@@ -1,5 +1,6 @@
 import { Note } from "./note";
 import { Instrument, INoteProps } from "./Instrument";
+import { ISoundHub } from "../soundhub/soundhub";
 
 const keyProps: INoteProps[] = [
     {note: "A1", index: 0, song : 'sounds/piano/C4.mp3', extras: {"type": "white"}},
@@ -34,8 +35,8 @@ export class TestKey extends Note {
 }
 
 export class TestInstrument extends Instrument<TestKey> {
-    constructor(log: (string )=> void, transform: Transform) {
-        super(log, transform);
+    constructor(log: (string )=> void, soundHub: ISoundHub, transform: Transform) {
+        super(log, soundHub, transform);
         this.createNotes(null, TestKey, keyProps);
     }
     getMaterial() {
