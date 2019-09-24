@@ -36,7 +36,8 @@ export abstract class Note extends EntityWrapper implements INoteController, INo
     constructor (log: (string )=> void, transform: Transform, parent: Entity, noteProp: INoteProps) {
         super(log, transform, parent);
         this.note = noteProp.note;
-        this.entity.addComponentOrReplace(this.getNoteShape(noteProp));
+        let noteShape = this.getNoteShape(noteProp);
+        if (noteShape) this.entity.addComponentOrReplace(noteShape);
         this.entity.addComponent (new OnPointerDown(e => {this.log(JSON.stringify(e)); this.onPressed();}));
         this.setSound(new AudioClip(noteProp.song));
     }

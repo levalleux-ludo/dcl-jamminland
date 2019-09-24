@@ -16,7 +16,7 @@ export function getPianoNotes(): INoteProps[] {
         let index = 0;
         let white_index = 0;
         for (let octave of [1,2,3,4,5,6]) {
-            for (let letter of ["A", "B", "C", "D", "E", "F", "G"]) {
+            for (let letter of ["C", "D", "E", "F", "G", "A", "B"]) {
                 let note = letter + octave;
                 let type = "WHITE";
                 pianoNotes.push({
@@ -24,7 +24,7 @@ export function getPianoNotes(): INoteProps[] {
                 });
                 index++;
                 white_index++;
-                if ((octave === 6) && (letter === "A")) break;
+                if ((octave === 6) && (letter === "C")) break; // end with C6
                 if (["A","C","D","F","G"].indexOf(letter) !== -1) {
                     let note = letter + octave + "_sharp";
                     let type = "BLACK";
