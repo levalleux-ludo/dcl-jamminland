@@ -2,7 +2,7 @@ import { INoteProps, Instrument } from "./Instrument";
 import { Note } from "./note";
 import { ISoundHub } from "../soundhub/soundhub";
 
-const bassModelFile = "models/bass.gltf";
+const bassModelFile = "models/bass_perso_1.gltf";
 const soundsPath = "sounds/bass/";
 const extension = ".wav"
 var bassNotes: INoteProps[];
@@ -52,7 +52,7 @@ export class BassNote extends Note {
     }
     getMaterial() {
         const material = new Material()
-        material.albedoTexture = new Texture("models/fingerprint.png",{hasAlpha: true});
+        material.albedoTexture = new Texture("images/fingerprint.png",{hasAlpha: true});
         material.hasAlpha = true;
         return material;
     }
@@ -78,15 +78,15 @@ export class Bass extends Instrument<BassNote> {
         return new GLTFShape(bassModelFile);
     }
     getTransformForNote(noteProp: INoteProps): Transform {
-        let posX = 0.026;
-        let posY = 0.03;
-        let posZ = -0.41;
+        let posX = 0.4;
+        let posY = 0.8;
+        let posZ = -13.0;
         let noteCord = noteProp.extras['cord'] as number;
         let notePosition = noteProp.extras['position'] as number;
         return new Transform({
-            position: new Vector3(posX-(0.012 * noteCord), posY, posZ + 0.05*notePosition),
+            position: new Vector3(posX-(0.2 * noteCord), posY, posZ + 1.2*notePosition -0.1*noteCord),
             rotation: Quaternion.Euler(90,0,0),
-            scale: new Vector3(0.01, 0.04, 0.02),
+            scale: new Vector3(0.4, 1.0, 0.8),
         })
     }
 }
