@@ -11,8 +11,8 @@ export abstract class EntityWrapper {
         if (material) this.entity.addComponent(material);
         if (parent) {
             this.entity.setParent(parent);
-        } else {
-            engine.addEntity(this.entity);
+        // } else {
+        //     engine.addEntity(this.entity);
         }
     }
     protected abstract getShape(): Shape;

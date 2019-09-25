@@ -10,7 +10,7 @@ let imageTexture = new Texture('images/bass_guitar.png');
 
 export class BassUI extends UIInstrument {
     image: UIImage;
-    constructor(log: (string )=> void, parent: UIShape, soundHub: ISoundHub) {
+    constructor(log: (string )=> void, parent: UIShape) {
         super(log, parent);
         this.image = new UIImage(this.container, imageTexture);
         this.image.hAlign = 'center'
@@ -33,21 +33,11 @@ export class BassUI extends UIInstrument {
         toolName.paddingTop = -10
         toolName.color = Color4.FromHexString('#0F1217ff')
 
-        const closeIcon = new UIImage(this.container, new Texture('images/close-icon3.png'))
-        closeIcon.name = 'clickable-image'
-        closeIcon.width = '50px'
-        closeIcon.height = '50px'
-        closeIcon.hAlign = 'right'
-        closeIcon.vAlign = 'top'
-        closeIcon.sourceWidth = 128
-        closeIcon.sourceHeight = 128
-        closeIcon.isPointerBlocker = true
-        closeIcon.onClick = new OnClick(() => {
-            this.hide();
-        });
-
+        
+    }
+    public setSoundHub(soundHub: ISoundHub) {
+        super.setSoundHub(soundHub);
         this.createNotes(soundHub, getBassNotes());
-
     }
     createNotes(soundHub: ISoundHub, noteProps: INoteProps[]) {
         let tabPositionX = ['32.5%', '25%', '18.7%', '12.6%', '6.7%', '1.0%'];

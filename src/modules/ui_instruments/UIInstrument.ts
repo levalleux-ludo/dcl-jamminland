@@ -20,6 +20,18 @@ export abstract class UIInstrument implements INoteController {
         this.container.vAlign = 'top';
         this.container.isPointerBlocker = true;
         this.container.visible = false;
+        const closeIcon = new UIImage(this.container, new Texture('images/close-icon3.png'))
+        closeIcon.name = 'clickable-image'
+        closeIcon.width = '50px'
+        closeIcon.height = '50px'
+        closeIcon.hAlign = 'right'
+        closeIcon.vAlign = 'top'
+        closeIcon.sourceWidth = 128
+        closeIcon.sourceHeight = 128
+        closeIcon.isPointerBlocker = true
+        closeIcon.onClick = new OnClick(() => {
+            this.hide();
+        });
     }
     public show() {
         this.container.visible = true;
@@ -51,7 +63,7 @@ export abstract class UIInstrument implements INoteController {
             onPlayNote.call(this, this.getInstrument(), note);
         })
     }
-    private onClickCallback(note) {
+    protected onClickCallback(note) {
         // relay towards the 3D entity containing the sound Component
         this.soundHub.onPlayNote(this.getInstrument(), note);
         this.notifyPlaying(note);

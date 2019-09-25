@@ -1,12 +1,17 @@
+import { EntityWrapper } from "./entity_wrapper";
+
 // const modelFile = 'models/land.glb';
 const modelFile = 'models/land1.gltf';
 
-export class Land {
+export class Land extends EntityWrapper {
     entity: Entity;
-    constructor(transform: Transform) {
-        this.entity = new Entity();
-        this.entity.addComponent(transform);
-        this.entity.addComponent(new GLTFShape(modelFile));
-        engine.addEntity(this.entity);
+    constructor(log: (string )=> void, transform: Transform) {
+        super(log, transform);
+    }
+    getMaterial() {
+        return null;
+    }
+    getShape() {
+        return new GLTFShape(modelFile);
     }
 }
