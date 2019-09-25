@@ -17,4 +17,7 @@ export abstract class EntityWrapper {
     }
     protected abstract getShape(): Shape;
     protected abstract getMaterial(): Material;
+    public getEntity() {
+        return this.entity;
+    }
 }

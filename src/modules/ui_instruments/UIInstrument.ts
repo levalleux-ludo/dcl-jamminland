@@ -21,6 +21,15 @@ export abstract class UIInstrument implements INoteController {
         this.container.isPointerBlocker = true;
         this.container.visible = false;
     }
+    public show() {
+        this.container.visible = true;
+    }
+    public hide() {
+        this.container.visible = false;
+    }
+    public isVisible() {
+        return this.container.visible;
+    }
     // **** INoteController implementation ****
     _onPlayedNoteCallbacks: ((instrument: string, note: string)=>void)[] = [];
     public setSoundHub(soundHub: ISoundHub) {
