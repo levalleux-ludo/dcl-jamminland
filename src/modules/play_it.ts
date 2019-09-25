@@ -6,8 +6,10 @@ export class PlayIt extends PushButton {
     constructor(log: (string )=> void, transform: Transform, parent: Entity, ui: UIInstrument) {
         super(log, transform, 'images/playme.jpg', Color3.Black(), () => {
             // When the button is pushed, display the UI
-            if (this.ui) {
+            if (!this.ui.isVisible()) {
                 this.ui.show();
+            } else {
+                this.ui.hide();
             }
         }, parent);
         this.ui = ui;

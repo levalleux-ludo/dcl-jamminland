@@ -20,26 +20,23 @@ const gameCanvas = new UICanvas();
 //   position: new Vector3(8.0, 0.0, 8.0)
 // }));
 
-// const piano = new Piano(trace, soundHub, new Transform({
-//   position: new Vector3(2, -0.1, 13.0),
-//   rotation: Quaternion.Euler(0, -30 ,0),
-//   scale: new Vector3(0.12, 0.2, 0.2)
-// }))
+const piano = new Piano(trace, soundHub, new Transform({
+  position: new Vector3(2, -0.1, 13.0),
+  rotation: Quaternion.Euler(0, -30 ,0),
+  scale: new Vector3(0.12, 0.2, 0.2)
+}))
 
 const bass = new Bass(trace, soundHub, new Transform({
   position: new Vector3(6, 1.5, 12.0),
   rotation: Quaternion.Euler(20, 80 ,70),
   scale: new Vector3(0.1,0.1,0.1)
 }));
+const bassUI = new BassUI(trace, gameCanvas, soundHub);
 const play_bass = new PlayIt(trace, new Transform({
   position: new Vector3(4.0,0.0,0.0),
   rotation: Quaternion.Euler(0,180,90),
   scale: new Vector3(1.0,1.0,5.0)
-}), bass.getEntity(), new BassUI(trace, gameCanvas));
-
-
-let bassNotes = getBassNotes();
-trace(JSON.stringify(bassNotes));
+}), bass.getEntity(), bassUI);
 
 function trace (message) {
   console.log(message);

@@ -23,9 +23,11 @@ export abstract class UIInstrument implements INoteController {
     }
     public show() {
         this.container.visible = true;
+        this.container.isPointerBlocker = true;
     }
     public hide() {
         this.container.visible = false;
+        this.container.isPointerBlocker = false;
     }
     public isVisible() {
         return this.container.visible;
