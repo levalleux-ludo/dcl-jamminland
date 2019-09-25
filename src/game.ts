@@ -8,6 +8,7 @@ import { BassUI } from "./modules/ui_instruments/bass_ui";
 import { PianoUI } from "./modules/ui_instruments/piano_ui";
 import { RecorderUI } from "./modules/ui_instruments/recorder_ui";
 import { Tempo } from "./modules/recorder/tempo";
+import { Recorder3D } from "./modules/recorder/recorder3D";
 
 // const land = new Land(trace, new Transform({
 //   position: new Vector3(8.0, 0.0, 15.8),
@@ -54,8 +55,19 @@ const gameCanvas = new UICanvas();
 // engine.addEntity(bass.getEntity());
 
 const tempo = new Tempo(trace, 100, 4, 4);
+const recorder3d = new Recorder3D(trace, new Transform({
+  position: new Vector3(13.0, 1.0, 13.0),
+  rotation: Quaternion.Euler(0, 65 ,0),
+  scale: new Vector3(0.2,0.2,0.2)
+}));
 const recorderUI = new RecorderUI(trace, gameCanvas, soundHub, tempo);
-recorderUI.display();
+const play_recorder = new PlayIt(trace, new Transform({
+  position: new Vector3(0.8,1.2,0.0),
+  rotation: Quaternion.Euler(0,180,0),
+  scale: new Vector3(0.4,0.4,2.0)
+}), recorder3d.getEntity(), recorderUI);
+engine.addEntity(recorder3d.getEntity());
+// recorderUI.display();
 function trace (message) {
   console.log(message);
 }

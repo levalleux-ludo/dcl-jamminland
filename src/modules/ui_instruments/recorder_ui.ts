@@ -3,10 +3,9 @@ import { TempoUI } from "./tempoUI";
 import { Tempo } from "../recorder/tempo";
 import { TrackUI, eTrackStatus } from "./trackUI";
 import { TrackRecorder } from "../recorder/trackRecorder";
+import { UIWrapper } from "../ui_wrapper";
 
-export class RecorderUI {
-    container: UIContainerRect;
-    log: (string )=> void;
+export class RecorderUI extends UIWrapper {
     soundHub: ISoundHub;
     image: UIImage;
     indicator: TempoUI;
@@ -14,18 +13,13 @@ export class RecorderUI {
     tracks: TrackUI[] = [];
     instrument: string;
     constructor(log: (string )=> void, parent: UIShape, soundHub: ISoundHub, tempo: Tempo) {
-        this.log = log;
+        super(log, parent);
         this.soundHub = soundHub;
         this.tempo = tempo;
-        this.container = new UIContainerRect(parent);
         this.container.width = 360;
         this.container.height = 230;
         this.container.hAlign = 'right';
         this.container.vAlign = 'center';
-        // this.container.positionY = '0%';
-        // this.container.adaptHeight = true;
-        this.container.isPointerBlocker = true;
-        this.container.visible = false;
 
         let imageTexture = new Texture('images/audio_device_background_2.png');
         this.image = new UIImage(this.container, imageTexture);
@@ -37,8 +31,10 @@ export class RecorderUI {
         this.image.sourceHeight = 416;
         this.image.width = `100%`;
         this.image.height = `100%`;
-        this.image.opacity = 0.7;
+        this.image.opacity = 1.0;
         // this.image.isPointerBlocker = true;
+
+        this.addCloseButton();
 
         let posXs = [-50, 120];
         // let posYs = ['-25%', '-10%', '+5%', '+20%'];
@@ -77,23 +73,6 @@ export class RecorderUI {
         this.tempo.registerOnBeat((currentPhrase:number, currentBar:number, currentBeat: number, currentBeatInPhrase: number) => {
             this.indicator.setBeat(1+currentBeatInPhrase);
         });
-
-        const closeIcon = new UIImage(this.container, new Texture('images/close-icon3.png'))
-        closeIcon.name = 'clickable-image'
-        closeIcon.width = '50px'
-        closeIcon.height = '50px'
-        closeIcon.hAlign = 'right'
-        closeIcon.vAlign = 'top'
-        closeIcon.sourceWidth = 128
-        closeIcon.sourceHeight = 128
-        closeIcon.isPointerBlocker = true
-        closeIcon.onClick = new OnClick(() => {
-            this.container.visible = false
-            this.container.isPointerBlocker = false
-            // log('clicked on the close image ', this.visible)
-        })
-
-
     }
 
     refreshTrackActivation() {
@@ -131,9 +110,5 @@ export class RecorderUI {
         this.tracks.forEach(track => {
             track.setTrackRecorder(new TrackRecorder(this.log, this.instrument, this.soundHub, this.tempo));
         })
-    }
-
-    public display() {
-        this.container.visible = true;
     }
 }

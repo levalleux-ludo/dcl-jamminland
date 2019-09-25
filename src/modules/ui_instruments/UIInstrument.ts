@@ -1,48 +1,18 @@
 import { INoteController, ISoundHub } from "../soundhub/soundhub";
 import { INoteProps } from "../instruments/Instrument";
+import { UIWrapper } from "../ui_wrapper";
 
-export abstract class UIInstrument implements INoteController {
+export abstract class UIInstrument extends UIWrapper implements INoteController {
     public abstract getInstrument(): string;
     public abstract createNotes(soundHub: ISoundHub, noteProps: INoteProps[]);
     public display() {
         this.container.visible = true;
     }
 
-    container: UIContainerRect;
     soundHub: ISoundHub;
-    log: (string )=> void;
     constructor(log: (string )=> void, parent: UIShape) {
-        this.log = log;
-        this.container = new UIContainerRect(parent);
-        this.container.width = '100%';
-        this.container.height = '33%';
-        this.container.hAlign = 'center';
-        this.container.vAlign = 'top';
-        this.container.isPointerBlocker = true;
-        this.container.visible = false;
-        const closeIcon = new UIImage(this.container, new Texture('images/close-icon3.png'))
-        closeIcon.name = 'clickable-image'
-        closeIcon.width = '50px'
-        closeIcon.height = '50px'
-        closeIcon.hAlign = 'right'
-        closeIcon.vAlign = 'top'
-        closeIcon.sourceWidth = 128
-        closeIcon.sourceHeight = 128
-        closeIcon.isPointerBlocker = true
-        closeIcon.onClick = new OnClick(() => {
-            this.hide();
-        });
-    }
-    public show() {
-        this.container.visible = true;
-        this.container.isPointerBlocker = true;
-    }
-    public hide() {
-        this.container.visible = false;
-        this.container.isPointerBlocker = false;
-    }
-    public isVisible() {
-        return this.container.visible;
+        super(log, parent);
+        this.addCloseButton();
     }
     // **** INoteController implementation ****
     _onPlayedNoteCallbacks: ((instrument: string, note: string)=>void)[] = [];

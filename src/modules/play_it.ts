@@ -1,9 +1,9 @@
-import { UIInstrument } from "./ui_instruments/UIInstrument";
 import { PushButton } from "./pushbutton";
+import { UIWrapper } from "./ui_wrapper";
 
 export class PlayIt extends PushButton {
-    ui: UIInstrument;
-    constructor(log: (string )=> void, transform: Transform, parent: Entity, ui: UIInstrument) {
+    ui: UIWrapper;
+    constructor(log: (string )=> void, transform: Transform, parent: Entity, ui: UIWrapper) {
         super(log, transform, 'images/playme.jpg', Color3.Black(), () => {
             // When the button is pushed, display the UI
             if (!this.ui.isVisible()) {
