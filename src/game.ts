@@ -9,6 +9,7 @@ import { PianoUI } from "./modules/ui_instruments/piano_ui";
 import { RecorderUI } from "./modules/ui_instruments/recorder_ui";
 import { Tempo } from "./modules/recorder/tempo";
 import { Recorder3D } from "./modules/recorder/recorder3D";
+import { DrumSet } from "./modules/instruments/drumset";
 
 // const land = new Land(trace, new Transform({
 //   position: new Vector3(8.0, 0.0, 15.8),
@@ -67,6 +68,13 @@ const play_recorder = new PlayIt(trace, new Transform({
   scale: new Vector3(0.4,0.4,2.0)
 }), recorder3d.getEntity(), recorderUI);
 engine.addEntity(recorder3d.getEntity());
+
+const drumSet = new DrumSet(trace, soundHub, new Transform({
+  position: new Vector3(9.0, 0.0, 14.0),
+  rotation: Quaternion.Euler(0,0,0),
+  scale: new Vector3(0.5, 0.5, 0.5)
+}));
+engine.addEntity(drumSet.getEntity());
 // recorderUI.display();
 function trace (message) {
   console.log(message);

@@ -1,6 +1,5 @@
 import { EntityWrapper } from "./entity_wrapper";
 
-// const modelFile = 'models/land.glb';
 const modelFile = 'models/land1.gltf';
 
 export class Land extends EntityWrapper {

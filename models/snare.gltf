@@ -1,0 +1,156 @@
+{
+    "asset" : {
+        "generator" : "Khronos glTF Blender I/O v0.9.36",
+        "version" : "2.0"
+    },
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "Scene",
+            "nodes" : [
+                0,
+                1,
+                2
+            ]
+        }
+    ],
+    "nodes" : [
+        {
+            "mesh" : 0,
+            "name" : "Cylinder.004_1",
+            "rotation" : [
+                0.002505933865904808,
+                -0.009327052161097527,
+                -0.9998924136161804,
+                0.011042876169085503
+            ],
+            "scale" : [
+                1.4995819330215454,
+                0.5637555718421936,
+                1.4995818138122559
+            ],
+            "translation" : [
+                2.464778184890747,
+                4.085130214691162,
+                -5.6441545486450195
+            ]
+        },
+        {
+            "name" : "Light",
+            "rotation" : [
+                0.16907575726509094,
+                0.7558803558349609,
+                -0.27217137813568115,
+                0.570947527885437
+            ],
+            "translation" : [
+                4.076245307922363,
+                5.903861999511719,
+                -1.0054539442062378
+            ]
+        },
+        {
+            "name" : "Camera",
+            "rotation" : [
+                0.483536034822464,
+                0.33687159419059753,
+                -0.20870360732078552,
+                0.7804827094078064
+            ],
+            "translation" : [
+                7.358891487121582,
+                4.958309173583984,
+                6.925790786743164
+            ]
+        }
+    ],
+    "materials" : [
+        {
+            "doubleSided" : true,
+            "emissiveFactor" : [
+                0,
+                0,
+                0
+            ],
+            "name" : "Tb_Peau_Mate.002",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.4200232923030853,
+                    0.2938213050365448,
+                    0.21176353096961975,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.6000000238418579
+            }
+        }
+    ],
+    "meshes" : [
+        {
+            "name" : "Cylinder.004_1",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 0,
+                        "NORMAL" : 1
+                    },
+                    "indices" : 2,
+                    "material" : 0
+                }
+            ]
+        }
+    ],
+    "accessors" : [
+        {
+            "bufferView" : 0,
+            "componentType" : 5126,
+            "count" : 20,
+            "max" : [
+                0.9461899995803833,
+                -1.1489299535751343,
+                0.9461899995803833
+            ],
+            "min" : [
+                -0.9461899995803833,
+                -1.1489299535751343,
+                -0.9461899995803833
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 1,
+            "componentType" : 5126,
+            "count" : 20,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 2,
+            "componentType" : 5123,
+            "count" : 42,
+            "type" : "SCALAR"
+        }
+    ],
+    "bufferViews" : [
+        {
+            "buffer" : 0,
+            "byteLength" : 240,
+            "byteOffset" : 0
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 240,
+            "byteOffset" : 240
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 84,
+            "byteOffset" : 480
+        }
+    ],
+    "buffers" : [
+        {
+            "byteLength" : 564,
+            "uri" : "data:application/octet-stream;base64,3GO5viMQk7+byV+/AAAAACMQk7+COXK/3GO5PiMQk7+byV+/hEcrPyMQk7+ERyu/m8lfPyMQk7/cY7m+gjlyPyMQk78AAAAAm8lfPyMQk7/cY7k+hEcrPyMQk7+ERys/3GO5PiMQk7+byV8/AAAAACMQk7+COXI/3GO5viMQk7+byV8/hEcrvyMQk7+ERys/m8lfvyMQk7/cY7k+gjlyvyMQk78AAACAm8lfvyMQk7/cY7m+hEcrvyMQk7+ERyu/3GO5viMQk7+byV+/m8lfPyMQk7/cY7m+3GO5PiMQk7+byV8/m8lfvyMQk7/cY7k+AAAAgAAAgL8AAACAAAAAgAAAgL8AAACAAAAAgAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAACAAAAAAP//f78AAACAAAAAAP//f78AAACAAAAAAP//f78AAACAAAAAAP//f78AAAAAAAABAAIAAgADAAQABAAFAAYABgAHAAgACAAJAAoACgALAAwADAANAA4ADgAPAAAAAAACAAQABAAGAAgACAAKAAwADAAOAAAAEAARABIAEgATABAA"
+        }
+    ]
+}
