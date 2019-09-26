@@ -8,9 +8,7 @@
         {
             "name" : "Scene",
             "nodes" : [
-                0,
-                1,
-                2
+                0
             ]
         }
     ],
@@ -19,48 +17,20 @@
             "mesh" : 0,
             "name" : "Cylinder.023_0",
             "rotation" : [
-                0.9891733527183533,
-                0.10394029319286346,
-                -0.008271435275673866,
-                0.10326774418354034
+                -0.7724723815917969,
+                -0.06764819473028183,
+                0.07934559881687164,
+                0.6264298558235168
             ],
             "scale" : [
                 -1.4899810552597046,
-                -0.04650000110268593,
-                -1.4899810552597046
+                -1.489982008934021,
+                -0.046500034630298615
             ],
             "translation" : [
-                4.720760822296143,
-                6.239487648010254,
-                -6.144401550292969
-            ]
-        },
-        {
-            "name" : "Light",
-            "rotation" : [
-                0.16907575726509094,
-                0.7558803558349609,
-                -0.27217137813568115,
-                0.570947527885437
-            ],
-            "translation" : [
-                4.076245307922363,
-                5.903861999511719,
-                -1.0054539442062378
-            ]
-        },
-        {
-            "name" : "Camera",
-            "rotation" : [
-                0.483536034822464,
-                0.33687159419059753,
-                -0.20870360732078552,
-                0.7804827094078064
-            ],
-            "translation" : [
-                7.358891487121582,
-                4.958309173583984,
-                6.925790786743164
+                4.943403720855713,
+                6.239489555358887,
+                -6.292107105255127
             ]
         }
     ],
@@ -72,7 +42,7 @@
                 0,
                 0
             ],
-            "name" : "Cybale_Dore_Mtal_Mate.001",
+            "name" : "Cybale_Dore_Mtal_Mate.002",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
                     0.7856623530387878,
@@ -87,7 +57,7 @@
     ],
     "meshes" : [
         {
-            "name" : "Cylinder.023_0",
+            "name" : "Cylinder.023_0.001",
             "primitives" : [
                 {
                     "attributes" : {
@@ -104,7 +74,7 @@
         {
             "bufferView" : 0,
             "componentType" : 5126,
-            "count" : 44,
+            "count" : 48,
             "max" : [
                 1,
                 1,
@@ -120,7 +90,7 @@
         {
             "bufferView" : 1,
             "componentType" : 5126,
-            "count" : 44,
+            "count" : 48,
             "type" : "VEC3"
         },
         {
@@ -133,24 +103,24 @@
     "bufferViews" : [
         {
             "buffer" : 0,
-            "byteLength" : 528,
+            "byteLength" : 576,
             "byteOffset" : 0
         },
         {
             "buffer" : 0,
-            "byteLength" : 528,
-            "byteOffset" : 528
+            "byteLength" : 576,
+            "byteOffset" : 576
         },
         {
             "buffer" : 0,
             "byteLength" : 120,
-            "byteOffset" : 1056
+            "byteOffset" : 1152
         }
     ],
     "buffers" : [
         {
-            "byteLength" : 1176,
-            "uri" : "data:application/octet-stream;base64,AACAPwAAgD8AAAAAKQU1PwAAgD8pBTW/AAAAAAAAgD8AAIC/KQU1vwAAgD8pBTW/AACAvwAAgD8AAACAKQU1vwAAgD8pBTU/AAAAgAAAgD8AAIA/KQU1PwAAgD8pBTU/KQU1vwAAgL8pBTW/AAAAAAAAgL8AAIC/KQU1PwAAgL8pBTW/AACAPwAAgL8AAAAAKQU1PwAAgL8pBTU/AAAAgAAAgL8AAIA/KQU1vwAAgL8pBTU/AACAvwAAgL8AAACAKQU1vwAAgL8pBTW/KQU1PwAAgL8pBTW/KQU1PwAAgL8pBTU/KQU1vwAAgL8pBTU/KQU1PwAAgD8pBTW/AACAPwAAgL8AAAAAKQU1PwAAgL8pBTW/AACAPwAAgD8AAAAAKQU1PwAAgL8pBTU/AACAPwAAgL8AAAAAKQU1PwAAgD8pBTU/AAAAgAAAgL8AAIA/KQU1PwAAgL8pBTU/AAAAgAAAgD8AAIA/KQU1vwAAgL8pBTU/AAAAgAAAgL8AAIA/KQU1vwAAgD8pBTU/AACAvwAAgL8AAACAKQU1vwAAgL8pBTU/AACAvwAAgD8AAACAKQU1vwAAgL8pBTW/AACAvwAAgL8AAACAAAAAAAAAgL8AAIC/KQU1vwAAgD8pBTW/AAAAAAAAgD8AAIC/AAAAAAAAgD8AAIC/KQU1PwAAgL8pBTW/AAAAAAAAgL8AAIC/AAAAAAAAgD8AAACAAAAAAAAAgD8AAACAAAAAAAAAgD8AAACAAAAAAAAAgD8AAACAAAAAAAAAgD8AAACAAAAAAAAAgD8AAACAAAAAAAAAgD8AAACAAAAAAAAAgD8AAACAAAAAgP//f78AAACAAAAAgP//f78AAACAAAAAgP//f78AAACAAAAAAP//f78AAACAAAAAAP//f78AAACAAAAAAP//f78AAACAAAAAAP//f78AAACAAAAAAP//f78AAAAAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAgoNsPwAAAABs7sO+goNsPwAAAABs7sO+goNsPwAAAABs7sO+goNsPwAAAABs7sM+goNsPwAAAABs7sM+goNsPwAAAABs7sM+bO7DPgAAAACCg2w/bO7DPgAAAACCg2w/bO7DPgAAAACCg2w/bO7DvgAAAACCg2w/bO7DvgAAAACCg2w/bO7DvgAAAACCg2w/goNsvwAAAABs7sM+goNsvwAAAABs7sM+goNsvwAAAABs7sM+goNsvwAAAABs7sO+goNsvwAAAABs7sO+goNsvwAAAABs7sO+bO7DvgAAAACCg2y/bO7DvgAAAACCg2y/bO7DvgAAAACCg2y/bO7DPgAAAACCg2y/bO7DPgAAAACCg2y/bO7DPgAAAACCg2y/AAABAAIAAgADAAQABAAFAAYABgAHAAAAAAACAAQABAAGAAAACAAJAAoACgALAAwADAANAA4ADgAPAAgAEAARABIAEgATABAAFAAVABYAFwAYABkAGgAbABwAHQAeAB8AIAAhACIAIwAkACUAJgAnACgAKQAqACsA"
+            "byteLength" : 1272,
+            "uri" : "data:application/octet-stream;base64,AACAPwAAAAAAAIC/KQU1PykFNb8AAIC/AAAAAAAAgL8AAIC/KQU1vykFNb8AAIC/AACAvwAAAIAAAIC/KQU1vykFNT8AAIC/AAAAgAAAgD8AAIC/KQU1PykFNT8AAIC/KQU1vykFNb8AAIA/AAAAAAAAgL8AAIA/KQU1PykFNb8AAIA/KQU1PykFNb8AAIA/AACAPwAAAAAAAIA/KQU1PykFNT8AAIA/KQU1PykFNT8AAIA/AAAAgAAAgD8AAIA/KQU1vykFNT8AAIA/KQU1vykFNT8AAIA/AACAvwAAAIAAAIA/KQU1vykFNb8AAIA/KQU1vykFNb8AAIA/KQU1PykFNb8AAIA/KQU1PykFNT8AAIA/KQU1vykFNT8AAIA/KQU1PykFNb8AAIC/AACAPwAAAAAAAIA/KQU1PykFNb8AAIA/AACAPwAAAAAAAIC/KQU1PykFNT8AAIA/AACAPwAAAAAAAIA/KQU1PykFNT8AAIC/AAAAgAAAgD8AAIA/KQU1PykFNT8AAIA/AAAAgAAAgD8AAIC/KQU1vykFNT8AAIA/AAAAgAAAgD8AAIA/KQU1vykFNT8AAIC/AACAvwAAAIAAAIA/KQU1vykFNT8AAIA/AACAvwAAAIAAAIC/KQU1vykFNb8AAIA/AACAvwAAAIAAAIA/AAAAAAAAgL8AAIA/KQU1vykFNb8AAIC/AAAAAAAAgL8AAIC/AAAAAAAAgL8AAIC/KQU1PykFNb8AAIA/AAAAAAAAgL8AAIA/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAD//38/AAAAAAAAAAD//38/AAAAAAAAAAD//38/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAD//38/AAAAAAAAAAD//38/AAAAAAAAAAD//38/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAgAAAAIAAAIA/AAAAgAAAAIAAAIA/AAAAgAAAAIAAAIA/AAAAAAAAAAAAAIA/goNsP2zuw74AAACAgoNsP2zuw74AAACAgoNsP2zuw74AAACAgoNsP2zuwz4AAACAgoNsP2zuwz4AAACAgoNsP2zuwz4AAACAbO7DPoKDbD8AAACAbO7DPoKDbD8AAACAbO7DPoKDbD8AAACAbO7DvoKDbD8AAACAbO7DvoKDbD8AAACAbO7DvoKDbD8AAACAgoNsv2zuwz4AAACAgoNsv2zuwz4AAACAgoNsv2zuwz4AAACAgoNsv2zuw74AAACAgoNsv2zuw74AAACAgoNsv2zuw74AAACAbO7DvoKDbL8AAACAbO7DvoKDbL8AAACAbO7DvoKDbL8AAACAbO7DPoKDbL8AAACAbO7DPoKDbL8AAACAbO7DPoKDbL8AAACAAAABAAIAAgADAAQABAAFAAYABgAHAAAAAAACAAQABAAGAAAACAAJAAoACwAMAA0ADgAPABAAEQASABMAFAAVABYAFgAXABQAGAAZABoAGwAcAB0AHgAfACAAIQAiACMAJAAlACYAJwAoACkAKgArACwALQAuAC8A"
         }
     ]
 }

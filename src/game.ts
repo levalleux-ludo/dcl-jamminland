@@ -70,9 +70,9 @@ const play_recorder = new PlayIt(trace, new Transform({
 engine.addEntity(recorder3d.getEntity());
 
 const drumSet = new DrumSet(trace, soundHub, new Transform({
-  position: new Vector3(9.0, 0.0, 14.0),
-  rotation: Quaternion.Euler(0,0,0),
-  scale: new Vector3(0.5, 0.5, 0.5)
+  position: new Vector3(9.0, 0.0, 13.0),
+  rotation: Quaternion.Euler(0,180,0),
+  scale: new Vector3(0.2, 0.2, 0.2)
 }));
 engine.addEntity(drumSet.getEntity());
 // recorderUI.display();

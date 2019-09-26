@@ -8,59 +8,29 @@
         {
             "name" : "Scene",
             "nodes" : [
-                0,
-                1,
-                2
+                0
             ]
         }
     ],
     "nodes" : [
         {
             "mesh" : 0,
-            "name" : "Cylinder.004_1",
+            "name" : "SnareSurface",
             "rotation" : [
-                0.002505933865904808,
-                -0.009327052161097527,
-                -0.9998924136161804,
-                0.011042876169085503
+                -0.01518524531275034,
+                0,
+                0,
+                0.9998847246170044
             ],
             "scale" : [
-                1.4995819330215454,
-                0.5637555718421936,
-                1.4995818138122559
+                1.5282363891601562,
+                0.6529672741889954,
+                1.5958504676818848
             ],
             "translation" : [
-                2.464778184890747,
-                4.085130214691162,
-                -5.6441545486450195
-            ]
-        },
-        {
-            "name" : "Light",
-            "rotation" : [
-                0.16907575726509094,
-                0.7558803558349609,
-                -0.27217137813568115,
-                0.570947527885437
-            ],
-            "translation" : [
-                4.076245307922363,
-                5.903861999511719,
-                -1.0054539442062378
-            ]
-        },
-        {
-            "name" : "Camera",
-            "rotation" : [
-                0.483536034822464,
-                0.33687159419059753,
-                -0.20870360732078552,
-                0.7804827094078064
-            ],
-            "translation" : [
-                7.358891487121582,
-                4.958309173583984,
-                6.925790786743164
+                2.455801010131836,
+                4.101109981536865,
+                -5.5239033699035645
             ]
         }
     ],
@@ -72,7 +42,7 @@
                 0,
                 0
             ],
-            "name" : "Tb_Peau_Mate.002",
+            "name" : "Tb_Peau_Mate.000",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
                     0.4200232923030853,
@@ -87,14 +57,15 @@
     ],
     "meshes" : [
         {
-            "name" : "Cylinder.004_1",
+            "name" : "Cylinder.005",
             "primitives" : [
                 {
                     "attributes" : {
                         "POSITION" : 0,
-                        "NORMAL" : 1
+                        "NORMAL" : 1,
+                        "TEXCOORD_0" : 2
                     },
-                    "indices" : 2,
+                    "indices" : 3,
                     "material" : 0
                 }
             ]
@@ -104,53 +75,64 @@
         {
             "bufferView" : 0,
             "componentType" : 5126,
-            "count" : 20,
+            "count" : 19,
             "max" : [
-                0.9461899995803833,
-                -1.1489299535751343,
-                0.9461899995803833
+                0.9807853102684021,
+                1,
+                1
             ],
             "min" : [
-                -0.9461899995803833,
-                -1.1489299535751343,
-                -0.9461899995803833
+                -1,
+                1,
+                -1
             ],
             "type" : "VEC3"
         },
         {
             "bufferView" : 1,
             "componentType" : 5126,
-            "count" : 20,
+            "count" : 19,
             "type" : "VEC3"
         },
         {
             "bufferView" : 2,
+            "componentType" : 5126,
+            "count" : 19,
+            "type" : "VEC2"
+        },
+        {
+            "bufferView" : 3,
             "componentType" : 5123,
-            "count" : 42,
+            "count" : 51,
             "type" : "SCALAR"
         }
     ],
     "bufferViews" : [
         {
             "buffer" : 0,
-            "byteLength" : 240,
+            "byteLength" : 228,
             "byteOffset" : 0
         },
         {
             "buffer" : 0,
-            "byteLength" : 240,
-            "byteOffset" : 240
+            "byteLength" : 228,
+            "byteOffset" : 228
         },
         {
             "buffer" : 0,
-            "byteLength" : 84,
-            "byteOffset" : 480
+            "byteLength" : 152,
+            "byteOffset" : 456
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 102,
+            "byteOffset" : 608
         }
     ],
     "buffers" : [
         {
-            "byteLength" : 564,
-            "uri" : "data:application/octet-stream;base64,3GO5viMQk7+byV+/AAAAACMQk7+COXK/3GO5PiMQk7+byV+/hEcrPyMQk7+ERyu/m8lfPyMQk7/cY7m+gjlyPyMQk78AAAAAm8lfPyMQk7/cY7k+hEcrPyMQk7+ERys/3GO5PiMQk7+byV8/AAAAACMQk7+COXI/3GO5viMQk7+byV8/hEcrvyMQk7+ERys/m8lfvyMQk7/cY7k+gjlyvyMQk78AAACAm8lfvyMQk7/cY7m+hEcrvyMQk7+ERyu/3GO5viMQk7+byV+/m8lfPyMQk7/cY7m+3GO5PiMQk7+byV8/m8lfvyMQk7/cY7k+AAAAgAAAgL8AAACAAAAAgAAAgL8AAACAAAAAgAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAACAAAAAAP//f78AAACAAAAAAP//f78AAACAAAAAAP//f78AAACAAAAAAP//f78AAAAAAAABAAIAAgADAAQABAAFAAYABgAHAAgACAAJAAoACgALAAwADAANAA4ADgAPAAAAAAACAAQABAAGAAgACAAKAAwADAAOAAAAEAARABIAEgATABAA"
+            "byteLength" : 712,
+            "uri" : "data:application/octet-stream;base64,6O7DvgAAgD9og2y/Fu/DPgAAgD9eg2y/AAAAAAAAgD8AAIC/xzkOvwAAgD8+21S/2jkOPwAAgD8x21S/JttUvwAAgD/rOQ6/MttUPwAAgD/ZOQ6/uxR7vwAAgD8Hxke+vhR7PwAAgD/ExUe+AACAvwAAgD+8mYG1vxR7PwAAgD+6xUc+ZINsvwAAgD/87sM+MttUPwAAgD/ZOQ4/ONtUvwAAgD/QOQ4/4jkOvwAAgD8s21Q/2TkOPwAAgD8y21Q/3cVHvgAAgD+9FHs/EO/DPgAAgD9gg2w/TO+utAAAgD8AAIA/xKCmMgAAgD8AAACAxKCmMgAAgD8AAACAxKCmMgAAgD8AAACAxKCmMgAAgD8AAACAxKCmMgAAgD8AAACAxKCmMgAAgD8AAACAxKCmMgAAgD8AAACAxKCmMgAAgD8AAACAxKCmMgAAgD8AAACAxKCmMgAAgD8AAACAxKCmMgAAgD8AAACAxKCmMgAAgD8AAACAxKCmMgAAgD8AAACAxKCmMgAAgD8AAACAxKCmMgAAgD8AAACAxKCmMgAAgD8AAACAxKCmMgAAgD8AAACAxKCmMgAAgD8AAACAxKCmMgAAgD8AAACAufMhPpDC8j4uBq8+ksLyPv//fz5gXeo+N+3uPabz/D66RMQ+rPP8PgCiTj20sA0/xSvmPriwDT96ZW88mpEhP9aE+D6ekSE/HdcjPLRTLD/WhPg+0BU3PxOU5zwPbkE/xSvmPrj2Sj++oU49tvZKPwjt7j2YLVo/ukTEPpgtWj/xDVA+fmliPywGrz4nRl8/+/9/PsB4Yz8AAAEAAgADAAEAAAADAAQAAQAFAAQAAwAFAAYABAAHAAYABQAHAAgABgAJAAgABwAJAAoACAALAAoACQALAAwACgANAAwACwAOAAwADQAOAA8ADAAQAA8ADgAQABEADwAQABIAEQAAAA=="
         }
     ]
 }
