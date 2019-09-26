@@ -2,10 +2,10 @@ import { EntityWrapper } from "./entity_wrapper";
 
 export class PushButton extends EntityWrapper {
     pressedScaleRatio = 0.3;
-    color: Color3;
-    constructor(log: (string )=> void, transform: Transform, image: string, color: Color3, onPushed: ()=>void, parent?: Entity) {
+    constructor(log: (string )=> void, transform: Transform, image: string, onPushed: ()=>void, parent?: Entity) {
         super(log, transform, parent);
         let label = new Entity();
+        this.entity.addComponentOrReplace(this.getMaterial());
         label.setParent(this.entity);
         label.addComponent(new BoxShape());
         label.addComponent(new Transform({
@@ -30,9 +30,7 @@ export class PushButton extends EntityWrapper {
         return new BoxShape();
     }
     getMaterial() {
-        const materialBox = new Material();
-        materialBox.albedoColor = this.color;
-        return materialBox;
+        return null;
     }
 }
 

@@ -19,7 +19,7 @@ export class RecorderUI extends UIWrapper {
         this.container.width = 360;
         this.container.height = 230;
         this.container.hAlign = 'right';
-        this.container.vAlign = 'center';
+        this.container.positionY = -350;
 
         let imageTexture = new Texture('images/audio_device_background_2.png');
         this.image = new UIImage(this.container, imageTexture);

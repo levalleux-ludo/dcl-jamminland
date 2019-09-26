@@ -3,6 +3,7 @@ import { Note } from "./note";
 import { ISoundHub } from "../soundhub/soundhub";
 
 const pianoModelFile = "models/piano.gltf";
+const soundFileExtension = ".mp3";
 const keysModelFile = {
     "WHITE": "models/piano_key_white.gltf",
     "BLACK": "models/piano_key_black.gltf"
@@ -20,7 +21,7 @@ export function getPianoNotes(): INoteProps[] {
                 let note = letter + octave;
                 let type = "WHITE";
                 pianoNotes.push({
-                    note: note, index: index, song : soundsPath + note + '.mp3', extras: {"type": type, "white_index": white_index}
+                    note: note, index: index, song : soundsPath + note + soundFileExtension, extras: {"type": type, "white_index": white_index}
                 });
                 index++;
                 white_index++;
@@ -29,7 +30,7 @@ export function getPianoNotes(): INoteProps[] {
                     let note = letter + octave + "_sharp";
                     let type = "BLACK";
                     pianoNotes.push({
-                        note: note, index: index, song : soundsPath + note + '.mp3', extras: {"type": type, "white_index": white_index}
+                        note: note, index: index, song : soundsPath + note + soundFileExtension, extras: {"type": type, "white_index": white_index}
                     });
                     index++;
                 }

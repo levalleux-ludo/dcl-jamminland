@@ -4,7 +4,7 @@ import { UIWrapper } from "./ui_wrapper";
 export class PlayIt extends PushButton {
     ui: UIWrapper;
     constructor(log: (string )=> void, transform: Transform, parent: Entity, ui: UIWrapper) {
-        super(log, transform, 'images/playme.jpg', Color3.Black(), () => {
+        super(log, transform, 'images/playme.jpg', () => {
             // When the button is pushed, display the UI
             if (!this.ui.isVisible()) {
                 this.ui.show();
@@ -21,10 +21,11 @@ export class PlayIt extends PushButton {
         // }))
     }
     getMaterial() {
-        return null;
+        const materialBox = new Material();
+        materialBox.albedoColor = Color3.Black();
+        materialBox.hasAlpha = true;
+        materialBox.alpha = 0.5;
+        materialBox.emissiveColor = Color3.Yellow();
+        return materialBox;
     }
-    getShape() {
-        return new BoxShape();
-    }
-
 }
