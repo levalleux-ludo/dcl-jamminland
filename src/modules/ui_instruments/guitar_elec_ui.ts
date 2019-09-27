@@ -1,14 +1,14 @@
 import { UIInstrument } from "./UIInstrument";
 import { ISoundHub, INoteController } from "../soundhub/soundhub";
 import { INoteProps } from "../instruments/Instrument";
-import { getBassNotes } from "../instruments/bass";
+import { getGuitarElecNotes } from "../instruments/guitar_elec";
 
-const instrument = "bass";
+const instrument = "guitar_elec";
 
-let imageTexture = new Texture('images/bass_guitar.png');
+let imageTexture = new Texture('images/guitar_elec.png');
 
 
-export class BassUI extends UIInstrument {
+export class GuitarElecUI extends UIInstrument {
     image: UIImage;
     constructor(log: (string )=> void, parent: UIShape) {
         super(log, parent);
@@ -24,7 +24,7 @@ export class BassUI extends UIInstrument {
         this.image.opacity = 1.0;
 
         const toolName = new UIText(this.container)
-        toolName.value = "Bass Guitar"
+        toolName.value = "Electrical Guitar"
         toolName.fontSize = 20
         toolName.vAlign = 'top'
         toolName.width = '150px'
@@ -37,11 +37,13 @@ export class BassUI extends UIInstrument {
     }
     public setSoundHub(soundHub: ISoundHub) {
         super.setSoundHub(soundHub);
-        this.createNotes(soundHub, getBassNotes());
+        this.createNotes(soundHub, getGuitarElecNotes());
     }
     createNotes(soundHub: ISoundHub, noteProps: INoteProps[]) {
-        let tabPositionX = ['32.5%', '25%', '18.7%', '12.6%', '6.7%', '1.0%'];
-        let cordPositionY = ['7%', '3%', '-1%', '-5%'];
+        // let tabPositionX = ['32.5%', '25%', '18.7%', '12.6%', '6.7%', '1.0%'];
+        let tabPositionX = ['35%', '28.5%', '22.5%', '16.5%', '11.5%', '7%'];
+        // let cordPositionY = ['7%', '3%', '-1%', '-5%'];
+        let cordPositionY = ['-1.5%', '-5%', '-8.5%', '-12%', '-15.5%', '-19%'];
         for (let noteProp of noteProps) {
             let noteCord = noteProp.extras['cord'] as number;
             let notePosition = noteProp.extras['position'] as number;

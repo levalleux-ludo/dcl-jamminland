@@ -12,6 +12,7 @@ import { Recorder3D } from "./modules/recorder/recorder3D";
 import { DrumSet } from "./modules/instruments/drumset";
 import { DrumSetUI } from "./modules/ui_instruments/drumset_ui";
 import { GuitarElec, getGuitarElecNotes } from "./modules/instruments/guitar_elec";
+import { GuitarElecUI } from "./modules/ui_instruments/guitar_elec_ui";
 
 // const land = new Land(trace, new Transform({
 //   position: new Vector3(8.0, 0.0, 15.8),
@@ -85,12 +86,19 @@ const gameCanvas = new UICanvas();
 // engine.addEntity(drumSet.getEntity());
 
 const guitarElec = new GuitarElec(trace, soundHub, new Transform({
-  position: new Vector3(11.5, 1.8, 12.0),
-  rotation: Quaternion.Euler(20, 80 ,70),
+  position: new Vector3(11.5, 1.6, 12.0),
+  rotation: Quaternion.Euler(20, 60 ,70),
   scale: new Vector3(0.1,0.1,0.1)
 }));
+const guitarElecUI = new GuitarElecUI(trace, gameCanvas);
+guitarElecUI.setSoundHub(soundHub);
+const play_guitar_elec = new PlayIt(trace, new Transform({
+  position: new Vector3(4.0,0.0,2.0),
+  rotation: Quaternion.Euler(0,190,90),
+  scale: new Vector3(1.0,1.0,5.0)
+}), guitarElec.getEntity(), guitarElecUI);
 engine.addEntity(guitarElec.getEntity());
-// recorderUI.display();
+
 function trace (message) {
   console.log(message);
 }
