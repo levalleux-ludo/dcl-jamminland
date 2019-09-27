@@ -4,7 +4,7 @@ import { ISoundHub } from "../soundhub/soundhub";
 
 const bassModelFile = "models/bass_perso_1.gltf";
 const soundsPath = "sounds/bass/";
-const extension = ".wav"
+const extension = ".mp3";
 var bassNotes: INoteProps[];
 export function getBassNotes(): INoteProps[] {
     if (!bassNotes) {
@@ -21,7 +21,7 @@ export function getBassNotes(): INoteProps[] {
                     ((octave === 2) && (letter === "G"))
                 ) { // change cord
                     bassNotes.push({
-                        note: note + "_", index: index, song : soundsPath + note + extension, extras: {"cord": cord, "position": position}
+                        note: note + "_", index: index, song : soundsPath + note + "_" + extension, extras: {"cord": cord, "position": position}
                     });
                     cord++;
                     position = 0;
