@@ -1,9 +1,5 @@
 
 export abstract class UIWrapper {
-    public display() {
-        this.container.visible = true;
-    }
-
     protected container: UIContainerRect;
     log: (string )=> void;
     constructor(log: (string )=> void, parent: UIShape) {

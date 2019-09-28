@@ -5,9 +5,6 @@ import { UIWrapper } from "../ui_wrapper";
 export abstract class UIInstrument extends UIWrapper implements INoteController {
     public abstract getInstrument(): string;
     public abstract createNotes(soundHub: ISoundHub, noteProps: INoteProps[]);
-    public display() {
-        this.container.visible = true;
-    }
 
     soundHub: ISoundHub;
     constructor(log: (string )=> void, parent: UIShape) {
