@@ -108,7 +108,9 @@ export class RecorderUI extends UIWrapper {
     public setActiveInstrument(instrument: string) {
         this.instrument = instrument;
         this.tracks.forEach(track => {
-            track.setTrackRecorder(new TrackRecorder(this.log, this.instrument, this.soundHub, this.tempo));
+            if ((track.getStatus() == eTrackStatus.DISABLED) || (track.getStatus() == eTrackStatus.READY)) {
+                track.setTrackRecorder(new TrackRecorder(this.log, this.instrument, this.soundHub, this.tempo));
+            }
         });
         this.refreshTrackActivation();
     }

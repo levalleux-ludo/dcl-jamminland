@@ -16,7 +16,7 @@ export class SelectInstrumentUI extends UIWrapper {
         this.toolName.fontSize = 36
         this.toolName.vAlign = 'top'
         // this.toolName.positionY = 100
-        this.toolName.width = '150px'
+        this.toolName.width = '200px'
         this.toolName.height = '35px'
         this.toolName.positionX = 60
         // this.toolName.paddingTop = -10
@@ -53,6 +53,7 @@ export class SelectInstrumentUI extends UIWrapper {
             this.previous();
         });
         this.addCloseButton(parent);
+        this.hide();
     }
     protected addToolName() {
         this.cleanControl(this.toolName);
@@ -120,7 +121,7 @@ export class SelectInstrumentUI extends UIWrapper {
             this.currentIndex = index;
             this.instruments[this.currentIndex].show();
             this.toolName.value = this.instruments[this.currentIndex].getInstrument();
-            this.refreshNavBar(true);
+            if (this.container.visible) this.refreshNavBar(true);
             if (this.fnOnSelectInstrument)
                 this.fnOnSelectInstrument(this.instruments[this.currentIndex].getInstrument());
         }

@@ -19,7 +19,7 @@ export class DrumSetUI extends UIInstrument {
         // this.container.hAlign = 'left';
 
         this.image = new UIImage(this.container, imageTexture);
-        this.image.hAlign = 'right'
+        this.image.hAlign = 'center'
         this.image.vAlign = 'top'
         // this.image.positionY = -100;
         this.image.paddingTop = 100; // under the close button

@@ -6,8 +6,19 @@ export enum eTrackStatus {
     EMPTY,
     RECORDING,
     READY,
-    PLAYING
+    PLAYING,
+    WAITING
 }
+
+const lcdTexts = { 
+    'DISABLED': {text: " [+] New track", color: Color4.White(), align: 'left'},
+    'EMPTY': {text: " [+] New track", color: Color4.White(), align: 'left'},
+    'RECORDING': {text: "*RECORDING*", color: Color4.Red(), align: 'center'},
+    'READY': {text: "TRACK_#", color: Color4.Teal(), align: 'left'},
+    'PLAYING': {text: "*REPLAY*", color: Color4.Green(), align: 'left'},
+    'WAITING': {text: "*WAITING*", color: Color4.Yellow(), align: 'center'}
+ };
+
 
 const texture_play = new Texture('images/play.png');
 const texture_stop = new Texture('images/stop.png');
@@ -29,10 +40,10 @@ export class TrackUI {
     img_rec: UIImage;
     img_delete: UIImage;
     img_delete_inactive: UIImage;
-    txt_new_track: UIText;
-    txt_recording: UIText;
-    txt_playing: UIText;
-    txt_track: UIText;
+    txt_lcd_text: UIText;
+    // txt_recording: UIText;
+    // txt_playing: UIText;
+    // txt_track: UIText;
     status: eTrackStatus = eTrackStatus.DISABLED;
     trackRecorder: TrackRecorder = null;
     log: (string )=> void;
@@ -91,11 +102,12 @@ export class TrackUI {
         this.lcd.container().visible = true;
 
         this.delete = new ImageContainer(this.container);
-        this.delete.container().positionX = 15;
+        this.delete.container().positionX = 45;
         this.delete.container().positionY = '0%';
         this.delete.container().width = 24;
         this.delete.container().height = 24;
         this.delete.registerImage('active', texture_cross_active, 81,84);
+        this.delete.container().isPointerBlocker = true;
         this.delete.registerOnClickImage('active', new OnClick(event => {
             this.log('onclick Delete');
             if (this.status == eTrackStatus.READY) {
@@ -104,32 +116,30 @@ export class TrackUI {
         }));
         this.delete.registerImage('inactive', texture_cross, 81,84);
 
-        this.txt_new_track = new UIText(this.lcd.container());
-        this.txt_new_track.value = " [+] New track";
-        this.txt_new_track.hTextAlign = 'left';
-        this.setTextGeometry(this.txt_new_track);
+        this.txt_lcd_text = new UIText(this.lcd.container());
+        this.setTextGeometry(this.txt_lcd_text);
 
-        this.txt_recording = new UIText(this.lcd.container());
-        this.txt_recording.value = "*RECORDING*";
-        this.txt_recording.color = Color4.Red();
-        this.txt_recording.hTextAlign = 'center';
-        this.setTextGeometry(this.txt_recording);
-        this.txt_recording.fontSize = 13;
+        // this.txt_recording = new UIText(this.lcd.container());
+        // this.txt_recording.value = "*RECORDING*";
+        // this.txt_recording.color = Color4.Red();
+        // this.txt_recording.hTextAlign = 'center';
+        // this.setTextGeometry(this.txt_recording);
+        // this.txt_recording.fontSize = 13;
 
-        this.txt_playing = new UIText(this.lcd.container());
-        this.txt_playing.value = "*REPLAY*";
-        this.txt_playing.color = Color4.Green();
-        this.txt_playing.hTextAlign = 'left';
-        this.setTextGeometry(this.txt_playing);
-        this.txt_playing.fontSize = 13;
+        // this.txt_playing = new UIText(this.lcd.container());
+        // this.txt_playing.value = "*REPLAY*";
+        // this.txt_playing.color = Color4.Green();
+        // this.txt_playing.hTextAlign = 'left';
+        // this.setTextGeometry(this.txt_playing);
+        // this.txt_playing.fontSize = 13;
 
-        this.txt_track = new UIText(this.lcd.container());
-        this.txt_track.value = "TRACK_#";
-        this.txt_track.hTextAlign = 'left';
-        this.txt_track.textWrapping = true;
-        this.txt_track.color = Color4.Teal();
-        this.txt_track.shadowBlur = 20;
-        this.setTextGeometry(this.txt_track);
+        // this.txt_track = new UIText(this.lcd.container());
+        // this.txt_track.value = "TRACK_#";
+        // this.txt_track.hTextAlign = 'left';
+        // this.txt_track.textWrapping = true;
+        // this.txt_track.color = Color4.Teal();
+        // this.txt_track.shadowBlur = 20;
+        // this.setTextGeometry(this.txt_track);
 
         this.swapButtonsAndTexts();
 
@@ -137,6 +147,7 @@ export class TrackUI {
 
     public setTrackRecorder (trackRecorder: TrackRecorder) {
         this.trackRecorder = trackRecorder;
+        this.changeStatus(eTrackStatus.DISABLED, false);
     }
 
     public enable(enable: boolean) {
@@ -152,6 +163,15 @@ export class TrackUI {
         this.container.positionY = posY;
     }
 
+    refresh_lcd_text() {
+        let status = eTrackStatus[this.status];
+        this.txt_lcd_text.value = lcdTexts[status].text;
+        this.txt_lcd_text.color = lcdTexts[status].color;
+        this.txt_lcd_text.hTextAlign = lcdTexts[status].align;
+        this.txt_lcd_text.value = lcdTexts[status].text;
+    
+     }
+    
     setTextGeometry(text: UIText) {
         let posX = 0;
         let posY = '45%';
@@ -168,54 +188,33 @@ export class TrackUI {
     }
 
     swapButtonsAndTexts() {
+        this.refresh_lcd_text();
         switch (this.status) {
             case eTrackStatus.DISABLED: {
-                this.txt_new_track.visible = true;
-                this.txt_new_track.color = Color4.Gray();
-                this.txt_recording.visible = false;
-                this.txt_playing.visible = false;
-                this.txt_track.visible = false;
                 this.play_stop_rec.makeOneVisible('disabled');
                 this.delete.makeAllInvisible();
                 this.lcd.makeOneVisible('inactive');
                 break;
             }
             case eTrackStatus.EMPTY: {
-                this.txt_new_track.visible = true;
-                this.txt_new_track.color = Color4.White();
-                this.txt_recording.visible = false;
-                this.txt_playing.visible = false;
-                this.txt_track.visible = false;
                 this.play_stop_rec.makeOneVisible('record');
                 this.delete.makeAllInvisible();
                 this.lcd.makeOneVisible('inactive');
                 break;
             }
             case eTrackStatus.RECORDING: {
-                this.txt_new_track.visible = false;
-                this.txt_recording.visible = true;
-                this.txt_playing.visible = false;
-                this.txt_track.visible = false;
                 this.play_stop_rec.makeOneVisible('stop');
                 this.delete.makeOneVisible('inactive');
                 this.lcd.makeOneVisible('active');
                 break;
             }
             case eTrackStatus.READY: {
-                this.txt_new_track.visible = false;
-                this.txt_recording.visible = false;
-                this.txt_playing.visible = false;
-                this.txt_track.visible = true;
                 this.play_stop_rec.makeOneVisible('play');
                 this.delete.makeOneVisible('active');
                 this.lcd.makeOneVisible('inactive');
                 break;
             }
             case eTrackStatus.PLAYING: {
-                this.txt_new_track.visible = false;
-                this.txt_recording.visible = false;
-                this.txt_playing.visible = true;
-                this.txt_track.visible = false;
                 this.play_stop_rec.makeOneVisible('stop');
                 this.delete.makeOneVisible('inactive');
                 this.lcd.makeOneVisible('active');

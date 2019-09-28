@@ -14,12 +14,12 @@ export class GuitarElecUI extends UIInstrument {
         super(log, parent);
         this.image = new UIImage(this.container, imageTexture);
         this.image.hAlign = 'center'
-        this.image.positionY = '30%'
-        this.image.paddingTop = 50; // under the close button
-        this.image.sourceWidth = 417
-        this.image.sourceHeight = 178
+        this.image.positionY = -150
+        // this.image.paddingTop = 50; // under the close button
+        this.image.sourceWidth = 430
+        this.image.sourceHeight = 124
         this.image.width = `100%`
-        this.image.height = `180%`
+        this.image.height = 300
         this.image.isPointerBlocker = true;
         this.image.opacity = 1.0;
 
