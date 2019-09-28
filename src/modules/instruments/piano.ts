@@ -8,6 +8,11 @@ const keysModelFile = {
     "WHITE": "models/piano_key_white.gltf",
     "BLACK": "models/piano_key_black.gltf"
 }
+// optim
+const keysShape = {
+    "WHITE": new GLTFShape(keysModelFile.WHITE),
+    "BLACK": new GLTFShape(keysModelFile.BLACK)
+}
 
 const soundsPath = "sounds/piano/";
 var pianoNotes: INoteProps[];
@@ -40,7 +45,6 @@ export function getPianoNotes(): INoteProps[] {
     return pianoNotes;
 };
 
-
 export class PianoKey extends Note {
     getShape() {
         return null;
@@ -50,7 +54,7 @@ export class PianoKey extends Note {
     }
     getNoteShape(noteProp: INoteProps) {
         let type = noteProp.extras["type"];
-        return new GLTFShape(keysModelFile[type]);
+        return keysShape[type];
     }
     getInstrument() {
         return "piano";

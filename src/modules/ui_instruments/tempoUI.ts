@@ -2,6 +2,10 @@ import { ImageContainer } from "../image_container";
 
 const indicatorPositionX = ['-47%', '-40.5%', '-34.5%', '-28.2%', '-22.1%', '-15.9%', '-9.7%', '-3.4%', '3.3%', '9.6%', '15.8%', '22.0%', '28.2%', '34.5%', '40.5%', '47%'];
 
+const imageTexture = new Texture('images/beat_indicator_background.png');
+const img_play = new Texture('images/play_silver.png');
+const img_pause = new Texture('images/pause_silver.png');
+const img_stop = new Texture('images/stop_silver.png');
 export class TempoUI {
     container: UIContainerRect;
     image: UIImage;
@@ -23,7 +27,6 @@ export class TempoUI {
         this.container.isPointerBlocker = true;
         this.container.visible = true;
 
-        let imageTexture = new Texture('images/beat_indicator_background.png');
         this.image = new UIImage(this.container, imageTexture);
         this.image.positionX = 32;
         this.image.positionY = '0%';
@@ -52,13 +55,13 @@ export class TempoUI {
         this.play_pause.container().positionY = '0%';
         this.play_pause.container().width = 32;
         this.play_pause.container().height = 32;
-        this.play_pause.registerImage('play', 'images/play_silver.png', 404, 403);
+        this.play_pause.registerImage('play', img_play, 404, 403);
         this.play_pause.registerOnClickImage('play', new OnClick(event => {
             this.log('onclick Play');
             this.play_pause.makeOneVisible('pause');
             this.notifyListener(true, false);
         }));
-        this.play_pause.registerImage('pause', 'images/pause_silver.png', 403, 402);
+        this.play_pause.registerImage('pause', img_pause, 403, 402);
         this.play_pause.registerOnClickImage('pause', new OnClick(event => {
             this.log('onclick Pause');
             this.play_pause.makeOneVisible('play');
@@ -98,7 +101,7 @@ export class TempoUI {
         //     this.notifyListener(false, true);
         // });
 
-        this.img_stop = new UIImage(this.container, new Texture('images/stop_silver.png'));
+        this.img_stop = new UIImage(this.container, img_stop);
         this.img_stop.positionX = -42;
         this.img_stop.positionY = '0%';
         this.img_stop.sourceWidth = 406;

@@ -48,14 +48,18 @@ export function getGuitarElecNotes(): INoteProps[] {
     return guitarElecNotes;
 }
 
+let material : Material = null;
+const img_fingerprint = new Texture("images/fingerprint2.png",{hasAlpha: true});
 export class GuitarElecNote extends Note {
     getShape() {
         return new PlaneShape();
     }
     getMaterial() {
-        const material = new Material()
-        material.albedoTexture = new Texture("images/fingerprint2.png",{hasAlpha: true});
-        material.hasAlpha = true;
+        if (!material) {
+            material = new Material()
+            material.albedoTexture = img_fingerprint;
+            material.hasAlpha = true;
+        }
         return material;
     }
     getNoteShape(noteProp: INoteProps) {

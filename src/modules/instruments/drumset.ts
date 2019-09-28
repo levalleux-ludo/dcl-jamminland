@@ -15,10 +15,10 @@ const drumsModelFile = {
     "kick": "models/kick.gltf",
 };
 const drumsUiImages = {
-    "cymbal1": {image: "images/drums_ui_cymbal1.png", sourceWidth: 297, sourceHeight: 110, posX: -210, posY: -12},
-    "cymbal2": {image: "images/drums_ui_cymbal2.png", sourceWidth: 282, sourceHeight: 106, posX: -157, posY: 87},
+    "cymbal1": {image: "images/drums_ui_cymbal1.png", sourceWidth: 297, sourceHeight: 110, posX: -209, posY: -5},
+    "cymbal2": {image: "images/drums_ui_cymbal2.png", sourceWidth: 282, sourceHeight: 106, posX: -156, posY: 89},
     "cymbal3": {image: "images/drums_ui_cymbal3.png", sourceWidth: 240, sourceHeight: 180, posX: 225, posY: 63},
-    "snare": {image: "images/drums_ui_snare.png", sourceWidth: 305, sourceHeight: 146, posX: -200, posY: -120},
+    "snare": {image: "images/drums_ui_snare.png", sourceWidth: 305, sourceHeight: 146, posX: -200, posY: -105},
     "tom1": {image: "images/drums_ui_tom1.png", sourceWidth: 197, sourceHeight: 105, posX: -53, posY: 38},
     "tom2": {image: "images/drums_ui_tom2.png", sourceWidth: 206, sourceHeight: 114, posX: 95, posY: 38},
     "floor": {image: "images/drums_ui_floor.png", sourceWidth: 297, sourceHeight: 161, posX: 210, posY: -95},

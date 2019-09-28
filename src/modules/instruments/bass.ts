@@ -45,15 +45,18 @@ export function getBassNotes(): INoteProps[] {
     }
     return bassNotes;
 };
-
+let material : Material = null;
+const img_fingerprint = new Texture("images/fingerprint.png",{hasAlpha: true});
 export class BassNote extends Note {
     getShape() {
         return new PlaneShape();
     }
     getMaterial() {
-        const material = new Material()
-        material.albedoTexture = new Texture("images/fingerprint.png",{hasAlpha: true});
-        material.hasAlpha = true;
+        if (!material) {
+            material = new Material()
+            material.albedoTexture = img_fingerprint;
+            material.hasAlpha = true;
+        }
         return material;
     }
     getNoteShape(noteProp: INoteProps) {

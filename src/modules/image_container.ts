@@ -7,8 +7,8 @@ export class ImageContainer {
     public container()  {
         return this._container;
     }
-    public registerImage(key: string, source: string, sourceWidth: number, sourceHeight: number) {
-        let image = new UIImage(this._container, new Texture(source));
+    public registerImage(key: string, source: Texture, sourceWidth: number, sourceHeight: number) {
+        let image = new UIImage(this._container, source);
         image.width = '100%';
         image.height = '100%';
         image.sourceWidth = sourceWidth;

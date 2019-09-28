@@ -5,6 +5,10 @@ import { getPianoNotes } from "../instruments/piano";
 import { INoteProps } from "../instruments/Instrument";
 
 const instrument = "piano";
+const img_white = new Texture("images/white_key.png");
+const img_green = new Texture("images/green_key.png");
+const img_black = new Texture("images/black_key.png");
+const img_black_pressed = new Texture("images/black_key_pressed.png");
 
 export class PianoUI extends UIInstrument {
 
@@ -18,7 +22,7 @@ export class PianoUI extends UIInstrument {
     createNotes(soundHub: ISoundHub, noteProps: INoteProps[]) {
         let offsetX = 19.5;
         let posX = -300;
-        let posY = '20%';
+        let posY = -150;
         let blackKeys = [];
         for (let noteProp of noteProps) {
             let noteType = noteProp.extras['type'] as string;
@@ -28,9 +32,9 @@ export class PianoUI extends UIInstrument {
                 imageContainer.container().positionX = posX;
                 imageContainer.container().positionY = posY;
                 // Specific to white key
-                imageContainer.registerImage('released', "images/white_key.png", 23, 117);
-                imageContainer.registerImage('pressed', "images/green_key.png", 24, 117);
-                imageContainer.container().height = '100%';
+                imageContainer.registerImage('released', img_white, 23, 117);
+                imageContainer.registerImage('pressed', img_green, 24, 117);
+                imageContainer.container().height = 150;
                 posX += offsetX;
                 // End specific
                 imageContainer.registerOnClickImage('released', new OnClick(event => {
@@ -47,11 +51,11 @@ export class PianoUI extends UIInstrument {
             let imageContainer = new ImageContainer(this.container);
             imageContainer.container().width = offsetX-1.0;
             imageContainer.container().positionX = blackKey.posX;
-            imageContainer.container().positionY = posY;
+            imageContainer.container().positionY = posY+25;
             // Specific to black key
-            imageContainer.registerImage('released', "images/black_key.png", 24, 117);
-            imageContainer.registerImage('pressed', "images/black_key_pressed.png", 24, 117);
-            imageContainer.container().height = '75%';
+            imageContainer.registerImage('released', img_black, 24, 117);
+            imageContainer.registerImage('pressed', img_black_pressed, 24, 117);
+            imageContainer.container().height = 100;
             // End specific
             imageContainer.registerOnClickImage('released', new OnClick(event => {
                 this.log(`PianoUI : Press on key ${blackKey.key}`);

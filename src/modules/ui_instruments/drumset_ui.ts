@@ -9,7 +9,7 @@ let imageTexture = new Texture('images/drumset_ui.png');
 let imageSourceWidth = 973;
 let imageSourceHeight = 401;
 let uiWidth = 600;
-let uiHeight = 350;
+let uiHeight = 300;
 
 export class DrumSetUI extends UIInstrument {
     image: UIImage;
@@ -19,9 +19,10 @@ export class DrumSetUI extends UIInstrument {
         // this.container.hAlign = 'left';
 
         this.image = new UIImage(this.container, imageTexture);
-        this.image.hAlign = 'center'
-        this.image.positionY = 0;
-        this.image.paddingTop = 50; // under the close button
+        this.image.hAlign = 'right'
+        this.image.vAlign = 'top'
+        // this.image.positionY = -100;
+        this.image.paddingTop = 100; // under the close button
         // this.image.paddingLeft = 100;
         this.image.sourceWidth = imageSourceWidth;
         this.image.sourceHeight = imageSourceHeight;
@@ -34,15 +35,15 @@ export class DrumSetUI extends UIInstrument {
         });
 
 
-        const toolName = new UIText(this.container)
-        toolName.value = "Drums"
-        toolName.fontSize = 20
-        toolName.vAlign = 'top'
-        toolName.width = '150px'
-        toolName.height = '35px'
-        toolName.positionX = 20
-        toolName.paddingTop = -10
-        toolName.color = Color4.FromHexString('#0F1217ff')
+        // const toolName = new UIText(this.container)
+        // toolName.value = "Drums"
+        // toolName.fontSize = 20
+        // toolName.vAlign = 'top'
+        // toolName.width = '150px'
+        // toolName.height = '35px'
+        // toolName.positionX = 20
+        // toolName.paddingTop = -10
+        // toolName.color = Color4.FromHexString('#0F1217ff')
 
         
     }
@@ -51,13 +52,11 @@ export class DrumSetUI extends UIInstrument {
         this.createNotes(soundHub, getDrumsNotes());
     }
     createNotes(soundHub: ISoundHub, noteProps: INoteProps[]) {
-        let offsetX = 19.5;
-        let posX = -300;
-        let posY = '20%';
+        let offsetY = -80;
         for (let noteProp of noteProps) {
             let imageSource = noteProp.extras["ui_image"] as string;
             let posX = noteProp.extras["ui_posX"] as number;
-            let posY = noteProp.extras["ui_posY"] as number;
+            let posY = noteProp.extras["ui_posY"] as number + offsetY;
             let sourceWidth = noteProp.extras["ui_sourceWidth"] as number;
             let sourceHeight = noteProp.extras["ui_sourceHeight"] as number;
             this.log("DrumSetUI : Add image " + imageSource + " at position " + posX + ", " + posY)
@@ -68,7 +67,7 @@ export class DrumSetUI extends UIInstrument {
             imageContainer.container().height =  height;
             imageContainer.container().positionX = posX;
             imageContainer.container().positionY = posY;
-            imageContainer.registerImage('normal', imageSource, sourceWidth, sourceHeight);
+            imageContainer.registerImage('normal', new Texture(imageSource), sourceWidth, sourceHeight);
             // End specific
             imageContainer.registerOnClickImage('normal', new OnClick(event => {
                 this.log(`DrumSetUI : Press on key ${noteProp.note}`);

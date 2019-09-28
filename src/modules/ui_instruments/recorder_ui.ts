@@ -5,6 +5,7 @@ import { TrackUI, eTrackStatus } from "./trackUI";
 import { TrackRecorder } from "../recorder/trackRecorder";
 import { UIWrapper } from "../ui_wrapper";
 
+const imageTexture = new Texture('images/audio_device_background_2.png');
 export class RecorderUI extends UIWrapper {
     soundHub: ISoundHub;
     image: UIImage;
@@ -19,9 +20,8 @@ export class RecorderUI extends UIWrapper {
         this.container.width = 360;
         this.container.height = 230;
         this.container.hAlign = 'right';
-        this.container.positionY = -350;
+        this.container.positionY = -400;
 
-        let imageTexture = new Texture('images/audio_device_background_2.png');
         this.image = new UIImage(this.container, imageTexture);
         this.image.hAlign = 'center';
         // this.image.positionY = '0%';
@@ -34,7 +34,7 @@ export class RecorderUI extends UIWrapper {
         this.image.opacity = 1.0;
         // this.image.isPointerBlocker = true;
 
-        this.addCloseButton();
+        this.addCloseButton(this.container);
 
         let posXs = [-50, 120];
         // let posYs = ['-25%', '-10%', '+5%', '+20%'];
@@ -98,7 +98,7 @@ export class RecorderUI extends UIWrapper {
             }
         }
         if (recording && firstEmpty) firstEmpty.enable(false);
-        if (!recording && !firstEmpty && firstDisabled) {
+        if (!recording && !firstEmpty && firstDisabled && this.instrument) {
             let trackRecorder = new TrackRecorder(this.log, this.instrument, this.soundHub, this.tempo);
             firstDisabled.setTrackRecorder(trackRecorder);
             firstDisabled.enable(true);
@@ -109,6 +109,7 @@ export class RecorderUI extends UIWrapper {
         this.instrument = instrument;
         this.tracks.forEach(track => {
             track.setTrackRecorder(new TrackRecorder(this.log, this.instrument, this.soundHub, this.tempo));
-        })
+        });
+        this.refreshTrackActivation();
     }
 }

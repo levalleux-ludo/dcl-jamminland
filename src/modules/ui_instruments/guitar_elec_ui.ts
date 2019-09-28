@@ -23,15 +23,15 @@ export class GuitarElecUI extends UIInstrument {
         this.image.isPointerBlocker = true;
         this.image.opacity = 1.0;
 
-        const toolName = new UIText(this.container)
-        toolName.value = "Electrical Guitar"
-        toolName.fontSize = 20
-        toolName.vAlign = 'top'
-        toolName.width = '150px'
-        toolName.height = '35px'
-        toolName.positionX = 20
-        toolName.paddingTop = -10
-        toolName.color = Color4.FromHexString('#0F1217ff')
+        // const toolName = new UIText(this.container)
+        // toolName.value = "Electrical Guitar"
+        // toolName.fontSize = 20
+        // toolName.vAlign = 'top'
+        // toolName.width = '150px'
+        // toolName.height = '35px'
+        // toolName.positionX = 20
+        // toolName.paddingTop = -10
+        // toolName.color = Color4.FromHexString('#0F1217ff')
 
         
     }

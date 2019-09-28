@@ -14,24 +14,24 @@ export class BassUI extends UIInstrument {
         super(log, parent);
         this.image = new UIImage(this.container, imageTexture);
         this.image.hAlign = 'center'
-        this.image.positionY = '30%'
-        this.image.paddingTop = 50; // under the close button
+        this.image.positionY = -150;
+        // this.image.paddingTop = 50; // under the close button
         this.image.sourceWidth = 417
         this.image.sourceHeight = 178
         this.image.width = `100%`
-        this.image.height = `180%`
+        this.image.height = 300
         this.image.isPointerBlocker = true;
         this.image.opacity = 1.0;
 
-        const toolName = new UIText(this.container)
-        toolName.value = "Bass Guitar"
-        toolName.fontSize = 20
-        toolName.vAlign = 'top'
-        toolName.width = '150px'
-        toolName.height = '35px'
-        toolName.positionX = 20
-        toolName.paddingTop = -10
-        toolName.color = Color4.FromHexString('#0F1217ff')
+        // const toolName = new UIText(this.container)
+        // toolName.value = "Bass Guitar"
+        // toolName.fontSize = 20
+        // toolName.vAlign = 'top'
+        // toolName.width = '150px'
+        // toolName.height = '35px'
+        // toolName.positionX = 20
+        // toolName.paddingTop = -10
+        // toolName.color = Color4.FromHexString('#0F1217ff')
 
         
     }

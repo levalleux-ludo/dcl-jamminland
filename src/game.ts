@@ -13,6 +13,7 @@ import { DrumSetUI } from "./modules/ui_instruments/drumset_ui";
 import { GuitarElec, getGuitarElecNotes } from "./modules/instruments/guitar_elec";
 import { GuitarElecUI } from "./modules/ui_instruments/guitar_elec_ui";
 import { Bass } from "./modules/instruments/bass";
+import { SelectInstrumentUI } from "./modules/ui_instruments/select_instrument_ui";
 
 function trace (message) {
   console.log(message);
@@ -26,7 +27,7 @@ const gameCanvas = new UICanvas();
 // uiEntity.addComponentOrReplace(gameCanvas)
 // engine.addEntity(uiEntity)
 
-const complete = true;
+const complete = false;
 let features = {
   'land': true,
   'instrument_test': false,
@@ -40,13 +41,15 @@ if (!complete) {
   features = {
     'land': false,
     'instrument_test': false,
-    'piano': false,
-    'bass': false,
+    'piano': true,
+    'bass': true,
     'guitar_elec': false,
     'drumset': false,
-    'recorder': false
+    'recorder': true
   }
 }
+const selectInstrumentUI = new SelectInstrumentUI (trace, gameCanvas);
+selectInstrumentUI.show();
 
 if (features.land) {
   const land = new Land(trace, new Transform({
@@ -66,13 +69,18 @@ if (features.piano) {
     rotation: Quaternion.Euler(0, -30 ,0),
     scale: new Vector3(0.12, 0.15, 0.12)
   }));
-  const pianoUI = new PianoUI(trace, gameCanvas);
+  const pianoUI = new PianoUI(trace, selectInstrumentUI.getContainer());
   pianoUI.setSoundHub(soundHub);
+  selectInstrumentUI.addInstrumentUI(pianoUI);
   const play_piano = new PlayIt(trace, new Transform({
     position: new Vector3(0.3,8.0,-1.9),
     rotation: Quaternion.Euler(0,-90,19),
     scale: new Vector3(0.3,1.0,4.5)
-  }), piano.getEntity(), pianoUI);
+  }), piano.getEntity(), () => {
+    trace("Click on Play PIANO");
+    selectInstrumentUI.selectInstrument(pianoUI);
+    selectInstrumentUI.show();
+  });
   engine.addEntity(piano.getEntity());
 }
 
@@ -82,13 +90,17 @@ if (features.bass) {
     rotation: Quaternion.Euler(20, 80 ,70),
     scale: new Vector3(0.1,0.1,0.1)
   }));
-  const bassUI = new BassUI(trace, gameCanvas);
+  const bassUI = new BassUI(trace, selectInstrumentUI.getContainer());
   bassUI.setSoundHub(soundHub);
+  selectInstrumentUI.addInstrumentUI(bassUI);
   const play_bass = new PlayIt(trace, new Transform({
     position: new Vector3(4.0,0.0,0.0),
     rotation: Quaternion.Euler(0,180,90),
     scale: new Vector3(1.0,1.0,5.0)
-  }), bass.getEntity(), bassUI);
+  }), bass.getEntity(),  () => {
+    selectInstrumentUI.selectInstrument(bassUI);
+    selectInstrumentUI.show();
+  });
   engine.addEntity(bass.getEntity());
 }
 
@@ -100,11 +112,17 @@ if (features.recorder) {
     scale: new Vector3(0.2,0.2,0.2)
   }));
   const recorderUI = new RecorderUI(trace, gameCanvas, soundHub, tempo);
+  selectInstrumentUI.onSelectInstrument(instrument => {
+    recorderUI.setActiveInstrument(instrument);
+  });
+  recorderUI.show();
   const play_recorder = new PlayIt(trace, new Transform({
     position: new Vector3(0.8,1.2,0.0),
     rotation: Quaternion.Euler(0,180,0),
     scale: new Vector3(0.4,0.4,2.0)
-  }), recorder3d.getEntity(), recorderUI);
+  }), recorder3d.getEntity(),  () => {
+    recorderUI.show();
+  });
   engine.addEntity(recorder3d.getEntity());
 }
 
@@ -116,11 +134,15 @@ if (features.drumset) {
   }));
   const drumSetUI = new DrumSetUI(trace, gameCanvas);
   drumSetUI.setSoundHub(soundHub);
+  selectInstrumentUI.addInstrumentUI(drumSetUI);
   const play_drums = new PlayIt(trace, new Transform({
     position: new Vector3(0.0,9.0,-1.0),
     rotation: Quaternion.Euler(0,90,0),
     scale: new Vector3(1.0,1.0,5.0)
-  }), drumSet.getEntity(), drumSetUI);
+  }), drumSet.getEntity(),  () => {
+    selectInstrumentUI.selectInstrument(drumSetUI);
+    selectInstrumentUI.show();
+  });
   engine.addEntity(drumSet.getEntity());
 }
 
@@ -132,11 +154,15 @@ if (features.guitar_elec) {
   }));
   const guitarElecUI = new GuitarElecUI(trace, gameCanvas);
   guitarElecUI.setSoundHub(soundHub);
+  selectInstrumentUI.addInstrumentUI(guitarElecUI);
   const play_guitar_elec = new PlayIt(trace, new Transform({
     position: new Vector3(4.0,0.0,2.0),
     rotation: Quaternion.Euler(0,190,90),
     scale: new Vector3(1.0,1.0,5.0)
-  }), guitarElec.getEntity(), guitarElecUI);
+  }), guitarElec.getEntity(),  () => {
+    selectInstrumentUI.selectInstrument(guitarElecUI);
+    selectInstrumentUI.show();
+  });
   engine.addEntity(guitarElec.getEntity());
 }
 

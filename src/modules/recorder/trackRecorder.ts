@@ -1,78 +1,47 @@
 import { Tempo } from "./tempo";
 import { IInstrumentRecorder, ISoundHub } from "../soundhub/soundhub";
+import { AbstractRecorder } from "./abstractRecorder";
 
-export class TrackRecorder implements IInstrumentRecorder {
-    log: (string )=> void;
-    instrument: string;
-    soundHub: ISoundHub;
+export class TrackRecorder extends AbstractRecorder {
     tempo: Tempo;
-    isRecording = false;
-    isPlaying = false;
     _record: { [s:number]: string;}  = <any>{};
     startTime = 0;
     recLength = 0;
     constructor(log: (string )=> void, instrument:string, soundHub: ISoundHub, tempo: Tempo) {
-        this.log = log;
-        this.instrument = instrument;
-        this.soundHub = soundHub;
+        super(log, instrument, soundHub);
         this.tempo = tempo;
-        this.setSoundHub(soundHub);
     }
-    public setSoundHub(soundHub: ISoundHub) {
-        soundHub.registerRecorder(this);
+    protected recordNote(note: string) {
+        let recTime = this.tempo.getCurrentTime() - this.startTime; 
+        this.log(`TrackRecorder : Record ${this.instrument} note ${note} at time ${recTime}`);
+        this._record[recTime] = note;
+        this.recLength = recTime;
     }
-    public onPlayedNote = (note: string) => {
-        this.log(`recorder for instrument ${this.instrument} is recording note ${note}`);
-        if (this.isRecording) {
-            let recTime = this.tempo.getCurrentTime() - this.startTime; 
-            this._record[recTime] = note;
-            this.recLength = recTime;
-            this.log(`Recording instrument ${this.instrument} note ${note} at time ${recTime}`);
-        }
+    protected onRecordStart() {
+        this._record = <any>{};
+        this.startTime = this.tempo.getCurrentTime();
+        this.recLength = 0;      
     }
-    public getInstrument() {
-        this.log("getInstrument() -> " + this.instrument);
-        return this.instrument;
+    protected onRecordStop() {
     }
-    public startRecording() {
-        if (!this.isRecording && !this.isPlaying) {
-            this._record = <any>{};
-            this.log("START RECORDING !!!");
-            this.startTime = this.tempo.getCurrentTime();
-            this.recLength = 0;
-            this.isRecording = true;
-        }
-    }
-    public stop() {
-        if (this.isRecording) {
-            this.log("STOP RECORDING !!!");
-            this.isRecording = false;
-        }
-        if (this.isPlaying) {
-            this.log("STOP PLAYING !!!");
-            this.isPlaying = false;
-        }
-    }
-    endOfPlaying: () => void;
-    public startPlaying(endOfPlaying: () => void) {
-        if (!this.isPlaying && !this.isRecording) {
-            this.log("START PLAYING !!!");
-            this.startTime = this.tempo.getCurrentTime();
-            this.isPlaying = true;
-            this.tempo.registerOnUpBeat(currentTime => {
-                if (this.isPlaying) {
-                    let recTime = currentTime - this.startTime; 
-                    if (recTime in this._record) {
-                        let note = this._record[recTime];
-                        this.log(`Play ${this.instrument} note ${note} at time ${recTime}`);
-                        this.soundHub.onPlayNote(this.instrument, note);
-                    }
-                    if (recTime >= this.recLength) {
-                        this.stop();
-                        endOfPlaying();
-                    }
+    protected onPlayStart() {
+        this.startTime = this.tempo.getCurrentTime();
+        this.tempo.registerOnUpBeat(currentTime => {
+            if (this.isPlaying) {
+                let recTime = currentTime - this.startTime; 
+                if (recTime in this._record) {
+                    let note = this._record[recTime];
+                    this.log(`TrackRecorder : Play ${this.instrument} note ${note} at time ${recTime}`);
+                    this.soundHub.onPlayNote(this.instrument, note);
                 }
-            });
-        }
+                if (recTime >= this.recLength) {
+                    this.log(`TrackRecorder : Record is finished after time ${recTime}`);
+                    this.stop();
+                    if (this.endOfPlaying) this.endOfPlaying();
+                }
+            }
+        });
+    }
+    protected onPlayStop() {
     }
 }

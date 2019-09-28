@@ -2,7 +2,8 @@ import { EntityWrapper } from "./entity_wrapper";
 
 export class PushButton extends EntityWrapper {
     pressedScaleRatio = 0.3;
-    constructor(log: (string )=> void, transform: Transform, image: string, onPushed: ()=>void, parent?: Entity) {
+    initialScale: Vector3;
+    constructor(log: (string )=> void, transform: Transform, image: Texture, onPushed: ()=>void, parent?: Entity) {
         super(log, transform, parent);
         let label = new Entity();
         this.entity.addComponentOrReplace(this.getMaterial());
@@ -14,14 +15,17 @@ export class PushButton extends EntityWrapper {
             scale: new Vector3(0.01,1.0,1.0)
         }));
         const materialLabel = new Material();
-        materialLabel.albedoTexture = new Texture(image);
+        materialLabel.albedoTexture = image;
         label.addComponent(materialLabel);
         label.addComponent(new OnClick(e => {
+            let transform = this.entity.getComponent(Transform);
+            this.initialScale = transform.scale;
             let anim = new PushButtonAnimation(this.log, this.entity, (fraction) => {
                 let transform = this.entity.getComponent(Transform);
-                let scaleX = transform.scale.x * (1 - fraction * this.pressedScaleRatio);
-                transform.scale = new Vector3(scaleX,transform.scale.y,transform.scale.z)
+                let scaleX = this.initialScale.x * (1 - fraction * this.pressedScaleRatio);
+                transform.scale = new Vector3(scaleX,this.initialScale.y,this.initialScale.z)
             });
+            anim.start();
             if (onPushed) onPushed();
         }));
     }

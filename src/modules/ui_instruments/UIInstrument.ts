@@ -9,7 +9,7 @@ export abstract class UIInstrument extends UIWrapper implements INoteController 
     soundHub: ISoundHub;
     constructor(log: (string )=> void, parent: UIShape) {
         super(log, parent);
-        this.addCloseButton();
+        // this.addCloseButton();
     }
     // **** INoteController implementation ****
     _onPlayedNoteCallbacks: ((instrument: string, note: string)=>void)[] = [];
