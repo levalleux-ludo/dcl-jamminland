@@ -11,8 +11,8 @@ export interface INoteProps {
 
 export abstract class Instrument<T extends Note> extends EntityWrapper{
     soundHub: ISoundHub;
-    constructor (log: (string )=> void, soundHub: ISoundHub, transform: Transform) {
-        super (log, transform);
+    constructor (log: (string )=> void, soundHub: ISoundHub, transform: Transform, parent: Entity) {
+        super (log, transform, parent);
         this.soundHub = soundHub;
     }
 

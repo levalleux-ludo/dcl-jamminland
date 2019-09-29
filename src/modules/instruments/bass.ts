@@ -70,8 +70,8 @@ export class BassNote extends Note {
 }
 
 export class Bass extends Instrument<BassNote> {
-    constructor(log: (string )=> void, soundHub: ISoundHub, transform: Transform) {
-        super(log, soundHub, transform);
+    constructor(log: (string )=> void, soundHub: ISoundHub, transform: Transform, parent: Entity) {
+        super(log, soundHub, transform, parent);
         this.createNotes(soundHub, BassNote, getBassNotes());
     }
     getMaterial() {

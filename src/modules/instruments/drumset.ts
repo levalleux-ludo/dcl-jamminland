@@ -3,7 +3,7 @@ import { Note } from "./note";
 import { ISoundHub } from "../soundhub/soundhub";
 
 const modelFile = 'models/drumset_low_poly.gltf';
-const soundFileExtension = ".wav";
+const soundFileExtension = ".mp3";
 const drumsModelFile = {
     "cymbal1": "models/cymbal1.gltf",
     "cymbal2": "models/cymbal2.gltf",
@@ -51,8 +51,8 @@ export function getDrumsNotes(): INoteProps[] {
 const instrument = "drums";
 
 export class DrumSet extends Instrument<DrumItem> {
-    constructor(log: (string )=> void, soundHub: ISoundHub, transform: Transform) {
-        super(log, soundHub, transform);
+    constructor(log: (string )=> void, soundHub: ISoundHub, transform: Transform, parent: Entity) {
+        super(log, soundHub, transform, parent);
         this.createNotes(soundHub, DrumItem, getDrumsNotes());
     }
     getMaterial() {

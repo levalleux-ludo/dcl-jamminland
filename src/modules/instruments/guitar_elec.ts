@@ -4,7 +4,7 @@ import { ISoundHub } from "../soundhub/soundhub";
 
 const guitarElecModelFile = "models/guitar_elec.gltf";
 const soundsPath = "sounds/guitar_elec/";
-const extension = ".wav";
+const extension = ".mp3";
 var guitarElecNotes: INoteProps[];
 export function getGuitarElecNotes(): INoteProps[] {
     if (!guitarElecNotes) {
@@ -73,8 +73,8 @@ export class GuitarElecNote extends Note {
 }
 
 export class GuitarElec extends Instrument<GuitarElecNote> {
-    constructor(log: (string )=> void, soundHub: ISoundHub, transform: Transform) {
-        super(log, soundHub, transform);
+    constructor(log: (string )=> void, soundHub: ISoundHub, transform: Transform, parent: Entity) {
+        super(log, soundHub, transform, parent);
         this.createNotes(soundHub, GuitarElecNote, getGuitarElecNotes());
     }
     getMaterial() {
