@@ -10,8 +10,10 @@ let imageTexture = new Texture('images/bass_guitar.png');
 
 export class BassUI extends UIInstrument {
     image: UIImage;
-    constructor(log: (string )=> void, parent: UIShape) {
-        super(log, parent);
+    constructor(log: (string )=> void, parent: UIShape, soundHub: ISoundHub) {
+        super(log, parent, soundHub);
+    }
+    protected buildControls() {
         this.image = new UIImage(this.container, imageTexture);
         this.image.hAlign = 'center'
         this.image.positionY = -150;
@@ -22,31 +24,18 @@ export class BassUI extends UIInstrument {
         this.image.height = 300
         this.image.isPointerBlocker = true;
         this.image.opacity = 1.0;
-
-        // const toolName = new UIText(this.container)
-        // toolName.value = "Bass Guitar"
-        // toolName.fontSize = 20
-        // toolName.vAlign = 'top'
-        // toolName.width = '150px'
-        // toolName.height = '35px'
-        // toolName.positionX = 20
-        // toolName.paddingTop = -10
-        // toolName.color = Color4.FromHexString('#0F1217ff')
-
         
+        this.createNotes(getBassNotes());
     }
-    public setSoundHub(soundHub: ISoundHub) {
-        super.setSoundHub(soundHub);
-        this.createNotes(soundHub, getBassNotes());
-    }
-    createNotes(soundHub: ISoundHub, noteProps: INoteProps[]) {
+
+    createNotes(noteProps: INoteProps[]) {
         let tabPositionX = ['32.5%', '25%', '18.7%', '12.6%', '6.7%', '1.0%'];
         let cordPositionY = ['7%', '3%', '-1%', '-5%'];
         for (let noteProp of noteProps) {
             let noteCord = noteProp.extras['cord'] as number;
             let notePosition = noteProp.extras['position'] as number;
             let item = new BassItemUI(this.log, this.image, noteProp.note, tabPositionX[notePosition], cordPositionY[noteCord-1]);
-            item.setSoundHub(soundHub);
+            item.setSoundHub(this.soundHub);
         }
 
     }

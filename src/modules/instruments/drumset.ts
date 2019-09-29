@@ -53,6 +53,8 @@ const instrument = "drums";
 export class DrumSet extends Instrument<DrumItem> {
     constructor(log: (string )=> void, soundHub: ISoundHub, transform: Transform, parent: Entity) {
         super(log, soundHub, transform, parent);
+    }
+    protected createYourNotes(soundHub: ISoundHub) {
         this.createNotes(soundHub, DrumItem, getDrumsNotes());
     }
     getMaterial() {

@@ -55,6 +55,10 @@ export class SelectInstrumentUI extends UIWrapper {
         this.addCloseButton(parent);
         this.hide();
     }
+    protected buildControls() {
+
+    }
+
     protected addToolName() {
         this.cleanControl(this.toolName);
         this.cleanControl(this.nextIcon);

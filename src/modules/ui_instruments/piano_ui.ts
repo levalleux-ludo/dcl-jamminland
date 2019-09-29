@@ -12,14 +12,10 @@ const img_black_pressed = new Texture("images/black_key_pressed.png");
 
 export class PianoUI extends UIInstrument {
 
-    constructor(log: (string )=> void, parent: UIShape) {
-        super(log, parent);
+    protected buildControls() {
+        this.createNotes(getPianoNotes());
     }
-    public setSoundHub(soundHub: ISoundHub) {
-        super.setSoundHub(soundHub);
-        this.createNotes(soundHub, getPianoNotes());
-    }
-    createNotes(soundHub: ISoundHub, noteProps: INoteProps[]) {
+    createNotes(noteProps: INoteProps[]) {
         let offsetX = 19.5;
         let posX = -300;
         let posY = -150;

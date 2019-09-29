@@ -10,8 +10,10 @@ let imageTexture = new Texture('images/guitar_elec.png');
 
 export class GuitarElecUI extends UIInstrument {
     image: UIImage;
-    constructor(log: (string )=> void, parent: UIShape) {
-        super(log, parent);
+    constructor(log: (string )=> void, parent: UIShape, soundHub: ISoundHub) {
+        super(log, parent, soundHub);
+    }
+    protected buildControls() {
         this.image = new UIImage(this.container, imageTexture);
         this.image.hAlign = 'center'
         this.image.positionY = -150
@@ -23,23 +25,9 @@ export class GuitarElecUI extends UIInstrument {
         this.image.isPointerBlocker = true;
         this.image.opacity = 1.0;
 
-        // const toolName = new UIText(this.container)
-        // toolName.value = "Electrical Guitar"
-        // toolName.fontSize = 20
-        // toolName.vAlign = 'top'
-        // toolName.width = '150px'
-        // toolName.height = '35px'
-        // toolName.positionX = 20
-        // toolName.paddingTop = -10
-        // toolName.color = Color4.FromHexString('#0F1217ff')
-
-        
+        this.createNotes(getGuitarElecNotes());
     }
-    public setSoundHub(soundHub: ISoundHub) {
-        super.setSoundHub(soundHub);
-        this.createNotes(soundHub, getGuitarElecNotes());
-    }
-    createNotes(soundHub: ISoundHub, noteProps: INoteProps[]) {
+    createNotes(noteProps: INoteProps[]) {
         // let tabPositionX = ['32.5%', '25%', '18.7%', '12.6%', '6.7%', '1.0%'];
         let tabPositionX = ['35%', '28.5%', '22.5%', '16.5%', '11.5%', '7%'];
         // let cordPositionY = ['7%', '3%', '-1%', '-5%'];
@@ -48,9 +36,8 @@ export class GuitarElecUI extends UIInstrument {
             let noteCord = noteProp.extras['cord'] as number;
             let notePosition = noteProp.extras['position'] as number;
             let item = new BassItemUI(this.log, this.image, noteProp.note, tabPositionX[notePosition], cordPositionY[noteCord-1]);
-            item.setSoundHub(soundHub);
+            item.setSoundHub(this.soundHub);
         }
-
     }
     getInstrument() {
         return instrument;

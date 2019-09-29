@@ -37,6 +37,8 @@ export class TestKey extends Note {
 export class TestInstrument extends Instrument<TestKey> {
     constructor(log: (string )=> void, soundHub: ISoundHub, transform: Transform, parent: Entity) {
         super(log, soundHub, transform, parent);
+    }
+    protected createYourNotes(soundHub: ISoundHub) {
         this.createNotes(null, TestKey, keyProps);
     }
     getMaterial() {

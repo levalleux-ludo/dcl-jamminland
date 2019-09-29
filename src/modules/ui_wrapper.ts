@@ -5,6 +5,7 @@ export abstract class UIWrapper {
     protected container: UIContainerRect;
     log: (string )=> void;
     protected closeIcon: UIImage;
+    isBuilt = false;
     constructor(log: (string )=> void, parent: UIShape) {
         this.log = log;
         this.container = new UIContainerRect(parent);
@@ -15,6 +16,7 @@ export abstract class UIWrapper {
         this.container.isPointerBlocker = true;
         this.container.visible = false;
     }
+    protected abstract buildControls();
     protected cleanControl(ctrl: UIShape) {
         // if (ctrl) {
         //     ctrl.visible = false;
@@ -39,6 +41,10 @@ export abstract class UIWrapper {
         });
     }
     public show() {
+        if (!this.isBuilt) {
+            this.buildControls();
+            this.isBuilt = true;
+        }
         this.container.visible = true;
         this.container.isPointerBlocker = true;
         if (this.closeIcon) {

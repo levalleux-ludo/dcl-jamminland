@@ -4,18 +4,20 @@ import { UIWrapper } from "../ui_wrapper";
 
 export abstract class UIInstrument extends UIWrapper implements INoteController {
     public abstract getInstrument(): string;
-    public abstract createNotes(soundHub: ISoundHub, noteProps: INoteProps[]);
+    public abstract createNotes(noteProps: INoteProps[]);
 
     soundHub: ISoundHub;
-    constructor(log: (string )=> void, parent: UIShape) {
+    constructor(log: (string )=> void, parent: UIShape, soundHub: ISoundHub) {
         super(log, parent);
-        // this.addCloseButton();
+        this.soundHub = soundHub;
+    }
+    protected buildControls() {
+        this.soundHub.registerNoteController(this);
     }
     // **** INoteController implementation ****
     _onPlayedNoteCallbacks: ((instrument: string, note: string)=>void)[] = [];
     public setSoundHub(soundHub: ISoundHub) {
-        this.soundHub = soundHub;
-        soundHub.registerNoteController(this);
+        // TODO : should be useless in the end
     }
     public registerOnPlayedNote(onPlayNote: (instrument: string, note: string)=> void) {
         // allow registering to allow recording from UI

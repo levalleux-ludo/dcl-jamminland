@@ -13,11 +13,10 @@ let uiHeight = 300;
 
 export class DrumSetUI extends UIInstrument {
     image: UIImage;
-    constructor(log: (string )=> void, parent: UIShape) {
-        super(log, parent);
-        // this.container.width = 640;
-        // this.container.hAlign = 'left';
-
+    constructor(log: (string )=> void, parent: UIShape, soundHub: ISoundHub) {
+        super(log, parent, soundHub);
+    }
+    protected buildControls() {
         this.image = new UIImage(this.container, imageTexture);
         this.image.hAlign = 'center'
         this.image.vAlign = 'top'
@@ -33,25 +32,10 @@ export class DrumSetUI extends UIInstrument {
         this.image.onClick = new OnClick(() => {
             this.log("On click DrumSet_ui");
         });
-
-
-        // const toolName = new UIText(this.container)
-        // toolName.value = "Drums"
-        // toolName.fontSize = 20
-        // toolName.vAlign = 'top'
-        // toolName.width = '150px'
-        // toolName.height = '35px'
-        // toolName.positionX = 20
-        // toolName.paddingTop = -10
-        // toolName.color = Color4.FromHexString('#0F1217ff')
-
         
+        this.createNotes(getDrumsNotes());
     }
-    public setSoundHub(soundHub: ISoundHub) {
-        super.setSoundHub(soundHub);
-        this.createNotes(soundHub, getDrumsNotes());
-    }
-    createNotes(soundHub: ISoundHub, noteProps: INoteProps[]) {
+    createNotes(noteProps: INoteProps[]) {
         let offsetY = -80;
         for (let noteProp of noteProps) {
             let imageSource = noteProp.extras["ui_image"] as string;

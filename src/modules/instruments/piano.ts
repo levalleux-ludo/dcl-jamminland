@@ -67,6 +67,8 @@ export class PianoKey extends Note {
 export class Piano extends Instrument<PianoKey> {
     constructor(log: (string )=> void, soundHub: ISoundHub, transform: Transform, parent: Entity) {
         super(log, soundHub, transform, parent);
+    }
+    protected createYourNotes(soundHub: ISoundHub) {
         this.createNotes(soundHub, PianoKey, getPianoNotes());
     }
     getMaterial() {

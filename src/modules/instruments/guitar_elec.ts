@@ -75,6 +75,8 @@ export class GuitarElecNote extends Note {
 export class GuitarElec extends Instrument<GuitarElecNote> {
     constructor(log: (string )=> void, soundHub: ISoundHub, transform: Transform, parent: Entity) {
         super(log, soundHub, transform, parent);
+    }
+    protected createYourNotes(soundHub: ISoundHub) {
         this.createNotes(soundHub, GuitarElecNote, getGuitarElecNotes());
     }
     getMaterial() {

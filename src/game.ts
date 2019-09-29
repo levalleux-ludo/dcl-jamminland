@@ -39,7 +39,7 @@ engine.addEntity(scene)
 
 const complete = true;
 let features = {
-  'land': false,
+  'land': true,
   'musichall': false,
   'instrument_test': false,
   'piano': true,
@@ -51,13 +51,13 @@ let features = {
 if (!complete) {
   features = {
     'land': false,
-    'musichall': true,
+    'musichall': false,
     'instrument_test': false,
     'piano': true,
-    'bass': false,
-    'guitar_elec': false,
-    'drumset': false,
-    'recorder': false
+    'bass': true,
+    'guitar_elec': true,
+    'drumset': true,
+    'recorder': true
   }
 }
 const selectInstrumentUI = new SelectInstrumentUI (trace, gameCanvas);
@@ -109,8 +109,7 @@ if (features.piano) {
     rotation: Quaternion.Euler(0, -30 ,0),
     scale: new Vector3(0.12, 0.15, 0.12)
   }), scene);
-  const pianoUI = new PianoUI(trace, selectInstrumentUI.getContainer());
-  pianoUI.setSoundHub(soundHub);
+  const pianoUI = new PianoUI(trace, selectInstrumentUI.getContainer(), soundHub);
   selectInstrumentUI.addInstrumentUI(pianoUI);
   pianoUI.hide();
   const play_piano = new PlayIt(trace, new Transform({
@@ -131,8 +130,7 @@ if (features.guitar_elec) {
     rotation: Quaternion.Euler(20, 60 ,70),
     scale: new Vector3(0.1,0.1,0.1)
   }), scene);
-  const guitarElecUI = new GuitarElecUI(trace, selectInstrumentUI.getContainer());
-  guitarElecUI.setSoundHub(soundHub);
+  const guitarElecUI = new GuitarElecUI(trace, selectInstrumentUI.getContainer(), soundHub);
   selectInstrumentUI.addInstrumentUI(guitarElecUI);
   guitarElecUI.hide();
   const play_guitar_elec = new PlayIt(trace, new Transform({
@@ -152,8 +150,7 @@ if (features.bass) {
     rotation: Quaternion.Euler(20, 80 ,70),
     scale: new Vector3(0.1,0.1,0.1)
   }), scene);
-  const bassUI = new BassUI(trace, selectInstrumentUI.getContainer());
-  bassUI.setSoundHub(soundHub);
+  const bassUI = new BassUI(trace, selectInstrumentUI.getContainer(), soundHub);
   selectInstrumentUI.addInstrumentUI(bassUI);
   bassUI.hide();
   const play_bass = new PlayIt(trace, new Transform({
@@ -173,8 +170,7 @@ if (features.drumset) {
     rotation: Quaternion.Euler(0,180,0),
     scale: new Vector3(0.2, 0.2, 0.2)
   }), scene);
-  const drumSetUI = new DrumSetUI(trace, selectInstrumentUI.getContainer());
-  drumSetUI.setSoundHub(soundHub);
+  const drumSetUI = new DrumSetUI(trace, selectInstrumentUI.getContainer(), soundHub);
   selectInstrumentUI.addInstrumentUI(drumSetUI);
   drumSetUI.hide();
   const play_drums = new PlayIt(trace, new Transform({
