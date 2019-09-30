@@ -17,7 +17,14 @@ export abstract class Instrument<T extends Note> extends EntityWrapper{
         super (log, transform, parent);
         this.soundHub = soundHub;
         this.entity.addComponent(new utils.Delay(5000,()=>{
+            let add2engine = false;
+            if (this.entity.isAddedToEngine) {
+                add2engine = true;
+                engine.removeEntity(this.entity);
+            }
             this.createYourNotes(soundHub);
+            if (add2engine)
+                engine.addEntity(this.entity);
         }));
     }
 

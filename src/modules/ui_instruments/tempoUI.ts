@@ -3,6 +3,7 @@ import { ImageContainer } from "../image_container";
 const indicatorPositionX = ['-47%', '-40.5%', '-34.5%', '-28.2%', '-22.1%', '-15.9%', '-9.7%', '-3.4%', '3.3%', '9.6%', '15.8%', '22.0%', '28.2%', '34.5%', '40.5%', '47%'];
 
 const imageTexture = new Texture('images/beat_indicator_background.png');
+const indicatorTexture = new Texture('images/beat_indicator_lampon.png');
 const img_play = new Texture('images/play_silver.png');
 const img_pause = new Texture('images/pause_silver.png');
 const img_stop = new Texture('images/stop_silver.png');
@@ -37,7 +38,6 @@ export class TempoUI {
         this.image.onClick = new OnClick(event => {this.log("onClick Background Recorder");});
         // this.image.isPointerBlocker = true;
 
-        let indicatorTexture = new Texture('images/beat_indicator_lampon.png');
         this.indicator = new UIImage(this.image, indicatorTexture);
         // this.indicator.vAlign = 'center';
         // this.indicator.positionX = '-47%';

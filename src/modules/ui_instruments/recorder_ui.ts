@@ -21,6 +21,7 @@ export class RecorderUI extends UIWrapper {
         this.container.height = 230;
         this.container.hAlign = 'right';
         this.container.positionY = -400;
+        this.container.visible = false;
     }
     protected buildControls() {
         this.image = new UIImage(this.container, imageTexture);

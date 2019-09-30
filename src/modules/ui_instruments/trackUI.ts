@@ -116,7 +116,10 @@ export class TrackUI {
         }));
         this.delete.registerImage('inactive', texture_cross, 81,84);
 
-        this.txt_lcd_text = new UIText(this.lcd.container());
+        this.txt_lcd_text = new UIText(this.container);
+        this.txt_lcd_text.width = 100;
+        this.txt_lcd_text.positionX = '-14%';
+        this.txt_lcd_text.positionY = '45%';
         this.setTextGeometry(this.txt_lcd_text);
 
         // this.txt_recording = new UIText(this.lcd.container());
@@ -168,20 +171,13 @@ export class TrackUI {
         this.txt_lcd_text.value = lcdTexts[status].text;
         this.txt_lcd_text.color = lcdTexts[status].color;
         this.txt_lcd_text.hTextAlign = lcdTexts[status].align;
-        this.txt_lcd_text.value = lcdTexts[status].text;
-    
      }
     
     setTextGeometry(text: UIText) {
-        let posX = 0;
-        let posY = '45%';
         let fontFamily = 'LCD';
         let fontAutoSize = true;
         let fontWeight = 'bold';
         text.fontSize = 15;
-        text.width = 100;
-        text.positionX = posX;
-        text.positionY = posY;
         // text.fontFamily = 'LCD';
         // text.fontAutoSize = fontAutoSize;
         text.fontWeight = fontWeight;

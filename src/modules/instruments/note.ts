@@ -1,6 +1,7 @@
 import { EntityWrapper } from "../entity_wrapper";
 import { INoteProps } from "./Instrument";
 import { INoteController, INotePlayer, ISoundHub } from "../soundhub/soundhub";
+import utils from "../../../node_modules/decentraland-ecs-utils/index"
 
 export abstract class Note extends EntityWrapper implements INoteController, INotePlayer {
     protected note;
@@ -39,7 +40,10 @@ export abstract class Note extends EntityWrapper implements INoteController, INo
         let noteShape = this.getNoteShape(noteProp);
         if (noteShape) this.entity.addComponentOrReplace(noteShape);
         this.entity.addComponent (new OnClick(e => {this.log(JSON.stringify(e)); this.onPressed();}));
-        this.setSound(new AudioClip(noteProp.song));
+        // Load the song in asynchronous way
+        this.entity.addComponent(new utils.Delay(100,()=>{
+            this.setSound(new AudioClip(noteProp.song));
+        }));
     }
     protected abstract getNoteShape(noteProp: INoteProps);
     protected abstract animate()
