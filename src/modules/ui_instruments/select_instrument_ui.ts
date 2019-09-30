@@ -18,19 +18,20 @@ export class SelectInstrumentUI extends UIWrapper {
         // this.toolName.positionY = 100
         this.toolName.width = '200px'
         this.toolName.height = '35px'
-        this.toolName.positionX = 60
+        this.toolName.positionX = 30
         // this.toolName.paddingTop = -10
         this.toolName.color = Color4.FromHexString('#0F1217ff')
         this.toolName.value = 'xxxxxxxxxxxxxxx'
+        this.toolName.hTextAlign = 'center'
 
         this.nextIcon = new UIImage(parent, new Texture('images/next.png'))
         this.nextIcon.name = 'clickable-image'
-        this.nextIcon.width = '12px'
-        this.nextIcon.height = '24px'
-        this.nextIcon.positionX = 120
+        this.nextIcon.width = '24px'
+        this.nextIcon.height = '48px'
+        this.nextIcon.positionX = 120+40
         this.nextIcon.vAlign = 'top'
         // this.nextIcon.positionY = 95
-        this.nextIcon.paddingTop = -10;
+        this.nextIcon.paddingTop = -10+4;
         this.nextIcon.sourceWidth = 64
         this.nextIcon.sourceHeight = 128
         this.nextIcon.isPointerBlocker = true
@@ -40,12 +41,12 @@ export class SelectInstrumentUI extends UIWrapper {
 
         this.previousIcon = new UIImage(parent, new Texture('images/previous.png'))
         this.previousIcon.name = 'clickable-image'
-        this.previousIcon.width = '12px'
-        this.previousIcon.height = '24px'
-        this.previousIcon.positionX = -60
+        this.previousIcon.width = '24px'
+        this.previousIcon.height = '48px'
+        this.previousIcon.positionX = -60-40;
         this.previousIcon.vAlign = 'top'
         // this.previousIcon.positionY = 95
-        this.previousIcon.paddingTop = -10;
+        this.previousIcon.paddingTop = -10+4;
         this.previousIcon.sourceWidth = 64
         this.previousIcon.sourceHeight = 128
         this.previousIcon.isPointerBlocker = true

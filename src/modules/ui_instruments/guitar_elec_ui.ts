@@ -30,8 +30,8 @@ export class GuitarElecUI extends UIInstrument {
     createNotes(noteProps: INoteProps[]) {
         // let tabPositionX = ['32.5%', '25%', '18.7%', '12.6%', '6.7%', '1.0%'];
         let tabPositionX = ['35%', '28.5%', '22.5%', '16.5%', '11.5%', '7%'];
-        // let cordPositionY = ['7%', '3%', '-1%', '-5%'];
-        let cordPositionY = ['-1.5%', '-5%', '-8.5%', '-12%', '-15.5%', '-19%'];
+        // let cordPositionY = ['-1.5%', '-5%', '-8.5%', '-12%', '-15.5%', '-19%'];
+        let cordPositionY = ['10%', '5%', '0%', '-5%', '-10%', '-15%'];
         for (let noteProp of noteProps) {
             let noteCord = noteProp.extras['cord'] as number;
             let notePosition = noteProp.extras['position'] as number;

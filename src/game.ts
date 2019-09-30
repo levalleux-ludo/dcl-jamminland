@@ -16,8 +16,15 @@ import { Bass } from "./modules/instruments/bass";
 import { SelectInstrumentUI } from "./modules/ui_instruments/select_instrument_ui";
 import { MusicHall } from "./modules/musichall";
 
+// const isProduction = true;
+const isProduction = false;
+const isIntegration = true;
+// const isIntegration = false;
+
 function trace (message) {
-  console.log(message);
+  if (!isProduction) {
+    console.log(message);
+  }
 }
 
 const soundHub = new SoundHub(trace);
@@ -37,7 +44,8 @@ engine.addEntity(scene)
 // uiEntity.addComponentOrReplace(gameCanvas)
 // engine.addEntity(uiEntity)
 
-const complete = true;
+//const complete = false;
+const complete = isProduction || isIntegration;
 let features = {
   'land': false,
   'musichall': true,
@@ -51,12 +59,12 @@ let features = {
 if (!complete) {
   features = {
     'land': false,
-    'musichall': false,
+    'musichall': true,
     'instrument_test': false,
-    'piano': true,
+    'piano': false,
     'bass': false,
     'guitar_elec': true,
-    'drumset': false,
+    'drumset': true,
     'recorder': false
   }
 }

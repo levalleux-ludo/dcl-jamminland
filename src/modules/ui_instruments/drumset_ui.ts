@@ -9,7 +9,7 @@ let imageTexture = new Texture('images/drumset_ui.png');
 let imageSourceWidth = 973;
 let imageSourceHeight = 401;
 let uiWidth = 600;
-let uiHeight = 300;
+let uiHeight = 350;
 
 export class DrumSetUI extends UIInstrument {
     image: UIImage;
@@ -21,7 +21,7 @@ export class DrumSetUI extends UIInstrument {
         this.image.hAlign = 'center'
         this.image.vAlign = 'top'
         // this.image.positionY = -100;
-        this.image.paddingTop = 100; // under the close button
+        // this.image.paddingTop = 100; // under the close button
         // this.image.paddingLeft = 100;
         this.image.sourceWidth = imageSourceWidth;
         this.image.sourceHeight = imageSourceHeight;
