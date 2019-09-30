@@ -54,10 +54,10 @@ if (!complete) {
     'musichall': false,
     'instrument_test': false,
     'piano': true,
-    'bass': true,
+    'bass': false,
     'guitar_elec': true,
-    'drumset': true,
-    'recorder': true
+    'drumset': false,
+    'recorder': false
   }
 }
 const selectInstrumentUI = new SelectInstrumentUI (trace, gameCanvas);
@@ -113,9 +113,9 @@ if (features.piano) {
   selectInstrumentUI.addInstrumentUI(pianoUI);
   pianoUI.hide();
   const play_piano = new PlayIt(trace, new Transform({
-    position: new Vector3(0.3,8.0,-1.9),
+    position: new Vector3(0.3,8.0,-1.5),
     rotation: Quaternion.Euler(0,-90,19),
-    scale: new Vector3(0.3,1.0,4.5)
+    scale: new Vector3(0.2,1.0,4.5)
   }), piano.getEntity(), () => {
     trace("Click on Play PIANO");
     selectInstrumentUI.selectInstrument(pianoUI);
@@ -134,7 +134,7 @@ if (features.guitar_elec) {
   selectInstrumentUI.addInstrumentUI(guitarElecUI);
   guitarElecUI.hide();
   const play_guitar_elec = new PlayIt(trace, new Transform({
-    position: new Vector3(4.0,0.0,2.0),
+    position: new Vector3(5.0,0.0,2.0),
     rotation: Quaternion.Euler(0,190,90),
     scale: new Vector3(1.0,1.0,5.0)
   }), guitarElec.getEntity(),  () => {
