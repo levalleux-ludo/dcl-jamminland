@@ -127,7 +127,7 @@ if (features.piano) {
 if (features.guitar_elec) {
   const guitarElec = new GuitarElec(trace, soundHub, new Transform({
     position: new Vector3(18.0, 3.1, 9.5),
-    rotation: Quaternion.Euler(20, -120 ,70),
+    rotation: Quaternion.Euler(-30, -120 ,55),
     scale: new Vector3(0.1,0.1,0.1)
   }), scene);
   const guitarElecUI = new GuitarElecUI(trace, selectInstrumentUI.getContainer(), soundHub);
@@ -147,7 +147,7 @@ if (features.guitar_elec) {
 if (features.bass) {
   const bass = new Bass(trace, soundHub, new Transform({
     position: new Vector3(21.5, 3.0, 9.0),
-    rotation: Quaternion.Euler(20, -100 ,70),
+    rotation: Quaternion.Euler(-10, -100 ,60),
     scale: new Vector3(0.1,0.1,0.1)
   }), scene);
   const bassUI = new BassUI(trace, selectInstrumentUI.getContainer(), soundHub);
