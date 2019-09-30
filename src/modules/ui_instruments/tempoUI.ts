@@ -16,6 +16,8 @@ export class TempoUI {
     img_stop: UIImage;
     indicator: UIImage;
     log: (string )=> void;
+    is_playing = false;
+    is_frozen = false;
     constructor(log: (string )=> void, parent: UIShape) {
         this.log = log;
         this.container = new UIContainerRect(parent);
@@ -58,14 +60,18 @@ export class TempoUI {
         this.play_pause.registerImage('play', img_play, 404, 403);
         this.play_pause.registerOnClickImage('play', new OnClick(event => {
             this.log('onclick Play');
+            this.is_playing = true;
+            this.is_frozen = false;
             this.play_pause.makeOneVisible('pause');
-            this.notifyListener(true, false);
+            this.notifyListener();
         }));
         this.play_pause.registerImage('pause', img_pause, 403, 402);
         this.play_pause.registerOnClickImage('pause', new OnClick(event => {
             this.log('onclick Pause');
+            this.is_playing = false;
+            this.is_frozen = true;
             this.play_pause.makeOneVisible('play');
-            this.notifyListener(false, true);
+            this.notifyListener();
         }));
         this.play_pause.makeOneVisible('play');
 
@@ -111,8 +117,10 @@ export class TempoUI {
         // this.img_stop.isPointerBlocker = true;
         this.img_stop.onClick = new OnClick(event => {
             this.log('onclick Stop');
+            this.is_playing = false;
+            this.is_frozen = false;
             this.play_pause.makeOneVisible('play');
-            this.notifyListener(false, false);
+            this.notifyListener();
         });
 
     }
@@ -137,8 +145,19 @@ export class TempoUI {
         this._callbackStartTempo = callback;
     }
 
-    notifyListener(isStarted:boolean, isFrozen:boolean) {
-        if (this._callbackStartTempo) this._callbackStartTempo(isStarted, isFrozen);
+    notifyListener() {
+        if (this._callbackStartTempo) this._callbackStartTempo(this.is_playing, this.is_frozen);
+    }
+
+    public isPlaying() {
+        return 
+    }
+
+    public play() {
+        this.is_playing = true;
+        this.is_frozen = false;
+        this.play_pause.makeOneVisible('pause');
+        this.notifyListener();
     }
 
     // swapPlayPause(isFrozen: boolean) {
