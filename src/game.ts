@@ -16,10 +16,41 @@ import { Bass } from "./modules/instruments/bass";
 import { SelectInstrumentUI } from "./modules/ui_instruments/select_instrument_ui";
 import { MusicHall } from "./modules/musichall";
 
+// Production and Integration
+let features = {
+  'land': false,
+  'musichall': true,
+  'instrument_test': false,
+  'piano': true,
+  'bass': true,
+  'guitar_elec': true,
+  'drumset': true,
+  'recorder': true
+}
+
+/////// TEST CONFIGURATION  ///////////
+
 // const isProduction = true;
 const isProduction = false;
+// const isIntegration = true;
 const isIntegration = true;
-// const isIntegration = false;
+//const complete = false;
+const complete = isProduction || isIntegration;
+
+if (!complete) {
+  features = {
+    'land': false,
+    'musichall': true,
+    'instrument_test': false,
+    'piano': false,
+    'bass': false,
+    'guitar_elec': false,
+    'drumset': true,
+    'recorder': true
+  }
+}
+
+///////////////////////////////////////////
 
 function trace (message) {
   if (!isProduction) {
@@ -44,30 +75,6 @@ engine.addEntity(scene)
 // uiEntity.addComponentOrReplace(gameCanvas)
 // engine.addEntity(uiEntity)
 
-//const complete = false;
-const complete = isProduction || isIntegration;
-let features = {
-  'land': false,
-  'musichall': true,
-  'instrument_test': false,
-  'piano': true,
-  'bass': true,
-  'guitar_elec': true,
-  'drumset': true,
-  'recorder': true
-}
-if (!complete) {
-  features = {
-    'land': false,
-    'musichall': true,
-    'instrument_test': false,
-    'piano': false,
-    'bass': false,
-    'guitar_elec': true,
-    'drumset': true,
-    'recorder': false
-  }
-}
 const selectInstrumentUI = new SelectInstrumentUI (trace, gameCanvas);
 
 if (features.land) {

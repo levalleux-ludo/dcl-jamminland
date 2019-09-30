@@ -1,8 +1,10 @@
+import utils from "../../node_modules/decentraland-ecs-utils/index"
 
 const img_closeIcon = new Texture('images/close-icon3.png');
 
 export abstract class UIWrapper {
     protected container: UIContainerRect;
+    private txt_loading: UIText;
     log: (string )=> void;
     protected closeIcon: UIImage;
     isBuilt = false;
@@ -15,6 +17,14 @@ export abstract class UIWrapper {
         this.container.vAlign = 'top';
         this.container.isPointerBlocker = true;
         this.container.visible = false;
+        this.txt_loading = new UIText(this.container);
+        this.txt_loading.value = 'Loading UI ...'
+        this.txt_loading.hTextAlign = 'center';
+        this.txt_loading.vTextAlign = 'center';
+        this.txt_loading.width = '100%'
+        this.txt_loading.height = '100%'
+        this.txt_loading.opacity = 0.8;
+        this.txt_loading.fontAutoSize = true;
     }
     protected abstract buildControls();
     protected cleanControl(ctrl: UIShape) {
@@ -42,8 +52,17 @@ export abstract class UIWrapper {
     }
     public show() {
         if (!this.isBuilt) {
-            this.buildControls();
-            this.isBuilt = true;
+            this.txt_loading.visible = true;
+            this.container.visible = true;
+            let entity = new Entity();
+            entity.addComponent(new utils.Delay(100,()=>{
+                this.buildControls();
+                this.txt_loading.visible = false;
+                this.txt_loading.dirty = true; // Any way to unreference it ?
+                this.isBuilt = true;
+                this.show(); // recall, but now the condition isBuilt has changed
+            }));
+            engine.addEntity(entity);
         }
         this.container.visible = true;
         this.container.isPointerBlocker = true;

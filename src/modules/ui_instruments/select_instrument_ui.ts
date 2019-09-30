@@ -144,7 +144,7 @@ export class SelectInstrumentUI extends UIWrapper {
         this.instruments.push(instrument);
         // this.addToolName();
         // this.addCloseButton();
-        this.change(this.instruments.length-1);
+        // this.change(this.instruments.length-1);
     }
     private getIndexForInstrument(instrument: UIInstrument): number {
         return this.instruments.indexOf(instrument)
