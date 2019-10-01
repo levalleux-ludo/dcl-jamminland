@@ -53,6 +53,9 @@ export class RecorderUI extends UIWrapper {
                 track.registerOnStatusChanged((theTrack, status) => {
                     this.refreshTrackActivation();
                 });
+                if (this.instrument) {
+                    track.setActiveInstrument(this.instrument);
+                }
                 this.tracks.push(track);
             }
         }
