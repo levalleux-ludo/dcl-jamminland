@@ -16,8 +16,8 @@ let uiHeight = 350;
 
 export class DrumSetUI extends UIInstrument {
     image: UIImage;
-    constructor(log: (string )=> void, parent: UIShape, soundHub: ISoundHub) {
-        super(log, parent, soundHub);
+    constructor(log: (string )=> void, parent: UIShape) {
+        super(log, parent);
     }
     protected buildControls() {
         this.image = new UIImage(this.container, textureBuilder.get('background'));

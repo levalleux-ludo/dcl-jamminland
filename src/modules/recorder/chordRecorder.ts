@@ -4,8 +4,8 @@ import { Tempo } from "./tempo";
 
 export class ChordRecorder extends AbstractRecorder {
     notes: string[] = [];
-    constructor(log: (string )=> void, instrument:string, soundHub: ISoundHub, tempo: Tempo) {
-        super(log, instrument, soundHub);
+    constructor(log: (string )=> void, soundHub: ISoundHub, tempo: Tempo) {
+        super(log, soundHub);
     }
     protected recordNote(note: string) {
         this.log(`ChordRecorder : Record ${this.instrument} note ${note}`);
@@ -25,5 +25,8 @@ export class ChordRecorder extends AbstractRecorder {
         if (this.endOfPlaying) this.endOfPlaying();
     }
     protected onPlayStop() {
+    }
+    protected onReset() {
+        this.notes = [];
     }
 }

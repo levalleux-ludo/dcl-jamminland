@@ -7,8 +7,8 @@ export class TrackRecorder extends AbstractRecorder {
     _record: { [s:number]: string;}  = <any>{};
     startTime = 0;
     recLength = 0;
-    constructor(log: (string )=> void, instrument:string, soundHub: ISoundHub, tempo: Tempo) {
-        super(log, instrument, soundHub);
+    constructor(log: (string )=> void, soundHub: ISoundHub, tempo: Tempo) {
+        super(log, soundHub);
         this.tempo = tempo;
     }
     protected recordNote(note: string) {
@@ -23,6 +23,12 @@ export class TrackRecorder extends AbstractRecorder {
         this.recLength = 0;      
     }
     protected onRecordStop() {
+        this.log(`TrackRecorder : Stop recording ${this.instrument}. Record length : ${this.recLength}`);
+    }
+    protected onReset() {
+        this._record = <any>{};
+        this.startTime = 0;
+        this.recLength = 0;
     }
     protected onPlayStart() {
         this.startTime = this.tempo.getCurrentTime();

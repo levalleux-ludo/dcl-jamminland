@@ -1,6 +1,8 @@
 import { ImageContainer } from "../image_container";
 import { TrackRecorder } from "../recorder/trackRecorder";
 import { TextureBuilder } from "../_helpers/texture_builder";
+import { AbstractRecorder } from "../recorder/abstractRecorder";
+import { Instrument } from "../instruments/Instrument";
 
 export enum eTrackStatus {
     DISABLED,
@@ -31,6 +33,7 @@ const textureBuilder = new TextureBuilder({
     'lcd_playing': 'images/LCD_background_playing.png',
 });
 export class TrackUI {
+    instrument: string;
     container: UIContainerRect;
     image: UIImage;
     lcd: ImageContainer;
@@ -43,14 +46,14 @@ export class TrackUI {
     img_delete: UIImage;
     img_delete_inactive: UIImage;
     txt_lcd_text: UIText;
-    // txt_recording: UIText;
-    // txt_playing: UIText;
-    // txt_track: UIText;
+    txt_instrument: UIText;
     status: eTrackStatus = eTrackStatus.DISABLED;
-    trackRecorder: TrackRecorder = null;
+    recorder: AbstractRecorder = null;
     log: (string )=> void;
-    constructor(log: (string )=> void, parent: UIShape) {
+    auto_loop = true;
+    constructor(log: (string )=> void, parent: UIShape, recorder: AbstractRecorder) {
         this.log = log;
+        this.recorder = recorder;
         this.container = new UIContainerRect(parent);
         this.container.width = 160;
         this.container.height = 40;
@@ -124,35 +127,36 @@ export class TrackUI {
         this.txt_lcd_text.positionY = '45%';
         this.setTextGeometry(this.txt_lcd_text);
 
-        // this.txt_recording = new UIText(this.lcd.container());
-        // this.txt_recording.value = "*RECORDING*";
-        // this.txt_recording.color = Color4.Red();
-        // this.txt_recording.hTextAlign = 'center';
-        // this.setTextGeometry(this.txt_recording);
-        // this.txt_recording.fontSize = 13;
-
-        // this.txt_playing = new UIText(this.lcd.container());
-        // this.txt_playing.value = "*REPLAY*";
-        // this.txt_playing.color = Color4.Green();
-        // this.txt_playing.hTextAlign = 'left';
-        // this.setTextGeometry(this.txt_playing);
-        // this.txt_playing.fontSize = 13;
-
-        // this.txt_track = new UIText(this.lcd.container());
-        // this.txt_track.value = "TRACK_#";
-        // this.txt_track.hTextAlign = 'left';
-        // this.txt_track.textWrapping = true;
-        // this.txt_track.color = Color4.Teal();
-        // this.txt_track.shadowBlur = 20;
-        // this.setTextGeometry(this.txt_track);
+        this.txt_instrument = new UIText(this.container);
+        this.txt_instrument.width = 8;
+        this.txt_instrument.height = 8;
+        this.txt_instrument.vAlign = 'bottom';
+        this.txt_instrument.hTextAlign = 'left';
+        this.txt_instrument.paddingBottom = 2;
+        this.txt_instrument.hAlign = 'left';
+        this.txt_instrument.fontAutoSize = true;
+        this.txt_instrument.visible = false;
 
         this.swapButtonsAndTexts();
 
     }
 
-    public setTrackRecorder (trackRecorder: TrackRecorder) {
-        this.trackRecorder = trackRecorder;
-        this.changeStatus(eTrackStatus.DISABLED, false);
+    public setActiveInstrument(instrument: string) {
+        const instrument_chars = {
+            'piano': 'P',
+            'bass': 'B',
+            'guitar_elec': 'E',
+            'drums': 'D',
+            'unknown': '?'
+        };
+        this.instrument = instrument;
+        let instrument_char = instrument_chars[instrument];
+        if (!instrument_char)
+            instrument_char = instrument_chars['unknown'];
+
+        this.recorder.setActiveInstrument(instrument);
+        this.txt_instrument.visible = true;
+        this.txt_instrument.value = instrument_char;
     }
 
     public enable(enable: boolean) {
@@ -225,26 +229,41 @@ export class TrackUI {
         this.onChangeCallback = callback;
     }
 
+    // AUTO LOOP
+    onReplayFinish() {
+        this.log("LoopRecorder::onReplayFinish()");
+        if (this.auto_loop) {
+            // restart playing until stop is asked
+            this.recorder.startPlaying(() => {this.onReplayFinish()});
+        } else {
+            this.changeStatus(eTrackStatus.READY);
+        }
+    }
+    onRecordFinish() {
+        this.log("LoopRecorder::onRecordFinish()");
+        if (this.auto_loop) {
+            // switch to replay immediately
+            this.changeStatus(eTrackStatus.PLAYING);
+        } else {
+            this.changeStatus(eTrackStatus.READY);
+        }
+    }
     changeStatus(newStatus: eTrackStatus, notify: boolean = true) {
         let oldStatus = this.status;
         if (oldStatus == newStatus) return;
         this.status = newStatus;
         this.swapButtonsAndTexts();
-        if (this.trackRecorder) {
-            if (this.status == eTrackStatus.RECORDING) {
-                this.trackRecorder.startRecording();
-            }
-            if (oldStatus == eTrackStatus.RECORDING) {
-                this.trackRecorder.stop();
-            }
-            if (this.status == eTrackStatus.PLAYING) {
-                this.trackRecorder.startPlaying(() => {
-                    this.changeStatus(eTrackStatus.READY);
-                });
-            }
-            if (oldStatus == eTrackStatus.PLAYING) {
-                this.trackRecorder.stop();
-            }
+        if (this.status == eTrackStatus.RECORDING) {
+            this.recorder.startRecording(() => {this.onRecordFinish()});
+        }
+        if (oldStatus == eTrackStatus.RECORDING) {
+            this.recorder.stop();
+        }
+        if (this.status == eTrackStatus.PLAYING) {
+            this.recorder.startPlaying(() => {this.onReplayFinish()});
+        }
+        if (oldStatus == eTrackStatus.PLAYING) {
+            this.recorder.stop();
         }
         if (notify && this.onChangeCallback) this.onChangeCallback(this, newStatus);
     }

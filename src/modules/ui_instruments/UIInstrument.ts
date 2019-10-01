@@ -7,17 +7,16 @@ export abstract class UIInstrument extends UIWrapper implements INoteController 
     public abstract createNotes(noteProps: INoteProps[]);
 
     soundHub: ISoundHub;
-    constructor(log: (string )=> void, parent: UIShape, soundHub: ISoundHub) {
+    constructor(log: (string )=> void, parent: UIShape) {
         super(log, parent);
-        this.soundHub = soundHub;
     }
     protected buildControls() {
-        this.soundHub.registerNoteController(this);
     }
     // **** INoteController implementation ****
     _onPlayedNoteCallbacks: ((instrument: string, note: string)=>void)[] = [];
     public setSoundHub(soundHub: ISoundHub) {
-        // TODO : should be useless in the end
+        this.soundHub = soundHub;
+        this.soundHub.registerNoteController(this);
     }
     public registerOnPlayedNote(onPlayNote: (instrument: string, note: string)=> void) {
         // allow registering to allow recording from UI
@@ -27,12 +26,16 @@ export abstract class UIInstrument extends UIWrapper implements INoteController 
 
     notifyPlaying(note) {
         // Notify listeners to allow recording
-        this.log(`PianoItemUI : play note ${note}`);
+        this.log(`InstrumentUI : play note ${note}`);
         this._onPlayedNoteCallbacks.forEach(onPlayNote => {
             onPlayNote.call(this, this.getInstrument(), note);
         })
     }
     protected onClickCallback(note) {
+        if (!this.soundHub) {
+            this.log("[WARN] UIInstrument::onClickCallback -> soundHub is not defined");
+            return;
+        }
         // relay towards the 3D entity containing the sound Component
         this.soundHub.onPlayNote(this.getInstrument(), note);
         this.notifyPlaying(note);

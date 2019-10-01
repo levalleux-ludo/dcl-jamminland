@@ -5,6 +5,8 @@ import { TrackUI, eTrackStatus } from "./trackUI";
 import { TrackRecorder } from "../recorder/trackRecorder";
 import { UIWrapper } from "../ui_wrapper";
 import { TextureBuilder } from "../_helpers/texture_builder";
+import { AbstractRecorder } from "../recorder/abstractRecorder";
+import { LoopRecorder } from "../recorder/loopRecorder";
 
 const textureBuilder = new TextureBuilder({
     'background': 'images/audio_device_background_2.png'
@@ -46,11 +48,15 @@ export class RecorderUI extends UIWrapper {
         let posYs = ['20%', '5%', '-10%', '-25%'];
         for (let i = 0; i < 2; i++) {
             for (let j = 0; j < 4; j++) {
-                let track = new TrackUI(this.log, this.image);
+                let recorder = new LoopRecorder(this.log, this.soundHub, this.tempo);
+                let track = new TrackUI(this.log, this.image, recorder);
                 track.setPosition(posXs[i], posYs[j]);
                 track.registerOnStatusChanged((theTrack, status) => {
                     this.refreshTrackActivation();
                 });
+                if (this.instrument) {
+                    track.setActiveInstrument(this.instrument);
+                }
                 this.tracks.push(track);
             }
         }
@@ -104,8 +110,6 @@ export class RecorderUI extends UIWrapper {
         }
         if (recording && firstEmpty) firstEmpty.enable(false);
         if (!recording && !firstEmpty && firstDisabled && this.instrument) {
-            let trackRecorder = new TrackRecorder(this.log, this.instrument, this.soundHub, this.tempo);
-            firstDisabled.setTrackRecorder(trackRecorder);
             firstDisabled.enable(true);
         }
     }
@@ -113,8 +117,8 @@ export class RecorderUI extends UIWrapper {
     public setActiveInstrument(instrument: string) {
         this.instrument = instrument;
         this.tracks.forEach(track => {
-            if ((track.getStatus() == eTrackStatus.DISABLED) || (track.getStatus() == eTrackStatus.READY)) {
-                track.setTrackRecorder(new TrackRecorder(this.log, this.instrument, this.soundHub, this.tempo));
+            if ((track.getStatus() == eTrackStatus.DISABLED) || (track.getStatus() == eTrackStatus.EMPTY)) {
+                track.setActiveInstrument(this.instrument);
             }
         });
         this.refreshTrackActivation();

@@ -5,7 +5,8 @@ export interface ISoundHub {
     registerNoteController(note: INoteController);
     /// Method called by a client to be notified when a note is played
     registerRecorder(recorder: IInstrumentRecorder);
-    /// Method called by the note while playing
+    unregisterRecorder(recorder: IInstrumentRecorder);
+        /// Method called by the note while playing
     onPlayNote(instrument: string, note: string);
 }
 
@@ -26,6 +27,17 @@ export interface INotePlayer {
     getInstrument(): string;
     getNote(): string;
 }
+function removeItemFromArray(log: ((message: string)=> void), array: any[], item: any): void {
+    let index = array.indexOf(item);
+    if (index == -1) {
+        log('removeItemFromArray : Unable to find item ' + JSON.stringify(item));
+        return;
+    }
+    if (index >= array.length) {
+        return;
+    }
+    array.splice(index, 1);
+}
 
 export class SoundHub implements ISoundHub {
     log: (string )=> void;
@@ -37,7 +49,7 @@ export class SoundHub implements ISoundHub {
     // may have several controllers for the same note/instrument
     private _notes: Record <string, Record <string, () => void > > = {};
     // store an array of 'onPlayedNote()' callbacks, per instrument
-    private _recorders: Record <string, ((note: string) => void)[] > = {};
+    private _recorders: Record <string, IInstrumentRecorder[] > = {};
 
     /// Method called by an instrument to register its notes, allowing the hub to be warned when the note is played (for recording)
     /// and make them playing (for replaying)
@@ -58,9 +70,23 @@ export class SoundHub implements ISoundHub {
     /// Method called by a client to be notified when a note is played
     public registerRecorder(recorder: IInstrumentRecorder) {
         let instrument = recorder.getInstrument();
+        if (!instrument) {
+            this.log("[ERROR] SoundHub::registerRecorder() Recorder has no active instrument defined. Cant register")
+            return;
+        }
         this.log(`SoundHub: registering recorder for instrument ${instrument}`);
         if (!this._recorders[instrument]) this._recorders[instrument] = [];
-        this._recorders[instrument].push(((note) => {recorder.onPlayedNote(note)}));
+        this._recorders[instrument].push(recorder);
+    }
+    public unregisterRecorder(recorder: IInstrumentRecorder) {
+        let instrument = recorder.getInstrument();
+        if (!instrument) {
+            this.log("[ERROR] SoundHub::unregisterRecorder() Recorder has no active instrument defined. Cant unregister")
+            return;
+        }
+        this.log(`SoundHub: unregistering recorder for instrument ${instrument}`);
+        if (!this._recorders[instrument]) return; // should never happen, but ...
+        removeItemFromArray(this.log, this._recorders[instrument], recorder);
     }
 
     /// Method called to ask the instrument to play a note
@@ -76,8 +102,8 @@ export class SoundHub implements ISoundHub {
         // warn all recorders for this instrument
         let instrumentRecorders = this._recorders[instrument];
         if (instrumentRecorders) {
-            instrumentRecorders.forEach(callback => {
-                callback(note);
+            instrumentRecorders.forEach(recorder => {
+                recorder.onPlayedNote(note)
             });
         }
     }

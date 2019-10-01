@@ -24,7 +24,6 @@ export abstract class Note extends EntityWrapper implements INoteController, INo
         return this.note;
     }
     public play() {
-        this.log("Play note " + this.note + " of instrument " + this.getInstrument());
         this.entity.getComponent(AudioSource).playOnce();
     }
     // ****************************************
@@ -39,7 +38,7 @@ export abstract class Note extends EntityWrapper implements INoteController, INo
         this.note = noteProp.note;
         let noteShape = this.getNoteShape(noteProp);
         if (noteShape) this.entity.addComponentOrReplace(noteShape);
-        this.entity.addComponent (new OnClick(e => {this.log(JSON.stringify(e)); this.onPressed();}));
+        this.entity.addComponent (new OnClick(e => {this.onPressed();}));
         // Load the song in asynchronous way
         this.entity.addComponent(new utils.Delay(100,()=>{
             this.setSound(new AudioClip(noteProp.song));
@@ -53,11 +52,8 @@ export abstract class Note extends EntityWrapper implements INoteController, INo
         this.entity.addComponentOrReplace(audioSource);
     }
     onPressed() {
-        this.log("before play");
         this.play();
-        this.log("before notifyPlaying");
         this.notifyPlaying();
-        this.log("before animate");
         this.animate();
     }
 }
