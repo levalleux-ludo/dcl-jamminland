@@ -27,7 +27,7 @@ export abstract class UIInstrument extends UIWrapper implements INoteController 
 
     notifyPlaying(note) {
         // Notify listeners to allow recording
-        this.log(`PianoItemUI : play note ${note}`);
+        this.log(`InstrumentUI : play note ${note}`);
         this._onPlayedNoteCallbacks.forEach(onPlayNote => {
             onPlayNote.call(this, this.getInstrument(), note);
         })
