@@ -78,7 +78,6 @@ export class Piano extends Instrument<PianoKey> {
         return new GLTFShape(pianoModelFile);
     }
     getTransformForNote(noteProp: INoteProps): Transform {
-        this.log("Piano::getTransformForNote(" + noteProp.note + ", index=" + noteProp.index + ", type=" + noteProp.extras['type'] + ", white_index=" + noteProp.extras['white_index']);
         let white_index = noteProp.extras['white_index'] as number; 
         let scaleX = 0.178;
         let posX = 7.4 - 0.398 * white_index;
@@ -106,10 +105,8 @@ class PianoKeyAnimation implements ISystem {
       this.log = log;
       this.entity = entity;
       engine.addSystem(this);
-      this.log("Build a new PianoKeyAnimation");
     };
     update() {
-        this.log("PianoKeyAnimation::update()");
       let transform = this.entity.getComponent(Transform)
       if ((this.pressed == true) && (this.fraction < 1)) {
           this.fraction += 1/4;
