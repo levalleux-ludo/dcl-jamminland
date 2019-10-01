@@ -1,6 +1,9 @@
 import utils from "../../node_modules/decentraland-ecs-utils/index"
+import { TextureBuilder } from "./_helpers/texture_builder";
 
-const img_closeIcon = new Texture('images/close-icon3.png');
+const textureBuilder = new TextureBuilder({
+    'close': 'images/close-icon3.png'
+});
 
 export abstract class UIWrapper {
     protected container: UIContainerRect;
@@ -37,7 +40,7 @@ export abstract class UIWrapper {
 
     protected addCloseButton(parent: UIShape) {
         this.cleanControl(this.closeIcon);
-        this.closeIcon = new UIImage(parent, img_closeIcon)
+        this.closeIcon = new UIImage(parent, textureBuilder.get('close'))
         this.closeIcon.name = 'clickable-image'
         this.closeIcon.width = '50px'
         this.closeIcon.height = '50px'

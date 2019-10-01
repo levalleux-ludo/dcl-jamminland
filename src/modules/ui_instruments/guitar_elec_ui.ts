@@ -5,8 +5,10 @@ import { getGuitarElecNotes } from "../instruments/guitar_elec";
 
 const instrument = "guitar_elec";
 
-let imageTexture = new Texture('images/guitar_elec.png');
-
+const textureBuilder({
+    'background': 'images/guitar_elec.png',
+    'item': 'images/bassItemUI.png' // {hasAlpha: true}
+});
 
 export class GuitarElecUI extends UIInstrument {
     image: UIImage;
@@ -14,7 +16,7 @@ export class GuitarElecUI extends UIInstrument {
         super(log, parent, soundHub);
     }
     protected buildControls() {
-        this.image = new UIImage(this.container, imageTexture);
+        this.image = new UIImage(this.container, textureBuilder.get('background'));
         this.image.hAlign = 'center'
         this.image.positionY = -150
         // this.image.paddingTop = 50; // under the close button
@@ -44,8 +46,6 @@ export class GuitarElecUI extends UIInstrument {
     }
 }
 
-const imageItem = new Texture ("images/bassItemUI.png", {hasAlpha: true});
-
 export class BassItemUI implements INoteController {
     note: string;
     image: UIImage;
@@ -53,7 +53,7 @@ export class BassItemUI implements INoteController {
 
     constructor(log: (string )=> void, parent: UIShape, note: string, posX, posY) {
         this.log = log;
-        this.image = new UIImage(parent, imageItem);
+        this.image = new UIImage(parent, textureBuilder.get('item'));
         this.image.positionX = posX;
         this.image.positionY = posY;
         this.image.sourceWidth = 680 ;   

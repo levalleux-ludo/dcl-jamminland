@@ -3,12 +3,16 @@ import { ImageContainer } from "../image_container";
 import { ISoundHub } from "../soundhub/soundhub";
 import { getPianoNotes } from "../instruments/piano";
 import { INoteProps } from "../instruments/Instrument";
+import { TextureBuilder } from "../_helpers/texture_builder";
 
 const instrument = "piano";
-const img_white = new Texture("images/white_key.png");
-const img_green = new Texture("images/green_key.png");
-const img_black = new Texture("images/black_key.png");
-const img_black_pressed = new Texture("images/black_key_pressed.png");
+
+const textureBuilder = new TextureBuilder({
+    "white": "images/white_key.png",
+    "green": "images/green_key.png",
+    "black": "images/black_key.png",
+    "black_pressed": "images/black_key_pressed.png"
+});
 
 export class PianoUI extends UIInstrument {
 
@@ -28,8 +32,8 @@ export class PianoUI extends UIInstrument {
                 imageContainer.container().positionX = posX;
                 imageContainer.container().positionY = posY;
                 // Specific to white key
-                imageContainer.registerImage('released', img_white, 23, 117);
-                imageContainer.registerImage('pressed', img_green, 24, 117);
+                imageContainer.registerImage('released', textureBuilder.get('white'), 23, 117);
+                imageContainer.registerImage('pressed', textureBuilder.get('green'), 24, 117);
                 imageContainer.container().height = 150;
                 posX += offsetX;
                 // End specific
@@ -49,8 +53,8 @@ export class PianoUI extends UIInstrument {
             imageContainer.container().positionX = blackKey.posX;
             imageContainer.container().positionY = posY+25;
             // Specific to black key
-            imageContainer.registerImage('released', img_black, 24, 117);
-            imageContainer.registerImage('pressed', img_black_pressed, 24, 117);
+            imageContainer.registerImage('released', textureBuilder.get('black'), 24, 117);
+            imageContainer.registerImage('pressed', textureBuilder.get('black_pressed'), 24, 117);
             imageContainer.container().height = 100;
             // End specific
             imageContainer.registerOnClickImage('released', new OnClick(event => {

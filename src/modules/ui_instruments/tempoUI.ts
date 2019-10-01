@@ -1,12 +1,15 @@
 import { ImageContainer } from "../image_container";
+import { TextureBuilder } from "../_helpers/texture_builder";
 
 const indicatorPositionX = ['-47%', '-40.5%', '-34.5%', '-28.2%', '-22.1%', '-15.9%', '-9.7%', '-3.4%', '3.3%', '9.6%', '15.8%', '22.0%', '28.2%', '34.5%', '40.5%', '47%'];
 
-const imageTexture = new Texture('images/beat_indicator_background.png');
-const indicatorTexture = new Texture('images/beat_indicator_lampon.png');
-const img_play = new Texture('images/play_silver.png');
-const img_pause = new Texture('images/pause_silver.png');
-const img_stop = new Texture('images/stop_silver.png');
+const textureBuilder = new TextureBuilder({
+    'background': 'images/beat_indicator_background.png',
+    'lamp_on': 'images/beat_indicator_lampon.png',
+    'play': 'images/play_silver.png',
+    'pause': 'images/pause_silver.png',
+    'stop': 'images/stop_silver.png'
+});
 export class TempoUI {
     container: UIContainerRect;
     image: UIImage;
@@ -28,7 +31,7 @@ export class TempoUI {
         this.container.isPointerBlocker = true;
         this.container.visible = true;
 
-        this.image = new UIImage(this.container, imageTexture);
+        this.image = new UIImage(this.container, textureBuilder.get('background'));
         this.image.positionX = 32;
         this.image.positionY = '0%';
         this.image.sourceWidth = 3345;
@@ -38,7 +41,7 @@ export class TempoUI {
         this.image.onClick = new OnClick(event => {this.log("onClick Background Recorder");});
         // this.image.isPointerBlocker = true;
 
-        this.indicator = new UIImage(this.image, indicatorTexture);
+        this.indicator = new UIImage(this.image, textureBuilder.get('lamp_on'));
         // this.indicator.vAlign = 'center';
         // this.indicator.positionX = '-47%';
         this.indicator.positionX = indicatorPositionX[0];
@@ -55,13 +58,13 @@ export class TempoUI {
         this.play_pause.container().positionY = '0%';
         this.play_pause.container().width = 32;
         this.play_pause.container().height = 32;
-        this.play_pause.registerImage('play', img_play, 404, 403);
+        this.play_pause.registerImage('play', textureBuilder.get('play'), 404, 403);
         this.play_pause.registerOnClickImage('play', new OnClick(event => {
             this.log('onclick Play');
             this.play_pause.makeOneVisible('pause');
             this.notifyListener(true, false);
         }));
-        this.play_pause.registerImage('pause', img_pause, 403, 402);
+        this.play_pause.registerImage('pause', textureBuilder.get('pause'), 403, 402);
         this.play_pause.registerOnClickImage('pause', new OnClick(event => {
             this.log('onclick Pause');
             this.play_pause.makeOneVisible('play');
@@ -69,39 +72,7 @@ export class TempoUI {
         }));
         this.play_pause.makeOneVisible('play');
 
-
-        // this.img_play = new UIImage(this.container, new Texture('images/play_silver.png'));
-        // this.img_play.positionX = -78;
-        // this.img_play.positionY = '0%';
-        // this.img_play.sourceWidth = 404;
-        // this.img_play.sourceHeight = 403;
-        // this.img_play.width = 32;
-        // this.img_play.height = 32;
-        // // this.img_play.isPointerBlocker = true;
-        // this.img_play.visible = true;
-        // this.img_play.onClick = new OnClick(event => {
-        //     this.log('onclick Play');
-        //     this.swapPlayPause(true);
-        //     this.notifyListener(true, false);
-        // });
-
-
-        // this.img_pause = new UIImage(this.container, new Texture('images/pause_silver.png'));
-        // this.img_pause.positionX = -78;
-        // this.img_pause.positionY = '0%';
-        // this.img_pause.sourceWidth = 403;
-        // this.img_pause.sourceHeight = 402;
-        // this.img_pause.width = 32;
-        // this.img_pause.height = 32;
-        // // this.img_pause.isPointerBlocker = true;
-        // this.img_pause.visible = false;
-        // this.img_pause.onClick = new OnClick(event => {
-        //     this.log('onclick Pause');
-        //     this.swapPlayPause(false);
-        //     this.notifyListener(false, true);
-        // });
-
-        this.img_stop = new UIImage(this.container, img_stop);
+        this.img_stop = new UIImage(this.container, textureBuilder.get('stop'));
         this.img_stop.positionX = -42;
         this.img_stop.positionY = '0%';
         this.img_stop.sourceWidth = 406;
@@ -140,11 +111,5 @@ export class TempoUI {
     notifyListener(isStarted:boolean, isFrozen:boolean) {
         if (this._callbackStartTempo) this._callbackStartTempo(isStarted, isFrozen);
     }
-
-    // swapPlayPause(isFrozen: boolean) {
-    //     this.img_pause.visible = isFrozen;
-    //     this.img_play.visible = !isFrozen;
-    // }
-
 
 }

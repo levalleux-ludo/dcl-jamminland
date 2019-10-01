@@ -1,8 +1,12 @@
 import { UIWrapper } from "../ui_wrapper";
 import { UIInstrument } from "./UIInstrument";
+import { TextureBuilder } from "../_helpers/texture_builder";
 
+const textureBuilder = new TextureBuilder({
+    'next': 'images/next.png',
+    'previous': 'images/previous.png'
+});
 export class SelectInstrumentUI extends UIWrapper {
-
     instruments: UIInstrument[] = [];
     currentIndex = 0;
     fnOnSelectInstrument: (string)=> void;
@@ -24,7 +28,7 @@ export class SelectInstrumentUI extends UIWrapper {
         this.toolName.value = 'xxxxxxxxxxxxxxx'
         this.toolName.hTextAlign = 'center'
 
-        this.nextIcon = new UIImage(parent, new Texture('images/next.png'))
+        this.nextIcon = new UIImage(parent, textureBuilder.get('next'))
         this.nextIcon.name = 'clickable-image'
         this.nextIcon.width = '24px'
         this.nextIcon.height = '48px'
@@ -39,7 +43,7 @@ export class SelectInstrumentUI extends UIWrapper {
             this.next();
         });
 
-        this.previousIcon = new UIImage(parent, new Texture('images/previous.png'))
+        this.previousIcon = new UIImage(parent, textureBuilder.get('previous'))
         this.previousIcon.name = 'clickable-image'
         this.previousIcon.width = '24px'
         this.previousIcon.height = '48px'
@@ -64,47 +68,6 @@ export class SelectInstrumentUI extends UIWrapper {
         this.cleanControl(this.toolName);
         this.cleanControl(this.nextIcon);
         this.cleanControl(this.previousIcon);
-
-        // this.toolName = new UIText(parent);
-        // this.toolName.fontSize = 36
-        // // this.toolName.vAlign = 'top'
-        // this.toolName.positionY = 100
-        // this.toolName.width = '150px'
-        // this.toolName.height = '35px'
-        // this.toolName.positionX = 60
-        // // this.toolName.paddingTop = -10
-        // this.toolName.color = Color4.FromHexString('#0F1217ff')
-        // this.toolName.value = 'xxxxxxxxxxxxxxx'
-
-        // this.nextIcon = new UIImage(parent, new Texture('images/next.png'))
-        // this.nextIcon.name = 'clickable-image'
-        // this.nextIcon.width = '12px'
-        // this.nextIcon.height = '24px'
-        // this.nextIcon.positionX = 120
-        // // this.nextIcon.vAlign = 'top'
-        // this.nextIcon.positionY = 95
-        // this.nextIcon.paddingTop = -10;
-        // this.nextIcon.sourceWidth = 64
-        // this.nextIcon.sourceHeight = 128
-        // this.nextIcon.isPointerBlocker = true
-        // this.nextIcon.onClick = new OnClick(() => {
-        //     this.next();
-        // });
-
-        // this.previousIcon = new UIImage(parent, new Texture('images/previous.png'))
-        // this.previousIcon.name = 'clickable-image'
-        // this.previousIcon.width = '12px'
-        // this.previousIcon.height = '24px'
-        // this.previousIcon.positionX = -60
-        // // this.previousIcon.vAlign = 'top'
-        // this.previousIcon.positionY = 95
-        // this.previousIcon.paddingTop = -10;
-        // this.previousIcon.sourceWidth = 64
-        // this.previousIcon.sourceHeight = 128
-        // this.previousIcon.isPointerBlocker = true
-        // this.previousIcon.onClick = new OnClick(() => {
-        //     this.previous();
-        // });
     }
     public onSelectInstrument(onSelectInstrument: (string)=> void) {
         this.fnOnSelectInstrument = onSelectInstrument;
