@@ -2,11 +2,14 @@ import { UIInstrument } from "./UIInstrument";
 import { ISoundHub, INoteController } from "../soundhub/soundhub";
 import { INoteProps } from "../instruments/Instrument";
 import { getBassNotes } from "../instruments/bass";
+import { TextureBuilder } from "../_helpers/texture_builder";
 
 const instrument = "bass";
 
-let imageTexture = new Texture('images/bass_guitar.png');
-
+const textureBuilder = new TextureBuilder({
+    'background': 'images/bass_guitar.png',
+    'item': "images/bassItemUI.png" // {hasAlpha: true}
+});
 
 export class BassUI extends UIInstrument {
     image: UIImage;
@@ -14,7 +17,7 @@ export class BassUI extends UIInstrument {
         super(log, parent, soundHub);
     }
     protected buildControls() {
-        this.image = new UIImage(this.container, imageTexture);
+        this.image = new UIImage(this.container, textureBuilder.get('background'));
         this.image.hAlign = 'center'
         this.image.positionY = -150;
         // this.image.paddingTop = 50; // under the close button
@@ -44,7 +47,6 @@ export class BassUI extends UIInstrument {
     }
 }
 
-const imageItem = new Texture ("images/bassItemUI.png", {hasAlpha: true});
 
 export class BassItemUI implements INoteController {
     note: string;
@@ -53,7 +55,7 @@ export class BassItemUI implements INoteController {
 
     constructor(log: (string )=> void, parent: UIShape, note: string, posX, posY) {
         this.log = log;
-        this.image = new UIImage(parent, imageItem);
+        this.image = new UIImage(parent, textureBuilder.get('item'));
         this.image.positionX = posX;
         this.image.positionY = posY;
         this.image.sourceWidth = 680 ;   

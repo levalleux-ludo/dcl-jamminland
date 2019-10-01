@@ -1,3 +1,9 @@
+import { TextureBuilder } from "../_helpers/texture_builder";
+
+const textureBuilder = new TextureBuilder({
+    'close': 'images/close-icon3.png'
+});
+
 export class TempoIndicatorUI  {
     container: UIContainerRect;
     constructor(parent: UIShape) {
@@ -11,20 +17,7 @@ export class TempoIndicatorUI  {
         this.container.visible = false;
         this.container.isPointerBlocker = false;
 
-        // let imageTexture = new Texture('images/image002.jpg');
-        // const image = new UIImage(this.container, imageTexture);
-        // image.hAlign = 'center'
-        // image.vAlign = 'center'
-        // image.sourceLeft = 0
-        // image.sourceTop = 0
-        // image.sourceWidth = 1000
-        // image.sourceHeight = 1000
-        // image.width = `200px`
-        // image.height = `200px`
-        // image.positionX = 20
-        // image.positionY = -30
-
-        const closeIcon = new UIImage(this.container, new Texture('images/close-icon3.png'));
+        const closeIcon = new UIImage(this.container, textureBuilder.get('close'));
         closeIcon.name = 'clickable-image';
         closeIcon.width = '50px';
         closeIcon.height = '50px';

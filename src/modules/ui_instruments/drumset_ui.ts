@@ -3,9 +3,12 @@ import { ISoundHub } from "../soundhub/soundhub";
 import { INoteProps } from "../instruments/Instrument";
 import { ImageContainer } from "../image_container";
 import { getDrumsNotes } from "../instruments/drumset";
+import { TextureBuilder } from "../_helpers/texture_builder";
 
 const instrument = "drums";
-let imageTexture = new Texture('images/drumset_ui.png');
+const textureBuilder = new TextureBuilder({
+    'background': 'images/drumset_ui.png'
+});
 let imageSourceWidth = 973;
 let imageSourceHeight = 401;
 let uiWidth = 600;
@@ -17,7 +20,7 @@ export class DrumSetUI extends UIInstrument {
         super(log, parent, soundHub);
     }
     protected buildControls() {
-        this.image = new UIImage(this.container, imageTexture);
+        this.image = new UIImage(this.container, textureBuilder.get('background'));
         this.image.hAlign = 'center'
         this.image.vAlign = 'top'
         // this.image.positionY = -100;

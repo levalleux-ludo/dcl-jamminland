@@ -1,5 +1,6 @@
 import { ImageContainer } from "../image_container";
 import { TrackRecorder } from "../recorder/trackRecorder";
+import { TextureBuilder } from "../_helpers/texture_builder";
 
 export enum eTrackStatus {
     DISABLED,
@@ -19,15 +20,16 @@ const lcdTexts = {
     'WAITING': {text: "*WAITING*", color: Color4.Yellow(), align: 'center'}
  };
 
-
-const texture_play = new Texture('images/play.png');
-const texture_stop = new Texture('images/stop.png');
-const texture_record = new Texture('images/record.png');
-const texture_record_off = new Texture('images/record_off.png');
-const texture_cross_active = new Texture('images/cross_active.png');
-const texture_cross = new Texture('images/cross.png');
-const texture_lcd = new Texture('images/LCD_background.png');
-const texture_lcd_playing = new Texture('images/LCD_background_playing.png');
+const textureBuilder = new TextureBuilder({
+    'play': 'images/play.png',
+    'stop': 'images/stop.png',
+    'record': 'images/record.png',
+    'record_off': 'images/record_off.png',
+    'cross_active': 'images/cross_active.png',
+    'cross': 'images/cross.png',
+    'lcd': 'images/LCD_background.png',
+    'lcd_playing': 'images/LCD_background_playing.png',
+});
 export class TrackUI {
     container: UIContainerRect;
     image: UIImage;
@@ -66,7 +68,7 @@ export class TrackUI {
         this.play_stop_rec.container().positionY = 0;
         this.play_stop_rec.container().width = 28;
         this.play_stop_rec.container().height = 28;
-        this.play_stop_rec.registerImage('play', texture_play, 70, 70);
+        this.play_stop_rec.registerImage('play', textureBuilder.get('play'), 70, 70);
         this.play_stop_rec.registerOnClickImage('play', new OnClick(event => {
             this.log('onclick Play');
             if (this.status == eTrackStatus.DISABLED) return;
@@ -74,7 +76,7 @@ export class TrackUI {
                 this.changeStatus(eTrackStatus.PLAYING);
             }
         }));
-        this.play_stop_rec.registerImage('stop', texture_stop, 70, 70);
+        this.play_stop_rec.registerImage('stop', textureBuilder.get('stop'), 70, 70);
         this.play_stop_rec.registerOnClickImage('stop', new OnClick(event => {
             this.log('onclick Stop');
             if (this.status == eTrackStatus.DISABLED) return;
@@ -82,7 +84,7 @@ export class TrackUI {
                 this.changeStatus(eTrackStatus.READY);
             }
         }));
-        this.play_stop_rec.registerImage('record', texture_record, 70, 71);
+        this.play_stop_rec.registerImage('record', textureBuilder.get('record'), 70, 71);
         this.play_stop_rec.registerOnClickImage('record', new OnClick(event => {
             this.log('onclick Rec');
             if (this.status == eTrackStatus.DISABLED) return;
@@ -90,11 +92,11 @@ export class TrackUI {
                 this.changeStatus(eTrackStatus.RECORDING);
             }
         }));
-        this.play_stop_rec.registerImage('disabled', texture_record_off, 70, 70);
+        this.play_stop_rec.registerImage('disabled', textureBuilder.get('record_off'), 70, 70);
         
         this.lcd = new ImageContainer(this.container);
-        this.lcd.registerImage('inactive', texture_lcd, 417, 178);
-        this.lcd.registerImage('active', texture_lcd_playing, 417, 178);
+        this.lcd.registerImage('inactive', textureBuilder.get('lcd'), 417, 178);
+        this.lcd.registerImage('active', textureBuilder.get('lcd_playing'), 417, 178);
         this.lcd.container().positionX = '-15%';
         this.lcd.container().positionY = '0%';
         this.lcd.container().width = 115;
@@ -106,7 +108,7 @@ export class TrackUI {
         this.delete.container().positionY = '0%';
         this.delete.container().width = 24;
         this.delete.container().height = 24;
-        this.delete.registerImage('active', texture_cross_active, 81,84);
+        this.delete.registerImage('active', textureBuilder.get('cross_active'), 81,84);
         this.delete.container().isPointerBlocker = true;
         this.delete.registerOnClickImage('active', new OnClick(event => {
             this.log('onclick Delete');
@@ -114,7 +116,7 @@ export class TrackUI {
                 this.changeStatus(eTrackStatus.EMPTY);
             }
         }));
-        this.delete.registerImage('inactive', texture_cross, 81,84);
+        this.delete.registerImage('inactive', textureBuilder.get('cross'), 81,84);
 
         this.txt_lcd_text = new UIText(this.container);
         this.txt_lcd_text.width = 100;

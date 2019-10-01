@@ -4,8 +4,11 @@ import { Tempo } from "../recorder/tempo";
 import { TrackUI, eTrackStatus } from "./trackUI";
 import { TrackRecorder } from "../recorder/trackRecorder";
 import { UIWrapper } from "../ui_wrapper";
+import { TextureBuilder } from "../_helpers/texture_builder";
 
-const imageTexture = new Texture('images/audio_device_background_2.png');
+const textureBuilder = new TextureBuilder({
+    'background': 'images/audio_device_background_2.png'
+});
 export class RecorderUI extends UIWrapper {
     soundHub: ISoundHub;
     image: UIImage;
@@ -24,7 +27,7 @@ export class RecorderUI extends UIWrapper {
         this.container.visible = false;
     }
     protected buildControls() {
-        this.image = new UIImage(this.container, imageTexture);
+        this.image = new UIImage(this.container, textureBuilder.get('background'));
         this.image.hAlign = 'center';
         // this.image.positionY = '0%';
         this.image.vAlign = 'top';
