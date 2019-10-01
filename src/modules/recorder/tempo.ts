@@ -5,7 +5,7 @@ export class Tempo {
     nbBeatsPerBar;
     tempoBPM;
     timerEntity: Entity;
-    upBeatRatio = 12; // convenient for ternary and 4-beat rythme (if tempo 180 bpm, timer period is set to 28 msec)
+    upBeatRatio = 4; // convenient for ternary and 4-beat rythme (if tempo 180 bpm, timer period is set to 28 msec)
     timer;
     shallStopAtEndOfBar = false;
     currentTime : number;
