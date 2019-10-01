@@ -24,7 +24,7 @@ export abstract class Note extends EntityWrapper implements INoteController, INo
         return this.note;
     }
     public play() {
-        this.log("Play note " + this.note + " of instrument " + this.getInstrument());
+        // this.log("Play note " + this.note + " of instrument " + this.getInstrument());
         this.entity.getComponent(AudioSource).playOnce();
     }
     // ****************************************

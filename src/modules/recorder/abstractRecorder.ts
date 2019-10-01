@@ -10,6 +10,7 @@ export abstract class AbstractRecorder implements IInstrumentRecorder {
     protected isPlaying = false;
     protected hasRecord_ = false;
     protected endOfPlaying: () => void;
+    protected endOfRecording: () => void;
     constructor(log: (string )=> void, soundHub: ISoundHub) {
         this.log = log;
         this.setSoundHub(soundHub);
@@ -43,12 +44,13 @@ export abstract class AbstractRecorder implements IInstrumentRecorder {
     public getInstrument() {
         return this.instrument;
     }
-    public startRecording() {
+    public startRecording(endOfRecording?: () => void) {
         if (!this.instrument) {
             this.log("[WARN] AbstractRecorder() : unable to start recording because there is no active instrument defined");
             return;
         }
         if (!this.isRecording && !this.isPlaying) {
+            this.endOfRecording = endOfRecording;
             this.log("START RECORDING !!!");
             this.isRecording = true;
             this.hasRecord_ = true;
@@ -67,7 +69,7 @@ export abstract class AbstractRecorder implements IInstrumentRecorder {
             this.onPlayStop();
         }
     }
-    public startPlaying(endOfPlaying: () => void) {
+    public startPlaying(endOfPlaying?: () => void) {
         if (!this.hasRecord()) {
             this.log("[WARN] AbstractRecorder() : unable to start playing because there is no record yet");
             return;

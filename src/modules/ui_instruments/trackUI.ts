@@ -50,6 +50,7 @@ export class TrackUI {
     status: eTrackStatus = eTrackStatus.DISABLED;
     recorder: AbstractRecorder = null;
     log: (string )=> void;
+    auto_loop = true;
     constructor(log: (string )=> void, parent: UIShape, recorder: AbstractRecorder) {
         this.log = log;
         this.recorder = recorder;
@@ -127,9 +128,11 @@ export class TrackUI {
         this.setTextGeometry(this.txt_lcd_text);
 
         this.txt_instrument = new UIText(this.container);
-        this.txt_instrument.width = 10;
-        this.txt_instrument.height = 10;
-        this.txt_instrument.vAlign = 'top';
+        this.txt_instrument.width = 8;
+        this.txt_instrument.height = 8;
+        this.txt_instrument.vAlign = 'bottom';
+        this.txt_instrument.hTextAlign = 'left';
+        this.txt_instrument.paddingBottom = 2;
         this.txt_instrument.hAlign = 'left';
         this.txt_instrument.fontAutoSize = true;
         this.txt_instrument.visible = false;
@@ -226,21 +229,38 @@ export class TrackUI {
         this.onChangeCallback = callback;
     }
 
+    // AUTO LOOP
+    onReplayFinish() {
+        this.log("LoopRecorder::onReplayFinish()");
+        if (this.auto_loop) {
+            // restart playing until stop is asked
+            this.recorder.startPlaying(() => {this.onReplayFinish()});
+        } else {
+            this.changeStatus(eTrackStatus.READY);
+        }
+    }
+    onRecordFinish() {
+        this.log("LoopRecorder::onRecordFinish()");
+        if (this.auto_loop) {
+            // switch to replay immediately
+            this.changeStatus(eTrackStatus.PLAYING);
+        } else {
+            this.changeStatus(eTrackStatus.READY);
+        }
+    }
     changeStatus(newStatus: eTrackStatus, notify: boolean = true) {
         let oldStatus = this.status;
         if (oldStatus == newStatus) return;
         this.status = newStatus;
         this.swapButtonsAndTexts();
         if (this.status == eTrackStatus.RECORDING) {
-            this.recorder.startRecording();
+            this.recorder.startRecording(() => {this.onRecordFinish()});
         }
         if (oldStatus == eTrackStatus.RECORDING) {
             this.recorder.stop();
         }
         if (this.status == eTrackStatus.PLAYING) {
-            this.recorder.startPlaying(() => {
-                this.changeStatus(eTrackStatus.READY);
-            });
+            this.recorder.startPlaying(() => {this.onReplayFinish()});
         }
         if (oldStatus == eTrackStatus.PLAYING) {
             this.recorder.stop();

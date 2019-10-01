@@ -6,6 +6,7 @@ import { TrackRecorder } from "../recorder/trackRecorder";
 import { UIWrapper } from "../ui_wrapper";
 import { TextureBuilder } from "../_helpers/texture_builder";
 import { AbstractRecorder } from "../recorder/abstractRecorder";
+import { LoopRecorder } from "../recorder/loopRecorder";
 
 const textureBuilder = new TextureBuilder({
     'background': 'images/audio_device_background_2.png'
@@ -47,7 +48,7 @@ export class RecorderUI extends UIWrapper {
         let posYs = ['20%', '5%', '-10%', '-25%'];
         for (let i = 0; i < 2; i++) {
             for (let j = 0; j < 4; j++) {
-                let recorder = new TrackRecorder(this.log, this.soundHub, this.tempo);
+                let recorder = new LoopRecorder(this.log, this.soundHub, this.tempo);
                 let track = new TrackUI(this.log, this.image, recorder);
                 track.setPosition(posXs[i], posYs[j]);
                 track.registerOnStatusChanged((theTrack, status) => {
