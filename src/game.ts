@@ -30,10 +30,10 @@ let features = {
 
 /////// TEST CONFIGURATION  ///////////
 
-// const isProduction = true;
-const isProduction = false;
+const isProduction = true;
+// const isProduction = false;
 // const isIntegration = true;
-const isIntegration = true;
+const isIntegration = false;
 //const complete = false;
 const complete = isProduction || isIntegration;
 

@@ -7,6 +7,7 @@
     "build": "build-ecs",
     "watch": "build-ecs --watch",
     "deploy:now": "dcl export && now -n JamminLand export",
+    "deploy:now:preprod": "dcl export && now -n JamminLand-test export",
     "deploy:github": "dcl export -o ../../levalleux-ludo.github.io/DCL/JamminLand run export",
     "ecs:install": "npm install --save-dev decentraland-ecs@latest",
     "ecs:install-next": "npm install --save-dev decentraland-ecs@next"
