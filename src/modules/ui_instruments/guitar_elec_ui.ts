@@ -2,10 +2,11 @@ import { UIInstrument } from "./UIInstrument";
 import { ISoundHub, INoteController } from "../soundhub/soundhub";
 import { INoteProps } from "../instruments/Instrument";
 import { getGuitarElecNotes } from "../instruments/guitar_elec";
+import { TextureBuilder } from "../_helpers/texture_builder";
 
 const instrument = "guitar_elec";
 
-const textureBuilder({
+const textureBuilder = new TextureBuilder({
     'background': 'images/guitar_elec.png',
     'item': 'images/bassItemUI.png' // {hasAlpha: true}
 });
