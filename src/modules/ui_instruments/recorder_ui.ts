@@ -117,7 +117,7 @@ export class RecorderUI extends UIWrapper {
     public setActiveInstrument(instrument: string) {
         this.instrument = instrument;
         this.tracks.forEach(track => {
-            if ((track.getStatus() == eTrackStatus.DISABLED) || (track.getStatus() == eTrackStatus.READY)) {
+            if ((track.getStatus() == eTrackStatus.DISABLED) || (track.getStatus() == eTrackStatus.EMPTY)) {
                 track.setActiveInstrument(this.instrument);
             }
         });
