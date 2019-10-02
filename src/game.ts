@@ -98,7 +98,7 @@ if (features.musichall) {
 // }));
 
 if (features.recorder) {
-  const tempo = new Tempo(trace, 120, 4, 4);
+  const tempo = new Tempo(trace, 80, 4, 4);
   const recorder3d = new Recorder3D(trace, new Transform({
     position: new Vector3(15, 2.6, 10.0),
     rotation: Quaternion.Euler(0, -115 ,0),
