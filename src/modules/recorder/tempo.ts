@@ -12,7 +12,7 @@ export class Tempo {
     isStarted = false;
     isFrozen = false;
     log: (string) => void;
-    private _callbacksUpBeat: ((currentTime: number)=>void)[] = [];
+    private _callbacksUpBeat: ((currentTime: number, currentUpBeatInPhrase: number)=>void)[] = [];
     private _callbacksBeat: ((currentPhrase: number, currentBar: number, currentBeat: number, currentBeatInPhrase: number)=>void)[] = [];
     private _callbacksBar: ((currentPhrase: number, currentBar: number)=>void)[] = [];
 
@@ -100,7 +100,7 @@ export class Tempo {
     }
 
     ;
-    public registerOnUpBeat(callback: (currentTime: number)=>void) {
+    public registerOnUpBeat(callback: (currentTime: number, currentUpBeatInPhrase: number)=>void) {
         this._callbacksUpBeat.push(callback);
     }
 
@@ -116,7 +116,7 @@ export class Tempo {
 
     private onUpBeat() {
         this._callbacksUpBeat.forEach(callback => {
-            callback(this.currentTime);
+            callback(this.currentTime, this.currentTime % (this.upBeatRatio * this.nbBeatsPerBar * this.nbBarPerPhrase));
         });
         if (this.getCurrentUpBeat() == 0) {
             this._callbacksBeat.forEach(callback => {

@@ -8,69 +8,83 @@ export class LoopRecorder extends AbstractRecorder {
     startTime = 0;
     recLength = 0;
     isWaiting = false;
+    recTime = 0;
     constructor(log: (string )=> void, soundHub: ISoundHub, tempo: Tempo) {
         super(log, soundHub);
         this.tempo = tempo;
-        this.tempo.registerOnBar((currentPhrase: number, currentBar: number) => {this.onBarEvent(currentPhrase, currentBar)});
-        this.tempo.registerOnUpBeat((currentTime: number) => {this.onUpBeat(currentTime)});
+        this.tempo.registerOnUpBeat((currentTime: number, currentUpBeatInPhrase: number) => {this.onUpBeat(currentTime, currentUpBeatInPhrase)});
     }
-    protected onUpBeat(currentTime: number) {
-        if (this.isPlaying && !this.isWaiting) {
-            let recTime = currentTime - this.startTime; 
-            if (recTime in this._record) {
-                let note = this._record[recTime];
-                this.log(`LoopRecorder : Play ${this.instrument} note ${note} at time ${recTime}`);
-                this.soundHub.onPlayNote(this.instrument, note);
-            }
-            if (recTime >= this.recLength) {
-                this.log(`LoopRecorder : Record is finished after time ${recTime}`);
-                this.stop();
-                if (this.endOfPlaying) {
-                    this.endOfPlaying();
-                    // If the play is immediately set there, dont wait a phrase more
-                    this.isWaiting = false;
-                    this.startTime = this.tempo.getCurrentTime();
-                }
-            }
-        }
-    }
-    protected onBarEvent(currentPhrase: number, currentBar: number) {
-        if (this.tempo.getCurrentBeatInPhrase() === 0) {
-            this.log("LoopRecorder: currentPhrase=" + currentPhrase + ", currentBar=" + currentBar + ", currentBeatInPhrase=" + this.tempo.getCurrentBeatInPhrase());
+    protected onUpBeat(currentTime: number, currentUpBeatInPhrase: number) {
+
+        this.recTime = currentUpBeatInPhrase - this.startTime; 
+
+        if (currentUpBeatInPhrase === 0) {
             if (this.isRecording) {
-                // RECORDING
                 if (this.isWaiting) {
-                    // Start real recording now
+
+                    // START REAL RECORDING
+
                     this.isWaiting = false;
-                    this.startTime = this.tempo.getCurrentTime();
+                    this.startTime = currentUpBeatInPhrase; // (=0)
                     this.recLength = 0;
                 } else {
+
+                    // STOP REAL RECORDING
+
                     this.log(`LoopRecorder : Record finishes automatically`);
                     this.stop();
                     if (this.endOfRecording) {
                         this.endOfRecording();
-                        // If the play is immediately set there, dont wait a phrase more
+                        // If the play is immediately set by the callback, dont wait a phrase more
                         this.isWaiting = false;
-                        this.startTime = this.tempo.getCurrentTime();
+                        this.startTime = currentUpBeatInPhrase; // (=0)
+                        this.recTime = 0;
                     }
                 }
             } else if (this.isPlaying) {
-                // PLAYING
                 if (this.isWaiting) {
-                    // Start real playing now
+
+                    // START REAL REPLAY
+
                     this.isWaiting = false;
-                    this.startTime = this.tempo.getCurrentTime();
+                    this.startTime = currentUpBeatInPhrase; // (=0)
+                    this.recTime = 0;
                 }
             }
-           
+        }
+        if (this.isPlaying && !this.isWaiting) {
+
+            // REPLAY //
+
+            if (this.recTime in this._record) {
+                let note = this._record[this.recTime];
+                this.log(`LoopRecorder : Play ${this.instrument} note ${note} at time ${this.recTime}`);
+                this.soundHub.onPlayNote(this.instrument, note);
+            }
+            if (this.recTime >= this.recLength) {
+
+                // STOP REAL REPLAY
+
+                this.log(`LoopRecorder : Record is finished after time ${this.recTime}`);
+                this.stop();
+                if (this.endOfPlaying) {
+                    this.endOfPlaying();
+                    // If the play is immediately set by the callback, dont wait a phrase more
+                    this.isWaiting = false;
+                    this.startTime = 0;
+                    this.recTime = 0;
+                }
+            }
         }
     }
     protected recordNote(note: string) {
         if (!this.isWaiting) {
-            let recTime = this.tempo.getCurrentTime() - this.startTime; 
-            this.log(`LoopRecorder : Record ${this.instrument} note ${note} at time ${recTime}`);
-            this._record[recTime] = note;
-            this.recLength = recTime;
+
+            // RECORD //
+
+            this.log(`LoopRecorder : Record ${this.instrument} note ${note} at time ${this.recTime}`);
+            this._record[this.recTime] = note;
+            this.recLength = this.recTime;
         }
     }
     protected onRecordStart() {
