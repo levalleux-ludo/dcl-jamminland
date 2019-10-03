@@ -30,7 +30,7 @@ let features = {
 
 /////// TEST CONFIGURATION  ///////////
 
-const isProduction = false;
+const isProduction = true;
 // const isProduction = false;
 // const isIntegration = true;
 const isIntegration = false;
