@@ -6,14 +6,20 @@ export interface ISoundHub {
     /// Method called by a client to be notified when a note is played
     registerRecorder(recorder: IInstrumentRecorder);
     unregisterRecorder(recorder: IInstrumentRecorder);
-        /// Method called by the note while playing
-    onPlayNote(instrument: string, note: string);
+    registerBroadcaster(broadcaster: IInstrumentBroadcaster);
+    /// Method called by the note while playing
+    onPlayNote(instrument: string, note: string, broadcast?: boolean);
 }
 
 export interface IInstrumentRecorder {
     setSoundHub(soundHub: ISoundHub);
     onPlayedNote(note: string);
     getInstrument(): string;
+}
+
+export interface IInstrumentBroadcaster {
+    setSoundHub(soundHub: ISoundHub);
+    onPlayedNote(instrument: string, note: string);
 }
 
 export interface INoteController {
@@ -50,6 +56,7 @@ export class SoundHub implements ISoundHub {
     private _notes: Record <string, Record <string, () => void > > = {};
     // store an array of 'onPlayedNote()' callbacks, per instrument
     private _recorders: Record <string, IInstrumentRecorder[] > = {};
+    private _broadcaster: IInstrumentBroadcaster;
 
     /// Method called by an instrument to register its notes, allowing the hub to be warned when the note is played (for recording)
     /// and make them playing (for replaying)
@@ -78,6 +85,9 @@ export class SoundHub implements ISoundHub {
         if (!this._recorders[instrument]) this._recorders[instrument] = [];
         this._recorders[instrument].push(recorder);
     }
+    public registerBroadcaster(broadcaster: IInstrumentBroadcaster) {
+        this._broadcaster = broadcaster;
+    }
     public unregisterRecorder(recorder: IInstrumentRecorder) {
         let instrument = recorder.getInstrument();
         if (!instrument) {
@@ -90,10 +100,14 @@ export class SoundHub implements ISoundHub {
     }
 
     /// Method called to ask the instrument to play a note
-    public onPlayNote(instrument: string, note: string) {
+    public onPlayNote(instrument: string, note: string, broadcast: boolean = true) {
         this.log(`SoundHub: note ${note} has to be played on instrument ${instrument}`);
-        let play = this._notes[instrument][note];
-        if (play) play();
+        if (broadcast && this._broadcaster) {
+            this._broadcaster.onPlayedNote(instrument, note);
+        } else {
+            let play = this._notes[instrument][note];
+            if (play) play();
+        }
     }
 
     // called back when a note is played on the instrument
@@ -105,6 +119,9 @@ export class SoundHub implements ISoundHub {
             instrumentRecorders.forEach(recorder => {
                 recorder.onPlayedNote(note)
             });
+        }
+        if (this._broadcaster) {
+            this._broadcaster.onPlayedNote(instrument, note);
         }
     }
 }

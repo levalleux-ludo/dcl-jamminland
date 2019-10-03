@@ -37,7 +37,7 @@ export abstract class UIInstrument extends UIWrapper implements INoteController 
             return;
         }
         // relay towards the 3D entity containing the sound Component
-        this.soundHub.onPlayNote(this.getInstrument(), note);
+        // this.soundHub.onPlayNote(this.getInstrument(), note);
         this.notifyPlaying(note);
     }
 

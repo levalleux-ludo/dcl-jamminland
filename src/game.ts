@@ -15,6 +15,7 @@ import { GuitarElecUI } from "./modules/ui_instruments/guitar_elec_ui";
 import { Bass } from "./modules/instruments/bass";
 import { SelectInstrumentUI } from "./modules/ui_instruments/select_instrument_ui";
 import { MusicHall } from "./modules/musichall";
+import { MultiPlayerManager } from "./modules/soundhub/multiplayer";
 
 // Production and Integration
 let features = {
@@ -25,12 +26,13 @@ let features = {
   'bass': true,
   'guitar_elec': true,
   'drumset': true,
-  'recorder': true
+  'recorder': true,
+  'multiplayer' : false
 }
 
 /////// TEST CONFIGURATION  ///////////
 
-const isProduction = true;
+const isProduction = false;
 // const isProduction = false;
 // const isIntegration = true;
 const isIntegration = false;
@@ -46,7 +48,8 @@ if (!complete) {
     'bass': true,
     'guitar_elec': true,
     'drumset': true,
-    'recorder': true
+    'recorder': true,
+    'multiplayer' : true
   }
 }
 
@@ -97,8 +100,12 @@ if (features.musichall) {
 //   position: new Vector3(8.0, 0.0, 8.0)
 // }));
 
+let tempo: Tempo;
+if (features.recorder  || features.multiplayer) {
+  tempo = new Tempo(trace, 120, 4, 4);
+}
+
 if (features.recorder) {
-  const tempo = new Tempo(trace, 80, 4, 4);
   const recorder3d = new Recorder3D(trace, new Transform({
     position: new Vector3(15, 2.6, 10.0),
     rotation: Quaternion.Euler(0, -115 ,0),
@@ -116,6 +123,11 @@ if (features.recorder) {
     recorderUI.show();
   });
   engine.addEntity(recorder3d.getEntity());
+}
+
+if (features.multiplayer) {
+  const multiplayer = new MultiPlayerManager(trace, soundHub, tempo);
+  engine.addSystem(multiplayer);
 }
 
 if (features.piano) {

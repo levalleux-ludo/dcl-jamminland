@@ -52,7 +52,7 @@ export abstract class Note extends EntityWrapper implements INoteController, INo
         this.entity.addComponentOrReplace(audioSource);
     }
     onPressed() {
-        this.play();
+        // this.play();
         this.notifyPlaying();
         this.animate();
     }
