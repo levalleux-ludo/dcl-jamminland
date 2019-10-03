@@ -42,9 +42,9 @@ if (!complete) {
     'land': false,
     'musichall': true,
     'instrument_test': false,
-    'piano': false,
-    'bass': false,
-    'guitar_elec': false,
+    'piano': true,
+    'bass': true,
+    'guitar_elec': true,
     'drumset': true,
     'recorder': true
   }
