@@ -42,9 +42,9 @@ if (!complete) {
     'land': false,
     'musichall': true,
     'instrument_test': false,
-    'piano': false,
-    'bass': false,
-    'guitar_elec': false,
+    'piano': true,
+    'bass': true,
+    'guitar_elec': true,
     'drumset': true,
     'recorder': true
   }
@@ -98,7 +98,7 @@ if (features.musichall) {
 // }));
 
 if (features.recorder) {
-  const tempo = new Tempo(trace, 120, 4, 4);
+  const tempo = new Tempo(trace, 80, 4, 4);
   const recorder3d = new Recorder3D(trace, new Transform({
     position: new Vector3(15, 2.6, 10.0),
     rotation: Quaternion.Euler(0, -115 ,0),

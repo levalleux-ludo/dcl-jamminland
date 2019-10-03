@@ -32,7 +32,7 @@ export class TrackRecorder extends AbstractRecorder {
     }
     protected onPlayStart() {
         this.startTime = this.tempo.getCurrentTime();
-        this.tempo.registerOnUpBeat(currentTime => {
+        this.tempo.registerOnUpBeat((currentTime, currentUpBeatInPhrase) => {
             if (this.isPlaying) {
                 let recTime = currentTime - this.startTime; 
                 if (recTime in this._record) {
