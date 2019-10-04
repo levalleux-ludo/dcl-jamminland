@@ -4,5 +4,6 @@
     "allowJs": true
   },
   "include": ["src/**/*.ts"],
+  "exclude": ["src/mp_server/*.ts"],
   "extends": "./node_modules/decentraland-ecs/types/tsconfig.json"
 }

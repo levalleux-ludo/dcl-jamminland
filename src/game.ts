@@ -33,11 +33,12 @@ let features = {
 /////// TEST CONFIGURATION  ///////////
 
 const isProduction = false;
+const isProdMP = true;
 // const isProduction = false;
 // const isIntegration = true;
 const isIntegration = false;
 //const complete = false;
-const complete = isProduction || isIntegration;
+const complete = isProduction || isIntegration || isProdMP;
 
 if (!complete) {
   features = {
@@ -53,10 +54,12 @@ if (!complete) {
   }
 }
 
+if (isProdMP) features.multiplayer = true;
+
 ///////////////////////////////////////////
 
 function trace (message) {
-  if (!isProduction) {
+  if (!isProduction && !isProdMP) {
     console.log(message);
   }
 }

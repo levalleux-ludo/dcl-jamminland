@@ -5,9 +5,12 @@
   "scripts": {
     "start": "dcl start",
     "build": "build-ecs",
+    "build:mp_server": "cd src/mp_server && npm run build & cd ../..",
     "watch": "build-ecs --watch",
     "deploy:now": "dcl export && now -n JamminLand export",
     "deploy:now:preprod": "dcl export && now -n JamminLand-test export",
+    "deploy:now:mp": "dcl export && now -n JamminLand-mp export",
+    "deploy:now:mp_server": "cd src/mp_server && npm run deploy:now & cd ../..",
     "deploy:github": "dcl export -o ../../levalleux-ludo.github.io/DCL/JamminLand run export",
     "ecs:install": "npm install --save-dev decentraland-ecs@latest",
     "ecs:install-next": "npm install --save-dev decentraland-ecs@next"

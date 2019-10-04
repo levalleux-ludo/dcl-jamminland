@@ -1,0 +1,26 @@
+{
+    "version": 2,
+    "builds": [{ "src": "dist/mp_server.js", "use": "@now/node" }],
+    "routes": [
+        {
+            "src": "/",
+            "dest": "/dist/mp_server.js",
+            "methods": ["GET"]
+        },
+        {
+            "src": "/register",
+            "dest": "/dist/mp_server.js",
+            "methods": ["GET"]
+        },
+        {
+            "src": "/notes",
+            "dest": "/dist/mp_server.js",
+            "methods": ["GET"]
+        },
+        {
+            "src": "/play",
+            "dest": "/dist/mp_server.js",
+            "methods": ["POST"]
+        }
+    ]
+}

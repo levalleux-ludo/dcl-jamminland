@@ -1,35 +1,11 @@
 import { IInstrumentRecorder, SoundHubTest, ISoundHub, IInstrumentBroadcaster } from "./soundhub";
 import { Tempo } from "../recorder/tempo";
+import { NotesRecord, listInstruments } from "../../mp_server/i_multiplayer";
 
-const listInstruments = ["piano", "bass", "guitar_elec", "drums"];
 
-interface INotesPerInstrument {[key: string]: string[]; }
+// const apiUrl = "http://127.0.0.1:5611"
+const apiUrl = "https://jamminland-mp-server.levalleuxludo.now.sh"
 
-class NotesRecord {
-  public notesPerInstrument: INotesPerInstrument = {};
-  constructor() {
-    this.reset();
-  }
-  public reset(): void {
-    listInstruments.forEach((instrument) => {
-      this.notesPerInstrument[instrument] = [];
-    });
-  }
-  public resetRecord(instrument: string): void {
-    this.notesPerInstrument[instrument] = [];
-  }
-  public mergeNotes(instrument: string, newNotes: string[]) {
-    const notes = this.notesPerInstrument[instrument];
-    newNotes.forEach((note) => {
-      if (notes.indexOf(note) === -1) {
-        notes.push(note);
-      }
-    });
-  }
-  public getRecord(instrument: string): string[] {
-    return this.notesPerInstrument[instrument];
-  }
-}
 class Broadcaster implements IInstrumentBroadcaster {
     notesRecord: NotesRecord = new NotesRecord();
     constructor() {
@@ -82,7 +58,7 @@ function mergeNotes(note: string, notes: string[]) {
     }
 }
 // how often to refresh scene, in seconds
-const refreshInterval: number = 0.05
+const refreshInterval: number = 0.025
 let refreshTimer: number = refreshInterval
 
 export class MultiPlayerManager implements ISystem {
@@ -152,11 +128,9 @@ export class MultiPlayerManager implements ISystem {
 
 
 ///// Connect to the REST API
-
-const apiUrl = "http://127.0.0.1:5000"
-
 class Client {
     clientId: string;
+    isRegistering = false;
     constructor() {
         this.register();
     }
@@ -180,6 +154,7 @@ class Client {
     }
     getFromServer(callback: (notesPerInstrument: {[key: string]: string[]}) => void){
  
+      if (this.isRegistering) return;
         let url = `${apiUrl}/notes?client=${encodeURI(this.clientId)}`;
         
         executeTask(async () => {
@@ -187,8 +162,10 @@ class Client {
             let response = await fetch(url);
             if ((response.status == 401) || (response.status == 403)) {
                 // we need to register again (auto-disconnected by the server  after a timeout)
+                this.isRegistering = true;
                 this.register();
                 this.getFromServer(callback);
+                this.isRegistering = false;
                 return;
             }
             let json = await response.json()
