@@ -3,6 +3,7 @@ import express from "express";
 import { v4 as uuid } from "uuid";
 import { NotesRecord, INotesPerInstrument } from "./i_multiplayer";
 import { CustomLogger } from "./custom_logger";
+import { Mutex } from "async-mutex";
 
 const app = express();
 
@@ -11,7 +12,7 @@ const port = 5611;
 // CORS
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Headers", "*");
   next();
 });
 // Body parser
@@ -47,65 +48,102 @@ app.listen(port, () => {
 Visit http://localhost:${port}`);
 });
 
+// class Mutex {
+//     private mutex = Promise.resolve();
+  
+//     lock(): PromiseLike<() => void> {
+//       let begin: (unlock: () => void) => void = unlock => {};
+  
+//       this.mutex = this.mutex.then(() => {
+//         return new Promise(begin);
+//       });
+  
+//       return new Promise(res => {
+//         begin = res;
+//       });
+//     }
+//     async dispatch<T>(fn: (() => T) | (() => PromiseLike<T>)): Promise<T> {
+//         const unlock = await this.lock();
+//         try {
+//           return await Promise.resolve(fn());
+//         } finally {
+//           unlock();
+//         }
+//       }
+// }
+
 class MpServer {
     lastRequestTimePerClient: {[key: string]: number} = {};
     notesForClient: {[key: string]: NotesRecord} = {};
     inactiveDelay = 120000; // 2 min
 
+    mutex: Mutex = new Mutex();
+
     constructor() {
     }
 
-    public createClient(): string {
+    private createClient(): string {
         const id = uuid();
         this.notesForClient[id] = new NotesRecord();
         this.lastRequestTimePerClient[id] = Date.now();
-        return id;
+        return id;    
     }
       
-    public deleteClient(id: string) {
+    private  deleteClient(id: string) {
         customLogger.logger.info("delete client with id " + id);
         if (this.lastRequestTimePerClient[id]) { delete this.lastRequestTimePerClient[id]; }
         if (this.notesForClient[id]) { delete this.notesForClient[id]; }
     }
 
-    public pushNotes(instrument: string, newNotes: string[]): any {
-        const now = Date.now();
-        const inactiveClients = [];
-        for (const client in this.notesForClient) {
-            if (this.notesForClient.hasOwnProperty(client)) {
-                const lastRequestTimeForClient = this.lastRequestTimePerClient[client];
-                if ((now - lastRequestTimeForClient) > this.inactiveDelay) {
-                    inactiveClients.push(client);
-                } else {
-                    this.notesForClient[client].mergeNotes(instrument, newNotes);
+    public async pushNotes(instrument: string, newNotes: string[]): Promise<any> {
+        return this.mutex.runExclusive(() => {
+            const now = Date.now();
+            const inactiveClients = [];
+            for (const client in this.notesForClient) {
+                if (this.notesForClient.hasOwnProperty(client)) {
+                    const lastRequestTimeForClient = this.lastRequestTimePerClient[client];
+                    if ((now - lastRequestTimeForClient) > this.inactiveDelay) {
+                        inactiveClients.push(client);
+                    } else {
+                        this.notesForClient[client].mergeNotes(instrument, newNotes);
+                    }
                 }
             }
-        }
-        inactiveClients.forEach((client) => {this.deleteClient(client); });
-        return { status: "OK"};
+            for(let client of inactiveClients) {
+                this.deleteClient(client);
+            }
+            // inactiveClients.forEach((client: string) => {});
+            return { status: "OK"};
+        })
     }
 
-    public register(): any {
-        const id = this.createClient();
-        customLogger.logger.info("register a new client -> id=" + id);
-        return `{"id": "${id}"}`;
+    public async register(): Promise<any> {
+        return this.mutex.runExclusive(() => {
+            const id = this.createClient();
+            customLogger.logger.info("register a new client -> id=" + id);
+            return `{"id": "${id}"}`;    
+        })
     }
 
-    public checkClient(client: string) {
-        let lastRequestForClient = this.lastRequestTimePerClient[client];
-        if (!lastRequestForClient) return false;
-        lastRequestForClient = Date.now();
-        return true;
+    public async checkClient(client: string): Promise<boolean> {
+        return this.mutex.runExclusive(async () => {
+            let lastRequestForClient = this.lastRequestTimePerClient[client];
+            if (!lastRequestForClient) return false;
+            lastRequestForClient = Date.now();
+            return true;
+        })
     }
 
-    public popNotes(client: string): INotesPerInstrument {
-        const notesRecord = this.notesForClient[client];
-        if (!notesRecord) {
-            return {};
-        }
-        let notesPerInstrument = notesRecord.notesPerInstrument;
-        notesRecord.reset();
-        return notesPerInstrument;
+    public async popNotes(client: string): Promise<INotesPerInstrument> {
+        return this.mutex.runExclusive(async () => {
+            const notesRecord = this.notesForClient[client];
+            if (!notesRecord) {
+                return {};
+            }
+            let notesPerInstrument = notesRecord.notesPerInstrument;
+            notesRecord.reset();
+            return notesPerInstrument;
+        })
     }
     
 }
@@ -120,8 +158,9 @@ app.get("/", (req, res) => {
 
 app.post("/play", (req, res) => {
     const {instrument, notes} = req.body;
-    let response = mpServer.pushNotes(instrument, notes);
-    res.send(response);
+    mpServer.pushNotes(instrument, notes).then((response) => {
+        res.send(response);
+    });
 });
 
 // app.post("/log/clear", (req, res) => {
@@ -135,7 +174,9 @@ app.post("/play", (req, res) => {
 // });
 
 app.get("/register", (req, res) => {
-    res.send(mpServer.register());
+    mpServer.register().then((response) => {
+        res.send(response);
+    })
 });
 
 app.get("/log", (req, res) => {
@@ -156,12 +197,16 @@ app.get("/notes", (req, res) => {
         );
         return;
     }
-    if (!mpServer.checkClient(client)) {
-        res.status(401).send(
-        "Unknown client " + client + ". Please register"
-        );
-        return;
-    }
-    res.json(mpServer.popNotes(client));
+    mpServer.checkClient(client).then((isOK) => {
+        if (!isOK) {
+            res.status(401).send(
+            "Unknown client " + client + ". Please register"
+            );
+            return;
+        }
+        mpServer.popNotes(client).then((response) => {
+            res.json(response);
+        })
+    })
 });
   

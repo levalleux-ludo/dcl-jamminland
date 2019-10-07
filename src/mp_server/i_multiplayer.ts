@@ -9,20 +9,22 @@ export class NotesRecord {
   }
   public reset(): void {
     this.notesPerInstrument = {}
-    listInstruments.forEach((instrument) => {
+    for (let instrument of listInstruments) {
+    // listInstruments.forEach((instrument) => {
       this.notesPerInstrument[instrument] = [];
-    });
+    }
   }
   public resetRecord(instrument: string): void {
     this.notesPerInstrument[instrument] = [];
   }
   public mergeNotes(instrument: string, newNotes: string[]) {
     const notes = this.notesPerInstrument[instrument];
-    newNotes.forEach((note) => {
+    for (let note of newNotes) {
+    // newNotes.forEach((note) => {
       if (notes.indexOf(note) === -1) {
         notes.push(note);
       }
-    });
+    }
   }
   public getRecord(instrument: string): string[] {
     return this.notesPerInstrument[instrument];

@@ -28,9 +28,14 @@
             "methods": ["GET"]
         },
         {
+            "headers": {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+                "Access-Control-Allow-Headers": "*"
+            },
             "src": "/play",
             "dest": "/dist/mp_server.js",
-            "methods": ["POST"]
+            "methods": ["POST", "OPTIONS"]
         }
     ]
 }

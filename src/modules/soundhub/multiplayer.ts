@@ -2,9 +2,11 @@ import { IInstrumentRecorder, SoundHubTest, ISoundHub, IInstrumentBroadcaster } 
 import { Tempo } from "../recorder/tempo";
 import { NotesRecord, listInstruments } from "../../mp_server/i_multiplayer";
 
-
 // const apiUrl = "http://127.0.0.1:5611"
-const apiUrl = "https://jamminland-mp-server.levalleuxludo.now.sh"
+const apiUrls = [
+    "http://127.0.0.1:5611",
+    "https://jamminland-mp-server.levalleuxludo.now.sh"
+];
 
 class Broadcaster implements IInstrumentBroadcaster {
     notesRecord: NotesRecord = new NotesRecord();
@@ -58,7 +60,7 @@ function mergeNotes(note: string, notes: string[]) {
     }
 }
 // how often to refresh scene, in seconds
-const refreshInterval: number = 0.025
+const refreshInterval: number = 0.2
 let refreshTimer: number = refreshInterval
 
 export class MultiPlayerManager implements ISystem {
@@ -126,67 +128,120 @@ export class MultiPlayerManager implements ISystem {
 
 }
 
-
+class Mutex {
+    private mutex = Promise.resolve();
+  
+    lock(): PromiseLike<() => void> {
+      let begin: (unlock: () => void) => void = unlock => {};
+  
+      this.mutex = this.mutex.then(() => {
+        return new Promise(begin);
+      });
+  
+      return new Promise(res => {
+        begin = res;
+      });
+    }
+    async dispatch<T>(fn: (() => T) | (() => PromiseLike<T>)): Promise<T> {
+        const unlock = await this.lock();
+        try {
+          return await Promise.resolve(fn());
+        } finally {
+          unlock();
+        }
+      }
+}
 ///// Connect to the REST API
 class Client {
     clientId: string;
     isRegistering = false;
+    callInProgress = false;
+    apiUrl;
+    apiIndex = 0;
+    errorCount = 0;
+    mutex: Mutex = new Mutex();
     constructor() {
+        this.apiUrl = apiUrls[this.apiIndex++ % apiUrls.length];
         this.register();
     }
     callAPI(instrument: string, notes: string[]){
-        let url = `${apiUrl}/play`;
+        let url = `${this.apiUrl}/play`;
         let method = "POST";
       //   let mode = "no-cors";
         let headers = { 
             "Content-Type": "application/json",
-            'Origin': 'http://10.0.75.1:8000'
+            'Origin': 'http://10.0.75.1:8000',
+            // "Access-Control-Allow-Origin": "*",
+            // "Access-Control-Allow-Headers": "access-control-allow-headers,access-control-allow-origin,content-type",
+            // "Accept": "*/*"
            };
-        let body =  JSON.stringify({"instrument": instrument, "notes": JSON.stringify(notes)});
+        let body =  JSON.stringify({"instrument": instrument, "notes": notes});
         let params: RequestInit =  {headers: headers, method: method, body: body }
-        executeTask(async () => {
-          try {
+        this.mutex.dispatch(async () => {
+            this.callInProgress = true;
+            try {
             let response = await fetch(url,params);
           } catch(e) {
             log("failed to reach URL" + e)
           }
+          this.callInProgress = false;
         })
     }
     getFromServer(callback: (notesPerInstrument: {[key: string]: string[]}) => void){
- 
-      if (this.isRegistering) return;
-        let url = `${apiUrl}/notes?client=${encodeURI(this.clientId)}`;
+
+        if (this.callInProgress) return;
+        if (this.isRegistering) return;
+        if (!this.clientId) {
+            this.isRegistering = true;
+            this.register();
+            return;
+        } 
+
+        let url = `${this.apiUrl}/notes?client=${encodeURI(this.clientId)}`;
         
-        executeTask(async () => {
+        this.mutex.dispatch(async () => {
+          this.callInProgress = true;
           try {
             let response = await fetch(url);
             if ((response.status == 401) || (response.status == 403)) {
                 // we need to register again (auto-disconnected by the server  after a timeout)
-                this.isRegistering = true;
-                this.register();
-                this.getFromServer(callback);
-                this.isRegistering = false;
+                delete this.clientId;
                 return;
             }
-            let json = await response.json()
-            callback(json);
+            let json = await response.json();
+            executeTask(async () => {
+                callback(json);
+            });
+            this.errorCount = 0;
           } catch(e) {
-            log("getFromServer(): failed to reach URL " + e)
+            log("getFromServer(): failed to reach URL " + e);
+            this.errorCount++;
+            if (this.errorCount > 100) {
+                this.errorCount = 0;
+                delete this.clientId;
+            }
           }
+          this.callInProgress = false;
       
          })
     }
     register() {
-        let url = `${apiUrl}/register`;
+        let url = `${this.apiUrl}/register`;
         let method = "GET";
-        executeTask(async () => {
-          try {
+        this.mutex.dispatch(async () => {
+            this.callInProgress = true;
+            try {
             let response = await fetch(url);
             let json = await response.json();
             this.clientId = json.id;
           } catch(e) {
-            log("register(): failed to reach URL" + e)
+              delete this.clientId;
+            log("register(): failed to reach URL" + e);
+            this.apiUrl = apiUrls[this.apiIndex++ % apiUrls.length]; // next time try with next URL
+            log("register(): next try with new URL " + this.apiUrl);
           }
+          this.callInProgress = false;
+          this.isRegistering = false;
         })
     }
 }
