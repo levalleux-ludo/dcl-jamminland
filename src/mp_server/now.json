@@ -8,6 +8,16 @@
             "methods": ["GET"]
         },
         {
+            "src": "/log",
+            "dest": "/dist/mp_server.js",
+            "methods": ["GET"]
+        },
+        {
+            "src": "/clearlog",
+            "dest": "/dist/mp_server.js",
+            "methods": ["POST"]
+        },
+       {
             "src": "/register",
             "dest": "/dist/mp_server.js",
             "methods": ["GET"]

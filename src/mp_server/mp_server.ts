@@ -2,7 +2,7 @@ import bodyParser from "body-parser";
 import express from "express";
 import { v4 as uuid } from "uuid";
 import { NotesRecord, INotesPerInstrument } from "./i_multiplayer";
-
+import { CustomLogger } from "./custom_logger";
 
 const app = express();
 
@@ -22,7 +22,25 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-// Listen on port 5000
+// Logger
+const customLogger = new CustomLogger();
+customLogger.logger.info("TEST LOGGER");
+
+
+// function logRequest(req: express.Request, res: express.Response, next: any) {
+//     customLogger.logger.info(req.url)
+//     next()
+// }
+// app.use(logRequest)
+
+function logError(err: any, req: express.Request, res: express.Response, next: any) {
+    customLogger.logger.error(err)
+    res.status(500).send(err)
+    next()
+}
+app.use(logError)
+
+// Listen on port xxxx
 app.listen(port, () => {
     // tslint:disable-next-line:no-console
     console.log(`Server is booming on port ${port}
@@ -33,10 +51,8 @@ class MpServer {
     lastRequestTimePerClient: {[key: string]: number} = {};
     notesForClient: {[key: string]: NotesRecord} = {};
     inactiveDelay = 120000; // 2 min
-    log: (message: string)=> void;
 
-    constructor(log: (message: string)=> void) {
-        this.log = log;
+    constructor() {
     }
 
     public createClient(): string {
@@ -47,7 +63,7 @@ class MpServer {
     }
       
     public deleteClient(id: string) {
-        this.log("delete client with id " + id);
+        customLogger.logger.info("delete client with id " + id);
         if (this.lastRequestTimePerClient[id]) { delete this.lastRequestTimePerClient[id]; }
         if (this.notesForClient[id]) { delete this.notesForClient[id]; }
     }
@@ -71,7 +87,7 @@ class MpServer {
 
     public register(): any {
         const id = this.createClient();
-        this.log("register a new client -> id=" + id);
+        customLogger.logger.info("register a new client -> id=" + id);
         return `{"id": "${id}"}`;
     }
 
@@ -94,7 +110,7 @@ class MpServer {
     
 }
 
-const mpServer = new MpServer((message:string) => {console.log(message);});
+const mpServer = new MpServer();
 
 
 // Home route
@@ -104,12 +120,32 @@ app.get("/", (req, res) => {
 
 app.post("/play", (req, res) => {
     const {instrument, notes} = req.body;
-    let response = mpServer.pushNotes(instrument, JSON.parse(notes));
+    let response = mpServer.pushNotes(instrument, notes);
     res.send(response);
 });
 
+// app.post("/log/clear", (req, res) => {
+//     try {
+//         const {instrument, notes} = req.body;
+//         let response = mpServer.pushNotes(instrument, notes);
+//         res.send(response);
+//     } catch (e) {
+//         res.status(500).send(e);
+//     }
+// });
+
 app.get("/register", (req, res) => {
     res.send(mpServer.register());
+});
+
+app.get("/log", (req, res) => {
+    res.sendFile(customLogger.logFile);
+});
+
+app.post("/clearlog", (req, res) => {
+    customLogger.clear();
+    customLogger.logger.info("New logFile at " + new Date(Date.now()).toString())
+    res.status(200).send();
 });
 
 app.get("/notes", (req, res) => {
