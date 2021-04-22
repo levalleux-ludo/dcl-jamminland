@@ -1,3 +1,4 @@
+import { UICommit } from './ui_commit';
 import { Land } from "./modules/land";
 import { TestInstrument } from "./modules/instruments/testInstrument";
 import { SoundHub } from "./modules/soundhub/soundhub";
@@ -217,5 +218,31 @@ if (features.drumset) {
   });
   engine.addEntity(drumSet.getEntity());
 }
+
+const ui_commit = new UICommit(gameCanvas);
+
+const pattern = new Entity();
+pattern.addComponent(new GLTFShape('models/multicolor_pattern.glb'));
+pattern.addComponent(new Transform({
+  position: new Vector3(18.16,2.2,22.2),
+  scale: new Vector3(0.5,0.5,0.5);
+}));
+pattern.addComponent(new Billboard());
+pattern.addComponent(
+  new OnPointerDown(
+    (event) => {
+      log('click on pattern', event)
+      ui_commit.show();
+    },
+    {
+      button: ActionButton.POINTER,
+      hoverText: 'Buy me !!!',
+    }
+  )
+)
+engine.addEntity(pattern);
+log('HELLO');
+
+
 
 
