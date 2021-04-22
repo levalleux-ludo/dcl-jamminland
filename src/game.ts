@@ -61,7 +61,7 @@ if (isProdMP) features.multiplayer = true;
 
 function trace (message) {
   if (!isProduction && !isProdMP) {
-    console.log(message);
+    log(message);
   }
 }
 
@@ -225,7 +225,7 @@ const pattern = new Entity();
 pattern.addComponent(new GLTFShape('models/multicolor_pattern.glb'));
 pattern.addComponent(new Transform({
   position: new Vector3(18.16,2.2,22.2),
-  scale: new Vector3(0.5,0.5,0.5);
+  scale: new Vector3(0.5,0.5,0.5)
 }));
 pattern.addComponent(new Billboard());
 pattern.addComponent(
